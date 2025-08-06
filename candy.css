@@ -7,7 +7,7 @@ body {
     margin: 0;
 }
 
-.main-layout {
+.left-sidebar {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -65,7 +65,7 @@ body {
     box-sizing: border-box;
 }
 
-.socials {
+.right-sidebar {
     flex: 1;
     max-width: 200px;
     font-family: 'Rubik', sans-serif;
@@ -126,5 +126,4 @@ body {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     justify-content: center;
     align-items: center;
-    text-align: center;
 }
