@@ -1,0 +1,1 @@
+"# Skott-s-Website"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/ButterScott101/Skott-s-Website.gitgit push -u origin main
