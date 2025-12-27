@@ -1,0 +1,40 @@
+/* Page background */
+.story-page {
+  background-image: url("../images/wata33.png");
+  background-size: contain;
+  background-position: center;
+  margin: 0;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* Centered story box */
+.story-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 3px solid #ff1100;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+.story-container h1 {
+  text-align: center;
+  margin-top: 0;
+}
+
+/* Text */
+.story-container p {
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+/* Back link */
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 30px;
+  text-decoration: none;
+  color: #ff0000;
+  font-weight: bold;
+}
