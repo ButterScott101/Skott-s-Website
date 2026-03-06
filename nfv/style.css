@@ -1,0 +1,573 @@
+/* ============================= */
+/* PAGE BACKGROUND */
+/* ============================= */
+
+body{
+
+background-color:#00adc7;
+background-image:url("images/wata.gif");
+background-position:center;
+background-size:cover;
+
+margin:0;
+
+font-family:'Rubik',sans-serif;
+
+overflow-x:hidden;
+
+}
+
+/* video background */
+
+#bgvideo{
+
+position:fixed;
+top:0;
+left:0;
+
+width:100vw;
+height:100vh;
+
+object-fit:cover;
+
+z-index:-2;
+
+display:none;
+
+}
+
+/* stage 4 shows video */
+
+body.stage-4 #bgvideo{
+display:block;
+}
+
+/* dark vignette */
+
+body::after{
+
+content:"";
+position:fixed;
+top:0;
+left:0;
+
+width:100vw;
+height:100vh;
+
+background:radial-gradient(circle,transparent 35%,rgba(0,0,0,0.85) 100%);
+
+pointer-events:none;
+z-index:-1;
+
+}
+
+
+/* ============================= */
+/* TITLE */
+/* ============================= */
+
+.title{
+
+text-align:center;
+
+font-size:5rem;
+
+border:3px solid red;
+
+padding:20px;
+
+margin:20px auto;
+
+width:fit-content;
+
+background:#111;
+
+color:white;
+
+}
+
+
+/* ============================= */
+/* LAYOUT */
+/* ============================= */
+
+.layout{
+
+display:flex;
+
+align-items:flex-start;
+
+justify-content:space-between;
+
+gap:20px;
+
+padding:0 20px;
+
+}
+
+
+/* ============================= */
+/* LEFT SIDEBAR */
+/* ============================= */
+
+.left-sidebar{
+
+flex:0 0 300px;
+
+display:flex;
+
+justify-content:flex-start;
+
+}
+
+.aboutshark{
+
+max-width:300px;
+
+padding:20px;
+
+border:3px solid red;
+
+border-radius:10px;
+
+text-align:center;
+
+background:rgba(0,0,0,0.65);
+
+color:white;
+
+}
+
+
+/* shark image */
+
+#sharky{
+
+width:16rem;
+
+border:2px solid red;
+
+margin-top:10px;
+
+}
+
+
+/* ============================= */
+/* CENTER COLUMN */
+/* ============================= */
+
+.center-column{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+width:60%;
+
+}
+
+
+/* main content */
+
+.middle{
+
+width:100%;
+
+padding:20px;
+
+margin-top:20px;
+
+border:3px solid red;
+
+background:rgba(0,0,0,0.65);
+
+color:white;
+
+}
+
+
+/* ============================= */
+/* STORIES */
+/* ============================= */
+
+.stories-box{
+
+width:100%;
+
+margin-top:20px;
+
+padding:20px;
+
+border:3px solid red;
+
+background:rgba(0,0,0,0.65);
+
+color:white;
+
+text-align:center;
+
+}
+
+
+/* story buttons */
+
+.stage-4 .story-btn{
+
+padding:8px 14px;
+border:2px solid red;
+background:black;
+color:white;
+text-decoration:none;
+font-weight:bold;
+transition:0.2s;
+
+}
+
+.stage-4 .story-btn:hover{
+
+background:red;
+color:black;
+transform:scale(1.1);
+
+}
+
+/* ============================= */
+/* RIGHT SIDEBAR */
+/* ============================= */
+
+.right-sidebar{
+
+flex:0 0 200px;
+
+padding:20px;
+
+border:3px solid red;
+
+border-radius:10px;
+
+background:rgba(0,0,0,0.65);
+
+color:white;
+
+text-align:center;
+
+}
+
+
+/* blinkies */
+
+.right-sidebar img{
+
+margin:5px 0;
+
+max-width:100%;
+
+}
+
+
+/* social buttons */
+
+.social-button{
+
+display:block;
+
+margin:10px auto;
+
+padding:10px;
+
+background:#004b4b;
+
+color:white;
+
+text-decoration:none;
+
+border-radius:5px;
+
+width:80%;
+
+transition:0.2s;
+
+}
+
+.social-button:hover{
+
+background:red;
+
+transform:scale(1.05);
+
+}
+
+
+/* ============================= */
+/* MUSIC LINKS */
+/* ============================= */
+
+.music-list{
+
+list-style:none;
+
+padding:0;
+
+}
+
+.music-list a{
+
+color:#00c4ff;
+
+text-decoration:none;
+
+}
+
+.music-list a:hover{
+
+color:red;
+
+}
+
+
+/* ============================= */
+/* GLITCH ANIMATIONS */
+/* ============================= */
+
+@keyframes redglitch{
+
+0%{transform:translate(0,0);}
+20%{transform:translate(-2px,1px);}
+40%{transform:translate(2px,-1px);}
+60%{transform:translate(-1px,2px);}
+80%{transform:translate(1px,-2px);}
+100%{transform:translate(0,0);}
+
+}
+
+@keyframes borderglitch{
+
+0%{box-shadow:0 0 10px red;}
+50%{box-shadow:0 0 25px red,3px 0 0 red,-3px 0 0 red;}
+100%{box-shadow:0 0 10px red;}
+
+}
+
+
+/* ============================= */
+/* STAGE 2 GLITCH */
+/* ============================= */
+
+.stage-2 .aboutshark,
+.stage-2 .middle,
+.stage-2 .stories-box,
+.stage-2 .right-sidebar,
+.stage-2 .title{
+
+animation:
+
+redglitch 0.08s infinite,
+borderglitch 0.6s infinite;
+
+}
+
+
+/* ============================= */
+/* STAGE 3 STRONGER GLITCH */
+/* ============================= */
+
+.stage-3 .aboutshark,
+.stage-3 .middle,
+.stage-3 .stories-box,
+.stage-3 .right-sidebar,
+.stage-3 .title{
+
+animation:
+
+redglitch 0.05s infinite,
+borderglitch 0.4s infinite;
+
+letter-spacing:3px;
+
+}
+
+
+/* ============================= */
+/* STAGE 4 BLOODY UI */
+/* ============================= */
+
+.stage-4 .aboutshark,
+.stage-4 .middle,
+.stage-4 .stories-box,
+.stage-4 .right-sidebar,
+.stage-4 .title{
+
+background-image:url("images/scabby_blood.png");
+
+background-size:cover;
+
+border:3px solid red;
+
+animation:
+
+redglitch 0.03s infinite,
+borderglitch 0.2s infinite;
+
+}
+
+.stage-3::before,
+.stage-4::before{
+
+content:"";
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:repeating-linear-gradient(
+0deg,
+rgba(0,0,0,0.2),
+rgba(0,0,0,0.2) 2px,
+transparent 2px,
+transparent 4px
+);
+
+pointer-events:none;
+
+z-index:999;
+
+}
+
+/* hide tape buttons normally */
+
+.story-buttons{
+display:none;
+}
+
+/* only show them in stage 4 */
+
+.stage-4 .story-buttons{
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+/* ============================= */
+/* STAGE 5 FINAL RITUAL */
+/* ============================= */
+
+.ritual-message{
+
+display:none;
+
+position:fixed;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+font-size:3rem;
+
+color:red;
+
+text-align:center;
+
+font-family:monospace;
+
+z-index:9999;
+
+}
+
+
+/* hide entire site */
+
+.stage-5 .layout,
+.stage-5 .title,
+.stage-5 .left-sidebar,
+.stage-5 .center-column,
+.stage-5 .right-sidebar,
+.stage-5 audio,
+.stage-5 video{
+
+display:none;
+
+}
+
+
+/* black void */
+
+.stage-5{
+
+background:black !important;
+
+}
+
+
+/* show ritual text */
+
+.ritual-message{
+
+display:none;
+
+position:fixed;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+font-size:3rem;
+
+color:red;
+
+text-align:center;
+
+font-family:monospace;
+
+z-index:9999;
+
+}
+
+
+/* creepy glow */
+
+@keyframes ritualglow{
+
+0%{text-shadow:0 0 5px red;}
+100%{text-shadow:0 0 30px red;}
+
+}
+
+@keyframes textflicker{
+
+0%{opacity:1;}
+10%{opacity:0;}
+12%{opacity:1;}
+18%{opacity:0;}
+20%{opacity:1;}
+30%{opacity:0.4;}
+32%{opacity:1;}
+60%{opacity:0.7;}
+62%{opacity:1;}
+80%{opacity:0;}
+82%{opacity:1;}
+100%{opacity:1;}
+
+}
+
+.stage-5 .ritual-message{
+
+display:block;
+
+animation:textflicker 2s infinite;
+
+text-shadow:
+0 0 5px red,
+0 0 10px red,
+0 0 20px darkred;
+
+}

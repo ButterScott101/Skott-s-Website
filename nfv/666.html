@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>dddddddd</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<div class="ritual-message">
+The ritual is complete.<br>
+I am now in you.
+</div>
+
+<body>
+    
+<audio id="bgmusic" autoplay loop></audio>
+
+<video id="bgvideo" autoplay muted loop>
+  <source src="video/bloodbackground.mp4" type="video/mp4">
+</video>
+
+<div class="title">ddddddddddddddddddd</div>
+
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="left-sidebar">
+    <div class="aboutshark">
+      <h2>About Me</h2>
+      <img id="sharky" src="images/sharkupdate.PNG" alt="dddddddddddddd">
+      <p>
+        This is me, Skott, the pattern shark. I am Pansexual and Polyamourous.
+        I like making music and making really bad art but I try.
+        I am also 17 years old in my senior year.
+      </p>
+    </div>
+  </div>
+
+  <!-- CENTER COLUMN -->
+  <div class="center-column">
+
+    <div class="middle">
+      <div class="aboutweb">
+        <p>
+          Hello there! Welcome to my website. This website has music i made along with
+          some social media platforms listed. I first bought this domain in 2025 with the name of "skottheshark"
+          and its not for the reason of saying im actually a shark but because i like sharks. I have interests
+          in sharks, dogs, cats, etc. Anyways if you have any questions about the site or any q&a's for me, email
+          me at fuck@gmail.com trust i will totally answer!
+        </p>
+      </div>
+    </div>
+
+    <!-- STORIES -->
+    <div class="stories-box">
+
+<h2>Stories</h2>
+
+<div class="story-buttons">
+
+<a class="story-btn" href="video/tape1.mp4" target="_blank">Tape 1</a>
+
+<a class="story-btn" href="video/tape2.mp4" target="_blank">Tape 2</a>
+
+<a class="story-btn" href="video/tape3.mp4" target="_blank">Tape 3</a>
+
+<a class="story-btn" href="video/unknown.mp4" target="_blank">Do Not Watch</a>
+
+</div>
+
+</div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="right-sidebar">
+
+    <div class="sidebar-box">
+      <h3>Social Media</h3>
+      <ul class="social-list">
+        <li><a href="https://x.com/ac_alexan" class="social-button" target="_blank">Twitter</a></li>
+        <li><a href="https://www.youtube.com/@SkottRedux" class="social-button" target="_blank">YouTube</a></li>
+        <li><a href="https://github.com/ButterScott101" class="social-button" target="_blank">GitHub</a></li>
+        <li><a href="https://www.sudomemo.net/user/5FEDB500A0E1553C@DSi/" class="social-button" target="_blank">Sudomemo</a></li>
+      </ul>
+    </div>
+
+    <!-- BLINKIES -->
+    <img src="https://blinkies.cafe/b/display/0074-pan.gif" alt="Pan pride">
+    <img src="https://blinkies.cafe/b/display/0190-hittingfloor.gif" width="150" alt="hitting floor">
+    <img src="https://blinkies.cafe/b/display/0206-nyancat.gif" width="150" alt="nyan cat">
+    <img src="https://blinkies.cafe/b/display/0030-catpaw.gif" alt="cat paw">
+    <img src="https://blinkies.cafe/b/display/0114-tbh.gif" alt="tbh">
+    <img src="https://blinkies.cafe/b/display/0102-rainbowchecker.gif" alt="rainbow">
+    <img src="https://blinkies.cafe/b/display/0090-flatline.gif" alt="flatline">
+    <img src="https://blinkies.cafe/b/display/0032-coffeecup.gif" alt="coffee">
+    <img src="https://blinkies.cafe/b/display/0221-cd.gif" width="150" alt="cd">
+
+    <a href="https://fudgikakes.neocities.org/">
+      <img src="https://fudgikakes.neocities.org/fudgikakes.gif" alt="fudgikakes">
+    </a>
+
+    <a href="https://moofle.carrd.co">
+      <img src="https://moofle.carrd.co/assets/images/image23.gif?v=5f4d5a70" alt="moofle">
+    </a>
+
+    <!-- MUSIC -->
+    <div class="music-box">
+      <h3>Songs I Made</h3>
+      <ul class="music-list">
+        <li><a href="audio/mafia funk.mp3" target="_blank">Mafia Funk</a></li>
+        <li><a href="audio/randum beat.mp3" target="_blank">Randum Beat</a></li>
+        <li><a href="audio/tt8hardcore.mp3" target="_blank">t&t>>8</a></li>
+        <li><a href="audio/shortlinebyte.mp3" target="_blank">ShortLineByte</a></li>
+        <li><a href="audio/AlexansTheme2026.mp3" target="_blank">Alexan's Theme</a></li>
+        <li><a href="audio/8000Hz.mp3" target="_blank">8000Hz</a></li>
+        <li><a href="audio/NegativeLexan.mp3" target="_blank">NegativeTheme</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+let refreshCount = parseInt(localStorage.getItem("refreshCount")) || 0;
+refreshCount++;
+
+localStorage.setItem("refreshCount", refreshCount);
+
+let stage = Math.floor(refreshCount / 4);
+stage = Math.min(stage,5);
+
+document.body.classList.add("stage-" + stage);
+
+
+
+/* AUDIO CONTROL */
+
+let music = document.getElementById("bgmusic");
+
+if(stage < 4){
+
+music.src = "audio/lease.mp3";
+music.volume = 1;
+music.play().catch(()=>{});
+
+}
+
+else if(stage === 4){
+
+music.src = "audio/finalstage.mp3";
+music.volume = 1;
+music.play().catch(()=>{});
+
+}
+
+else if(stage === 5){
+
+music.pause();
+music.volume = 0;
+
+}
+
+
+
+/* RANDOM D GENERATOR */
+
+function corruptText(){
+  let length = Math.floor(Math.random()*60)+20;
+  return "d".repeat(length);
+}
+
+
+/* STAGE 3 TEXT CORRUPTION */
+
+if(stage >= 3){
+
+  // corrupt most visible text
+  document.querySelectorAll("p, h1, h2, h3, li:not(.story-list li)").forEach(el=>{
+    el.textContent = corruptText();
+  });
+
+  // completely overwrite the right sidebar
+  let sidebar = document.querySelector(".right-sidebar");
+
+  if(sidebar){
+    sidebar.innerHTML = `
+    <h3>dddddddddddddddddddd</h3>
+    <p style="word-break:break-all; line-height:12px;">
+    ${"d".repeat(1200)}
+    </p>
+    `;
+  }
+
+}
+
+</script>
+
+</body>
+</html>
