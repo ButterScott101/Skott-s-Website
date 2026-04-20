@@ -1,7 +1,7 @@
 /* ===== PAGE BACKGROUND ===== */
 body {
-  background-color: #00adc7;
-  background-image: url("/images/wata.gif");
+  background-color: #000000;
+  background-image: url("/images/disco.gif");
   background-position: center;
   background-size: cover;
   margin: 0;
@@ -12,12 +12,54 @@ body {
 .title {
   text-align: center;
   font-size: 5rem;
-  font-weight: normal;
-  border: 3px solid #00adc7;
+  border: 3px solid #88ff00;
   padding: 20px;
   margin: 20px auto;
   width: fit-content;
-  background-color: #f0f8ff;
+  background-color: #00ff80;
+
+  /* CHAOS ANIMATIONS */
+  animation: 
+    rainbowFlash 0.2s infinite,
+    textFlash 0.05s infinite,
+    flicker 0.1s infinite,
+    shake 0.1s infinite;
+
+  /* glowing text effect */
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+@keyframes rainbowFlash {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes textFlash {
+  0% { color: red; }
+  10% { color: blue; }
+  20% { color: lime; }
+  30% { color: yellow; }
+  40% { color: magenta; }
+  50% { color: cyan; }
+  60% { color: orange; }
+  70% { color: purple; }
+  80% { color: white; }
+  90% { color: black; }
+  100% { color: red; }
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(2px, -2px); }
+  50% { transform: translate(-2px, 2px); }
+  75% { transform: translate(2px, 2px); }
+  100% { transform: translate(0, 0); }
 }
 
 /* ===== LAYOUT ===== */
@@ -38,7 +80,7 @@ body {
 
 .aboutshark {
   max-width: 300px;
-  border: 3px solid #00adc7;
+  border: 3px solid #000000;
   padding: 20px;
   background-color: #f0f8ff;
   border-radius: 10px;
@@ -48,7 +90,7 @@ body {
 
 #sharky {
   width: 16rem;
-  border: 2px solid #00adc7;
+  border: 2px solid #000000;
   margin-top: 10px;
 }
 
@@ -63,10 +105,10 @@ body {
 /* ===== MIDDLE MAIN BOX ===== */
 .middle {
   width: 100%;
-  border: 3px solid #00adc7;
+  border: 3px solid #000000;
   padding: 20px;
   margin-top: 20px;
-  background-color: #f0f8ff;
+  background-color: #ffffff;
   box-sizing: border-box;
 }
 
@@ -79,9 +121,9 @@ body {
 .stories-box {
   width: 100%;
   margin-top: 20px;
-  border: 3px solid #00adc7;
+  border: 3px solid #000000;
   padding: 20px;
-  background-color: #f0f8ff;
+  background-color: #ffffff;
   box-sizing: border-box;
 }
 
@@ -103,28 +145,35 @@ body {
 
 .story-list a {
   padding: 10px 15px;
-  border: 2px solid #00adc7;
+  border: 2px solid #000000;
   border-radius: 6px;
   text-decoration: none;
-  color: #00adc7;
+  color: #000000;
   font-weight: bold;
   transition: background-color 0.2s, color 0.2s, transform 0.2s;
 }
 
 .story-list a:hover {
-  background-color: #00adc7;
+  animation: rainbowHover 0.3s infinite, textFlash 0.1s infinite;
+  background-color: rgb(255, 0, 0);
   color: white;
-  transform: scale(1.05);
+  transform: scale(1.1);
+  text-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+}
+
+@keyframes rainbowHover {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 /* ===== RIGHT SIDEBAR ===== */
 .right-sidebar {
   max-width: 200px;
-  border: 3px solid #00adc7;
+  border: 3px solid #000000;
   padding: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-  background-color: #f0f8ff;
+  background-color: #ffffff;
   border-radius: 10px;
   text-align: center;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
@@ -146,7 +195,7 @@ body {
   display: block;
   margin: 10px auto;
   padding: 10px 15px;
-  background-color: #00adc7;
+  background-color: #000000;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -155,6 +204,7 @@ body {
 }
 
 .social-button:hover {
+  animation: rainbowHover 0.3s infinite, textFlash 0.1s infinite;
   background-color: #008ca3;
   transform: scale(1.05);
 }
@@ -180,4 +230,55 @@ body {
 .right-sidebar img {
   margin: 5px 0;
   max-width: 100%;
+}
+
+/* ===== BLINKIE SCROLL BAR ===== */
+.blinkie-bar {
+  width: 100%;
+  overflow: hidden;
+  border: 3px solid #00adc7;
+  margin-top: 20px;
+  padding: 10px 0;
+
+  animation: flashBar 0.3s infinite;
+}
+
+.blinkie-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: scrollBlinkies 10s linear infinite, flashBar 0.5s infinite;
+}
+
+.blinkie-track img {
+  height: 40px;
+}
+
+/* scrolling effect */
+@keyframes scrollBlinkies {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* flashing background */
+@keyframes flashBar {
+  0%   { background-color: red; }
+  20%  { background-color: blue; }
+  40%  { background-color: lime; }
+  60%  { background-color: yellow; }
+  80%  { background-color: magenta; }
+  100% { background-color: cyan; }
+}
+
+.rainbow-text {
+  animation: textFlash 0.1s infinite, rainbowHue 0.3s infinite;
+  font-weight: bold;
+  text-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+}
+
+/* reuse your existing textFlash if you already have it */
+/* add this if you don't */
+@keyframes rainbowHue {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
