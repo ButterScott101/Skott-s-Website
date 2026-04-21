@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>System Recovery</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      overflow: hidden;
+      animation: crtFlicker 0.1s infinite;
+    }
+
+    #terminal {
+      white-space: pre-wrap;
+      font-size: 1.2rem;
+      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,0,0.05) 0px,
+        rgba(0,255,0,0.05) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+    }
+
+    @keyframes crtFlicker {
+      50% { opacity: 0.95; }
+    }
+
+    body.deep {
+      animation: deepFlicker 0.08s infinite;
+    }
+
+    @keyframes deepFlicker {
+      50% { transform: translate(1px,-1px); }
+    }
+
+    @keyframes breakScreen {
+      0% { filter: none; }
+      50% { filter: invert(1) contrast(2); }
+      100% { filter: none; }
+    }
+
+    #hud {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="terminal"></div>
+
+<!-- AUDIO -->
+<audio id="typeSound" src="audio/type.mp3"></audio>
+<audio id="beepSound" src="audio/beep.mp3"></audio>
+<audio id="menaceMusic" src="audio/intrusion.mp3" loop></audio>
+
+<script>
+const terminal = document.getElementById("terminal");
+const typeSound = document.getElementById("typeSound");
+const beepSound = document.getElementById("beepSound");
+const slamSound = document.getElementById("slamSound");
+const menaceMusic = document.getElementById("menaceMusic");
+
+let solved = false;
+let discoveredCode = false;
+let deepMode = false;
+let exitAttempts = 0;
+let pleaseCount = 0;
+let currentInput = "";
+let acceptingInput = false;
+
+const lines = [
+  "Initializing recovery protocol...",
+  "Locating corrupted data...",
+  "Rebuilding interface...",
+  "Error: Unexpected response detected.",
+  "Attempting fallback...",
+  "User session mismatch.",
+  "Restoration failed."
+];
+
+/* TYPE */
+function typeLine(text, cb) {
+  acceptingInput = false; // lock input while typing
+
+  let i = 0;
+  function t() {
+    if (i < text.length) {
+      terminal.innerHTML += text[i];
+
+      if (Math.random() < 0.4) {
+        typeSound.currentTime = 0;
+        typeSound.play().catch(()=>{});
+      }
+
+      if (slamSound && Math.random() < 0.02) {
+  slamSound.currentTime = 0;
+  slamSound.play().catch(()=>{});
+}
+      i++;
+      setTimeout(t, deepMode ? 10 : 20);
+    } else {
+      terminal.innerHTML += "\n";
+
+      if (beepSound) {
+        beepSound.currentTime = 0;
+        beepSound.play().catch(()=>{});
+      }
+
+      if (cb) cb();
+    }
+  }
+  t();
+}
+/* START */
+function start() {
+  let i = 0;
+  function next() {
+    if (i < lines.length) {
+      typeLine(lines[i++], () => setTimeout(next, 300));
+    } else prompt();
+  }
+  next();
+}
+
+function prompt() {
+  acceptingInput = true;
+  terminal.innerHTML += "\n> ";
+}
+
+/* INPUT */
+document.addEventListener("keydown", e => {
+  if (!acceptingInput) return;
+
+  if (e.key === "Enter") {
+    terminal.innerHTML += "\n";
+    handle(currentInput.trim().toUpperCase());
+    currentInput = "";
+  } else if (e.key === "Backspace") {
+    currentInput = currentInput.slice(0,-1);
+    terminal.innerHTML = terminal.innerHTML.slice(0,-1);
+  } else if (e.key.length === 1) {
+    currentInput += e.key;
+    terminal.innerHTML += e.key;
+  }
+});
+
+/* COMMANDS */
+function handle(cmd) {
+
+  switch (cmd) {
+
+    case "HELP":
+      if (solved) {
+        typeLine(`AVAILABLE COMMANDS:
+HELP
+STATUS
+SCAN
+LOGS
+RECOVER
+CLEAR
+PLEASE
+DEEP
+EXIT`, prompt);
+      } else {
+        typeLine(`AVAILABLE COMMANDS:
+HELP
+STATUS
+SCAN
+LOGS
+RECOVER
+CLEAR
+PLEASE`, prompt);
+      }
+      break;
+
+    case "STATUS":
+      typeLine("System integrity: CRITICAL\nConnection: UNSTABLE\nUser: UNKNOWN", prompt);
+      break;
+
+    case "SCAN":
+      typeLine("Scanning...", () => {
+        setTimeout(() => {
+          typeLine("Anomaly detected.", prompt);
+        }, 800);
+      });
+      break;
+
+    case "LOGS":
+      typeLine(`[LOG] anomaly detected\n[LOG] code fragment: ECHO`, () => {
+        discoveredCode = true;
+        prompt();
+      });
+      break;
+
+    case "ECHO":
+      if (discoveredCode) {
+        typeLine("...signal stabilized", () => {
+          typeLine("connection restored", () => {
+            solved = true;
+            prompt();
+          });
+        });
+      } else typeLine("Unknown command", prompt);
+      break;
+
+    case "RECOVER":
+      typeLine("Attempting recovery...", () => {
+        setTimeout(() => {
+          typeLine("Recovery failed.", prompt);
+        }, 1000);
+      });
+      break;
+
+    case "PLEASE":
+      pleaseCount++;
+      if (pleaseCount === 1) typeLine("...", prompt);
+      else if (pleaseCount === 2) typeLine("that won't fix it", prompt);
+      else typeLine("it already happened", prompt);
+      break;
+
+    case "CLEAR":
+      terminal.innerHTML = "";
+      prompt();
+      break;
+
+    case "DEEP":
+      if (!solved) return typeLine("Access denied", prompt);
+
+      deepMode = true;
+      document.body.classList.add("deep");
+
+      const hud = document.createElement("div");
+      hud.id = "hud";
+      hud.innerHTML = `
+        SIGNAL: UNSTABLE<br>
+        DIRECTIVE: FIND PATH<br>
+        HINT: TRACE / ROOT / SIGNAL
+      `;
+      document.body.appendChild(hud);
+
+      typeLine("Entering deeper layer...", prompt);
+      break;
+
+    case "TRACE":
+      if (!deepMode) return typeLine("Command not recognized", prompt);
+      typeLine("Source found: /root/node", prompt);
+      break;
+
+    case "ROOT":
+      if (!deepMode) return typeLine("Access denied", prompt);
+      typeLine("Permission granted", prompt);
+      break;
+
+    case "SIGNAL":
+      if (!deepMode) return typeLine("No signal detected", prompt);
+
+      typeLine("...it is watching.", () => {
+
+        menaceMusic.volume = 0;
+        menaceMusic.play().catch(()=>{});
+
+        let v = 0;
+        const ramp = setInterval(()=>{
+          v += 0.05;
+          menaceMusic.volume = Math.min(v,0.7);
+          if(v >= 0.7) clearInterval(ramp);
+        },100);
+
+        typeLine("RUN.", () => {
+          setTimeout(() => {
+            typeLine("IT IS CLOSE.", prompt);
+          }, 1500);
+        });
+      });
+      break;
+
+    case "EXIT":
+      if (!solved) return typeLine("Access denied", prompt);
+
+      exitAttempts++;
+
+      if (exitAttempts === 1) {
+        typeLine("Command blocked.", prompt);
+      }
+
+      else if (exitAttempts === 2) {
+        typeLine("Override required...", () => {
+
+          document.body.style.animation = "breakScreen 0.4s";
+
+          setTimeout(() => {
+            document.body.style.animation = "";
+
+            typeLine("FORCING EXIT...", () => {
+
+              menaceMusic.pause();
+              menaceMusic.currentTime = 0;
+
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 500);
+            });
+
+          }, 400);
+        });
+      }
+      break;
+
+    default:
+      typeLine("Unknown command", prompt);
+  }
+}
+
+start();
+</script>
+
+</body>
+</html>

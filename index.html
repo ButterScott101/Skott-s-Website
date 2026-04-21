@@ -6,12 +6,16 @@
 </head>
 
 <body>
+  <div id="enterScreen">
+  CLICK TO ENTER MY WEBSITE (this is for the music to play)
+</div>
 
-  <audio autoplay loop>
-    <source src="audio/ringing.mp3" type="audio/mp3">
-  </audio>
+ <audio id="player" autoplay loop muted>
+  <source src="audio/ringing.mp3" type="audio/mp3">
+</audio>
 
-  <div class="title">Skott's website</div>
+<audio id="eas" src="audio/eas.mp3"></audio> 
+<div class="title">Skott's website</div>
 
   <div class="layout">
 
@@ -106,5 +110,95 @@
 
   </div>
 
+<script>
+const player = document.getElementById("player");
+const enterScreen = document.getElementById("enterScreen");
+
+/* =========================
+   RANDOM INTRO TEXT (OPTIONAL)
+========================= */
+const messages = [
+  "CLICK TO ENTER MY SITE",
+  "CLICK TO PROCEED",
+  "I AM DARB, I MADE THE WEBSITE",
+  "THIS SITE CONTAINS AUDIO, CLICK TO PROCEED"
+];
+
+enterScreen.innerText = messages[Math.floor(Math.random() * messages.length)];
+
+/* =========================
+   ENTER SCREEN CLICK
+========================= */
+enterScreen.addEventListener("click", () => {
+
+  // start music
+  player.muted = false;
+  player.volume = 1;
+  player.play().catch(err => console.log("Play failed:", err));
+
+  // fade out intro screen
+  enterScreen.style.opacity = "0";
+  setTimeout(() => {
+    enterScreen.remove();
+  }, 500);
+
+  // 10% corruption chance
+  if (Math.random() < 0.1) {
+    triggerCorruption();
+  }
+});
+
+/* =========================
+   CORRUPTION FUNCTION
+========================= */
+function triggerCorruption() {
+  console.log("CORRUPTION TRIGGERED");
+
+  // stop current audio
+  player.pause();
+
+  // switch to EAS tone
+  player.innerHTML = '<source src="audio/eas.mp3" type="audio/mp3">';
+  player.load();
+
+  player.loop = false;
+  player.currentTime = 0;
+
+  player.play().catch(err => {
+    console.log("EAS failed:", err);
+  });
+
+  // create overlay
+  const overlay = document.createElement("div");
+  overlay.innerHTML = "NO NO NO NO<br>GOD SAVE US ALL";
+
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    background: "black",
+    color: "red",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "3rem",
+    textAlign: "center",
+    zIndex: "9999",
+    animation: "flicker 0.3s infinite"
+  });
+
+  document.body.appendChild(overlay);
+
+  // redirect after 5 seconds
+  setTimeout(() => {
+    window.location.href = "/404.html";
+  }, 5000);
+}
+</script>
+
+
+  
 </body>
 </html>
