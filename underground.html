@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Underground</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      font-family: monospace;
+      overflow: hidden;
+      color: #666;
+    }
+
+    /* INTRO */
+    #intro {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 2rem;
+      cursor: pointer;
+      background: black;
+      z-index: 9999;
+    }
+
+    #intro:hover {
+      color: white;
+    }
+
+    /* IMAGE */
+    #image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 60%;
+      opacity: 0;
+      transition: opacity 5s ease;
+    }
+
+    /* MESSAGE */
+    #message {
+      position: absolute;
+      top: 70%;
+      width: 100%;
+      text-align: center;
+      font-size: 2rem;
+      opacity: 0;
+      transition: opacity 3s;
+      color: #888;
+    }
+
+    /* BUTTON */
+    #ghostBtn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background: transparent;
+      border: 2px solid #666;
+      color: #666;
+      cursor: pointer;
+      font-family: monospace;
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    #ghostBtn:hover {
+      background: #666;
+      color: black;
+    }
+
+    /* STATIC / CRT OVERLAY */
+    #static {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.15;
+      background-image: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.05) 0px,
+        rgba(255,255,255,0.05) 1px,
+        transparent 2px,
+        transparent 3px
+      );
+      animation: noise 0.2s infinite;
+    }
+
+    @keyframes noise {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(-1px,1px); }
+      100% { transform: translate(1px,-1px); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="intro">CLICK TO ENTER</div>
+
+<img id="image" src="images/creepy.jpg" alt="...">
+<div id="message"></div>
+<button id="ghostBtn">BECOME A GHOST AND GO BACK</button>
+
+<div id="static"></div>
+
+<audio id="bgMusic" src="audio/depressing.mp3" loop></audio>
+
+<script>
+const intro = document.getElementById("intro");
+const music = document.getElementById("bgMusic");
+const image = document.getElementById("image");
+const message = document.getElementById("message");
+const button = document.getElementById("ghostBtn");
+
+/* START EXPERIENCE */
+intro.addEventListener("click", () => {
+
+  intro.style.opacity = "0";
+  setTimeout(() => intro.remove(), 500);
+
+  // audio fade-in
+  music.volume = 0;
+  music.play().catch(()=>{});
+
+  let v = 0;
+  const fade = setInterval(() => {
+    v += 0.05;
+    music.volume = Math.min(v, 0.6);
+    if (v >= 0.6) clearInterval(fade);
+  }, 200);
+
+  // reveal image
+  setTimeout(() => {
+    image.style.opacity = "0.8";
+  }, 500);
+
+  // first message
+  setTimeout(() => {
+    message.textContent = "YOU WERE NOT MEANT TO BE HERE";
+    message.style.opacity = "1";
+  }, 10000);
+
+  // second message (overwrites first)
+  setTimeout(() => {
+    message.style.opacity = "0";
+
+    setTimeout(() => {
+      message.textContent = "THIS PLACE DOES NOT FORGET";
+      message.style.opacity = "1";
+    }, 1500);
+
+  }, 15000);
+
+  // show button
+  setTimeout(() => {
+    button.style.opacity = "1";
+  }, 20000);
+
+});
+
+/* BUTTON */
+button.onclick = () => {
+  window.location.href = "/";
+};
+</script>
+
+</body>
+</html>
