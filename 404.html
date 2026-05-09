@@ -11,15 +11,20 @@
       color: #00ff00;
       font-family: monospace;
       overflow: hidden;
+      opacity: 1;
+      transition: opacity 1s;
       animation: crtFlicker 0.1s infinite;
     }
 
     #terminal {
       white-space: pre-wrap;
       font-size: 1.2rem;
-      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+      text-shadow:
+        0 0 5px #00ff00,
+        0 0 10px #00ff00;
     }
 
+    /* CRT overlay */
     body::before {
       content: "";
       position: fixed;
@@ -35,29 +40,41 @@
     }
 
     @keyframes crtFlicker {
-      50% { opacity: 0.95; }
+      50% {
+        opacity: 0.96;
+      }
     }
 
+    /* deep mode */
     body.deep {
       animation: deepFlicker 0.08s infinite;
     }
 
     @keyframes deepFlicker {
-      50% { transform: translate(1px,-1px); }
+      0%   { transform: translate(0px,0px); }
+      50%  { transform: translate(1px,-1px); }
+      100% { transform: translate(0px,0px); }
     }
 
-    @keyframes breakScreen {
-      0% { filter: none; }
-      50% { filter: invert(1) contrast(2); }
-      100% { filter: none; }
-    }
-
+    /* hud */
     #hud {
       position: fixed;
       top: 10px;
       right: 10px;
       font-size: 0.9rem;
       opacity: 0.8;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    /* timer */
+    #timer {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: red;
+      font-size: 2rem;
+      z-index: 999;
     }
   </style>
 </head>
@@ -72,46 +89,66 @@
 <audio id="menaceMusic" src="audio/intrusion.mp3" loop></audio>
 
 <script>
+/* =========================
+   ELEMENTS
+========================= */
 const terminal = document.getElementById("terminal");
 const typeSound = document.getElementById("typeSound");
 const beepSound = document.getElementById("beepSound");
 const menaceMusic = document.getElementById("menaceMusic");
 
+/* =========================
+   STATE
+========================= */
 let solved = false;
 let discoveredCode = false;
 let deepMode = false;
+let countdownStarted = false;
 let exitAttempts = 0;
 let pleaseCount = 0;
+
 let currentInput = "";
 let acceptingInput = false;
-let countdownStarted = false;
 
 /* =========================
    TYPE SYSTEM
 ========================= */
 function typeLine(text, callback) {
+
   acceptingInput = false;
 
   let i = 0;
 
   function typeChar() {
+
     try {
+
       if (i < text.length) {
 
         terminal.innerHTML += text[i];
 
+        // typing sound
         if (typeSound && Math.random() < 0.25) {
+
           if (typeSound.paused) {
+
             typeSound.currentTime = 0;
-            typeSound.playbackRate = 0.9 + Math.random() * 0.2;
+            typeSound.playbackRate =
+              0.9 + Math.random() * 0.2;
+
             typeSound.play().catch(()=>{});
           }
         }
 
         i++;
-        setTimeout(typeChar, deepMode ? 10 : 20);
+
+        setTimeout(
+          typeChar,
+          deepMode ? 10 : 20
+        );
 
       } else {
+
         terminal.innerHTML += "\n";
 
         if (beepSound) {
@@ -121,8 +158,11 @@ function typeLine(text, callback) {
 
         if (callback) callback();
       }
+
     } catch {
+
       setTimeout(typeChar, 20);
+
     }
   }
 
@@ -130,9 +170,20 @@ function typeLine(text, callback) {
 }
 
 /* =========================
+   PROMPT
+========================= */
+function prompt() {
+
+  acceptingInput = true;
+
+  terminal.innerHTML += "\n> ";
+}
+
+/* =========================
    STARTUP
 ========================= */
 function start() {
+
   const lines = [
     "Initializing recovery protocol...",
     "Locating corrupted data...",
@@ -144,240 +195,562 @@ function start() {
   ];
 
   let i = 0;
-  function next() {
-    if (i < lines.length) {
-      typeLine(lines[i++], () => setTimeout(next, 300));
-    } else prompt();
-  }
-  next();
-}
 
-function prompt() {
-  acceptingInput = true;
-  terminal.innerHTML += "\n> ";
+  function next() {
+
+    if (i < lines.length) {
+
+      typeLine(
+        lines[i++],
+        () => setTimeout(next, 300)
+      );
+
+    } else {
+
+      prompt();
+
+    }
+  }
+
+  next();
 }
 
 /* =========================
    INPUT
 ========================= */
 document.addEventListener("keydown", e => {
+
   if (!acceptingInput) return;
 
   if (e.key === "Enter") {
+
     terminal.innerHTML += "\n";
-    handle(currentInput.trim().toUpperCase());
+
+    handleCommand(
+      currentInput.trim().toUpperCase()
+    );
+
     currentInput = "";
-  } else if (e.key === "Backspace") {
-    currentInput = currentInput.slice(0,-1);
-    terminal.innerHTML = terminal.innerHTML.slice(0,-1);
-  } else if (e.key.length === 1) {
-    currentInput += e.key;
-    terminal.innerHTML += e.key;
+
   }
+
+  else if (e.key === "Backspace") {
+
+    currentInput =
+      currentInput.slice(0, -1);
+
+    terminal.innerHTML =
+      terminal.innerHTML.slice(0, -1);
+
+  }
+
+  else if (e.key.length === 1) {
+
+    currentInput += e.key;
+
+    terminal.innerHTML += e.key;
+
+  }
+
 });
 
 /* =========================
    COMMANDS
 ========================= */
-function handle(cmd) {
+function handleCommand(cmd) {
 
   switch (cmd) {
 
+    /* HELP */
     case "HELP":
+
       typeLine(`AVAILABLE COMMANDS:
+
 HELP      - show this menu
-STATUS    - system state
-SCAN      - scan for anomalies
-LOGS      - view system logs
+STATUS    - view system state
+SCAN      - search for anomalies
+LOGS      - inspect system logs
 RECOVER   - attempt recovery
 CLEAR     - clear terminal
 PLEASE    - not recommended
+
 DEEP      - access deeper layer
+
 TRACE     - trace signal (deep only)
 ROOT      - access system (deep only)
-SIGNAL    - detect presence (deep only)
-EXIT      - exit system`, prompt);
+SIGNAL    - activate presence (deep only)
+
+BATTLE    - engage encounter
+EXIT      - exit system`,
+      prompt);
+
       break;
 
+    /* STATUS */
     case "STATUS":
-      typeLine("System integrity: CRITICAL\nConnection: UNSTABLE\nUser: UNKNOWN", prompt);
+
+      typeLine(
+`System integrity: CRITICAL
+Connection: UNSTABLE
+User: UNKNOWN`,
+      prompt);
+
       break;
 
+    /* SCAN */
     case "SCAN":
+
       typeLine("Scanning...", () => {
+
         setTimeout(() => {
-          typeLine("Anomaly detected.", prompt);
+
+          typeLine(
+            "Anomaly detected.",
+            prompt
+          );
+
         }, 800);
+
       });
+
       break;
 
+    /* LOGS */
     case "LOGS":
-      typeLine("[LOG] anomaly detected\n[LOG] code fragment: ECHO", () => {
+
+      typeLine(
+`[LOG] anomaly detected
+[LOG] code fragment: ECHO`,
+      () => {
+
         discoveredCode = true;
+
         prompt();
+
       });
+
       break;
 
+    /* ECHO */
     case "ECHO":
-      if (discoveredCode) {
-        typeLine("...signal stabilized", () => {
-          typeLine("connection restored", () => {
-            solved = true;
-            prompt();
-          });
-        });
-      } else typeLine("Unknown command", prompt);
+
+      if (!discoveredCode)
+        return typeLine(
+          "Unknown command",
+          prompt
+        );
+
+      typeLine(
+        "...signal stabilized",
+        () => {
+
+          typeLine(
+            "connection restored",
+            () => {
+
+              solved = true;
+
+              prompt();
+
+            }
+          );
+
+        }
+      );
+
       break;
 
+    /* RECOVER */
     case "RECOVER":
-      typeLine("Attempting recovery...", () => {
-        setTimeout(() => {
-          typeLine("Recovery failed.", prompt);
-        }, 1000);
-      });
+
+      typeLine(
+        "Attempting recovery...",
+        () => {
+
+          setTimeout(() => {
+
+            typeLine(
+              "Recovery failed.",
+              prompt
+            );
+
+          }, 1000);
+
+        }
+      );
+
       break;
 
+    /* PLEASE */
     case "PLEASE":
+
       pleaseCount++;
-      if (pleaseCount === 1) typeLine("...", prompt);
-      else if (pleaseCount === 2) typeLine("that won't fix it", prompt);
-      else typeLine("it already happened", prompt);
+
+      if (pleaseCount === 1)
+        typeLine("...", prompt);
+
+      else if (pleaseCount === 2)
+        typeLine("that won't fix it", prompt);
+
+      else
+        typeLine("it already happened", prompt);
+
       break;
 
+    /* CLEAR */
     case "CLEAR":
+
       terminal.innerHTML = "";
+
       prompt();
+
       break;
 
+    /* DEEP */
     case "DEEP":
-      if (!solved) return typeLine("Access denied", prompt);
+
+      if (!solved)
+        return typeLine(
+          "Access denied",
+          prompt
+        );
 
       deepMode = true;
+
       document.body.classList.add("deep");
 
-      const hud = document.createElement("div");
+      // remove duplicate hud
+      const oldHud =
+        document.getElementById("hud");
+
+      if (oldHud) oldHud.remove();
+
+      const hud =
+        document.createElement("div");
+
       hud.id = "hud";
+
       hud.innerHTML = `
         SIGNAL: UNSTABLE<br>
         DIRECTIVE: FIND PATH<br>
-        HINT: TRACE / ROOT / SIGNAL
+        HINT: TRACE / ROOT / SIGNAL / BATTLE
       `;
+
       document.body.appendChild(hud);
 
-      typeLine("Entering deeper layer...", prompt);
+      typeLine(
+        "Entering deeper layer...",
+        prompt
+      );
+
       break;
 
+    /* TRACE */
     case "TRACE":
-      if (!deepMode) return typeLine("Command not recognized", prompt);
-      typeLine("Source found: /root/node", prompt);
+
+      if (!deepMode)
+        return typeLine(
+          "Command not recognized",
+          prompt
+        );
+
+      typeLine(
+        "Source found: /root/node",
+        prompt
+      );
+
       break;
 
+    /* ROOT */
     case "ROOT":
-      if (!deepMode) return typeLine("Access denied", prompt);
-      typeLine("Permission granted", prompt);
+
+      if (!deepMode)
+        return typeLine(
+          "Access denied",
+          prompt
+        );
+
+      typeLine(
+        "Permission granted",
+        prompt
+      );
+
       break;
 
+    /* SIGNAL */
     case "SIGNAL":
-      if (!deepMode) return typeLine("No signal detected", prompt);
 
-      typeLine("...it is watching.", () => {
+      if (!deepMode)
+        return typeLine(
+          "No signal detected",
+          prompt
+        );
 
-        startCountdown();
+      if (countdownStarted)
+        return typeLine(
+          "SIGNAL ALREADY ACTIVE",
+          prompt
+        );
 
-        menaceMusic.volume = 0;
-        menaceMusic.play().catch(()=>{});
+      typeLine(
+        "...it is watching.",
+        () => {
 
-        let v = 0;
-        const ramp = setInterval(()=>{
-          v += 0.05;
-          menaceMusic.volume = Math.min(v,0.7);
-          if(v >= 0.7) clearInterval(ramp);
-        },100);
+          startCountdown();
 
-        typeLine("RUN.", prompt);
-      });
+          // music
+          menaceMusic.volume = 0;
+
+          menaceMusic.play().catch(()=>{});
+
+          let v = 0;
+
+          const ramp =
+            setInterval(() => {
+
+              v += 0.05;
+
+              menaceMusic.volume =
+                Math.min(v, 0.7);
+
+              if (v >= 0.7)
+                clearInterval(ramp);
+
+            }, 100);
+
+          typeLine(
+            "RUN.",
+            prompt
+          );
+
+        }
+      );
+
       break;
 
+    /* BATTLE */
+    case "BATTLE":
+
+      // only usable during signal event
+      if (!countdownStarted)
+        return typeLine(
+          "No hostile presence detected.",
+          prompt
+        );
+
+      typeLine(
+        "Initializing combat protocol...",
+        () => {
+
+          acceptingInput = false;
+
+          document.body.style.opacity = "0";
+
+          setTimeout(() => {
+
+            window.location.href =
+              "battle.html";
+
+          }, 1000);
+
+        }
+      );
+
+      break;
+
+    /* EXIT */
     case "EXIT":
-      if (!solved) return typeLine("Access denied", prompt);
+
+      if (!solved)
+        return typeLine(
+          "Access denied",
+          prompt
+        );
+
+      // cannot escape during countdown
+      if (countdownStarted)
+        return typeLine(
+          "ESCAPE SEQUENCE INTERRUPTED.",
+          prompt
+        );
 
       exitAttempts++;
 
       if (exitAttempts === 1) {
-        typeLine("Command blocked.", prompt);
-      } else if (exitAttempts === 2) {
-        typeLine("FORCING EXIT...", () => {
-          menaceMusic.pause();
-          window.location.href = "/";
-        });
+
+        typeLine(
+          "Command blocked.",
+          prompt
+        );
+
       }
+
+      else if (exitAttempts === 2) {
+
+        typeLine(
+          "FORCING EXIT...",
+          () => {
+
+            acceptingInput = false;
+
+            menaceMusic.pause();
+            menaceMusic.currentTime = 0;
+
+            document.body.style.opacity = "0";
+
+            setTimeout(() => {
+
+              window.location.href = "/";
+
+            }, 1000);
+
+          }
+        );
+      }
+
       break;
 
+    /* UNKNOWN */
     default:
-      typeLine("Unknown command", prompt);
+
+      typeLine(
+        "Unknown command",
+        prompt
+      );
+
   }
 }
 
 /* =========================
-   COUNTDOWN + DISTORTION
+   COUNTDOWN
 ========================= */
 function startCountdown() {
+
   if (countdownStarted) return;
+
   countdownStarted = true;
 
   let time = 10;
 
-  const timer = document.createElement("div");
-  timer.style.position = "fixed";
-  timer.style.bottom = "20px";
-  timer.style.left = "20px";
-  timer.style.color = "red";
-  timer.style.fontSize = "2rem";
+  const timer =
+    document.createElement("div");
+
+  timer.id = "timer";
+
   document.body.appendChild(timer);
 
-  const interval = setInterval(() => {
+  const interval =
+    setInterval(() => {
 
-    timer.textContent = "TIME: " + time;
+      timer.textContent =
+        "TIME: " + time;
 
-    menaceMusic.playbackRate = 1 + (10 - time) * 0.05;
+      // audio distortion
+      menaceMusic.playbackRate =
+        1 + (10 - time) * 0.05;
 
-    document.body.style.filter =
-      `contrast(${1 + (10 - time)*0.1}) brightness(${1 - (10 - time)*0.05})`;
+      // screen distortion
+      document.body.style.filter =
+        `contrast(${1 + (10 - time)*0.1})
+         brightness(${1 - (10 - time)*0.05})`;
 
-    time--;
+      time--;
 
-    if (time < 0) {
-      clearInterval(interval);
-      failSequence();
-    }
+      if (time < 0) {
 
-  }, 1000);
+        clearInterval(interval);
+
+        timer.remove();
+
+        failSequence();
+
+      }
+
+    }, 1000);
 }
 
 /* =========================
-   FAIL + ROUTE SYSTEM
+   FAILURE
 ========================= */
 function failSequence() {
 
+  acceptingInput = false;
+
+  menaceMusic.pause();
+
+  document.body.style.filter = "";
+
   document.body.innerHTML = `
-    <div style="color:red;font-size:2rem;text-align:center;margin-top:20%;">
-      SESSION TERMINATED<br><br>PROCESSING...
+    <div style="
+      color:red;
+      font-size:2rem;
+      text-align:center;
+      margin-top:20%;
+      font-family:monospace;
+    ">
+      SESSION TERMINATED<br><br>
+      PROCESSING...
     </div>
   `;
 
-  setTimeout(() => decideOutcome(), 3000);
+  setTimeout(
+    decideOutcome,
+    3000
+  );
 }
 
+/* =========================
+   OUTCOME
+========================= */
 function decideOutcome() {
+
   if (Math.random() < 0.5) {
-    document.body.innerHTML = "<h1 style='color:#0ff;text-align:center;'>RETURNING...</h1>";
-    setTimeout(()=>window.location.href="/",2000);
-  } else {
-    document.body.innerHTML = "<h1 style='color:red;text-align:center;'>DESCENDING...</h1>";
-    setTimeout(()=>window.location.href="https://skottheshark.xyz/underground.html",2500);
+
+    document.body.innerHTML = `
+      <h1 style="
+        color:#0ff;
+        text-align:center;
+        margin-top:20%;
+        font-family:monospace;
+      ">
+        RETURNING...
+      </h1>
+    `;
+
+    setTimeout(() => {
+
+      window.location.href = "/";
+
+    }, 2000);
+
+  }
+
+  else {
+
+    document.body.innerHTML = `
+      <h1 style="
+        color:red;
+        text-align:center;
+        margin-top:20%;
+        font-family:monospace;
+      ">
+        DESCENDING...
+      </h1>
+    `;
+
+    setTimeout(() => {
+
+      window.location.href =
+        "underground.html";
+
+    }, 2500);
+
   }
 }
 
+/* =========================
+   START
+========================= */
 start();
 </script>
 
