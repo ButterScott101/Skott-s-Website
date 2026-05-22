@@ -132,6 +132,26 @@
 
     }
 
+    /* =========================
+       CORRUPTION FLICKER
+    ========================= */
+
+    @keyframes flicker {
+
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+
+      100% {
+        opacity: 1;
+      }
+
+    }
+
   </style>
 </head>
 
@@ -150,14 +170,21 @@
 ========================= -->
 
 <audio id="player" autoplay loop muted>
-  <source src="audio/overwhelming.mp3" type="audio/mp3">
+
+  <source
+    src="audio/overwhelming.mp3"
+    type="audio/mp3">
+
 </audio>
 
-<audio id="eas" src="audio/eas.mp3"></audio>
+<audio id="eas"
+src="audio/eas.mp3"></audio>
 
-<audio id="punchSound" src="audio/punch.mp3"></audio>
+<audio id="punchSound"
+src="audio/punch.mp3"></audio>
 
-<audio id="scaryReveal" src="audio/reveal.mp3"></audio>
+<audio id="scaryReveal"
+src="audio/reveal.mp3"></audio>
 
 <!-- =========================
      TITLE
@@ -180,6 +207,7 @@
       <h2>About Me</h2>
 
       <!-- SECRET IMAGE EVENT -->
+
       <div id="sharkContainer">
 
         <img
@@ -197,14 +225,22 @@
       </div>
 
       <p>
+
         (for the record, this character is named alexan)
+
         Hi im Skott, I made
         this website mostly for social media accounts and other assets.
+
         More info is found on the middle box.
+
         As for me in general, im currently
-        17. Currently as im writing this,
+        17.
+
+        Currently as im writing this,
         it will be 2 months away from graduation!
+
         Yippee!
+
       </p>
 
     </div>
@@ -218,12 +254,15 @@
   <div class="center-column">
 
     <!-- MAIN BOX -->
+
     <div class="middle">
 
       <div class="aboutweb">
 
         <p>
+
           Hello there! Welcome to my website.
+
           This website has music i made along with
           some social media platforms listed.
 
@@ -266,6 +305,7 @@
     </div>
 
     <!-- STORIES -->
+
     <div class="stories-box">
 
       <h2>PlaceHolder (for now)</h2>
@@ -281,6 +321,7 @@
     </div>
 
     <!-- BLINKIE BAR -->
+
     <div class="blinkie-bar">
 
       <div class="blinkie-track">
@@ -294,6 +335,7 @@
         <img src="https://blinkies.cafe/b/display/0221-cd.gif">
 
         <!-- DUPLICATES -->
+
         <img src="https://blinkies.cafe/b/display/0190-hittingfloor.gif">
         <img src="https://blinkies.cafe/b/display/0206-nyancat.gif">
         <img src="https://blinkies.cafe/b/display/0114-tbh.gif">
@@ -347,6 +389,7 @@
     <img src="https://blinkies.cafe/b/display/0206-nyancat.gif">
 
     <!-- MUSIC -->
+
     <div class="music-box">
 
       <h3>Songs I Made</h3>
@@ -450,6 +493,14 @@ enterScreen.addEventListener("click", () => {
 
   }, 500);
 
+  /* RANDOM CORRUPTION */
+
+  if (Math.random() < 0.1) {
+
+    triggerCorruption();
+
+  }
+
 });
 
 /* =========================
@@ -474,6 +525,7 @@ const scaryReveal =
 let hits = 0;
 
 /* crack images */
+
 const cracks = [
 
   "images/crack1.png",
@@ -495,11 +547,13 @@ sharky.addEventListener("click", () => {
   hits++;
 
   /* punch sound */
+
   punchSound.currentTime = 0;
 
   punchSound.play().catch(()=>{});
 
   /* shake */
+
   sharky.classList.add("shaking");
 
   setTimeout(() => {
@@ -509,9 +563,11 @@ sharky.addEventListener("click", () => {
   }, 120);
 
   /* lower music */
+
   if (player.volume > 0) {
 
     player.volume =
+
       Math.max(
         0,
         player.volume - 0.07
@@ -520,6 +576,7 @@ sharky.addEventListener("click", () => {
   }
 
   /* cracks */
+
   if (hits >= 3)
     setCrack(0);
 
@@ -533,6 +590,7 @@ sharky.addEventListener("click", () => {
     setCrack(3);
 
   /* reveal */
+
   if (hits >= 15) {
 
     revealFace();
@@ -565,6 +623,8 @@ function revealFace() {
 
   crackOverlay.style.opacity = "0";
 
+  player.pause();
+
   setTimeout(() => {
 
     scaryReveal.volume = 0.8;
@@ -576,12 +636,97 @@ function revealFace() {
   }, 3000);
 
   /* redirect */
+
   setTimeout(() => {
 
     window.location.href =
       "confrontation.html";
 
   }, 9000);
+
+}
+
+/* =========================
+   RANDOM CORRUPTION
+========================= */
+
+function triggerCorruption() {
+
+  console.log("CORRUPTION TRIGGERED");
+
+  /* stop music */
+
+  player.pause();
+
+  /* switch to EAS */
+
+  player.innerHTML = `
+  <source
+  src="audio/eas.mp3"
+  type="audio/mp3">
+  `;
+
+  player.load();
+
+  player.loop = false;
+
+  player.currentTime = 0;
+
+  player.play().catch(err => {
+
+    console.log("EAS failed:", err);
+
+  });
+
+  /* overlay */
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.innerHTML =
+    "NO NO NO NO<br>GOD SAVE US ALL";
+
+  Object.assign(overlay.style, {
+
+    position: "fixed",
+
+    top: "0",
+    left: "0",
+
+    width: "100%",
+    height: "100%",
+
+    background: "black",
+
+    color: "red",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    fontSize: "3rem",
+
+    textAlign: "center",
+
+    zIndex: "999999",
+
+    animation:
+      "flicker 0.3s infinite"
+
+  });
+
+  document.body.appendChild(overlay);
+
+  /* redirect */
+
+  setTimeout(() => {
+
+    window.location.href =
+      "/404.html";
+
+  }, 5000);
 
 }
 
