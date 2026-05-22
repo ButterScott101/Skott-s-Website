@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>LOOK TOO DEEP</title>
+
+  <style>
+
+    body {
+
+      margin: 0;
+      overflow: hidden;
+
+      background: #120000;
+
+      font-family: monospace;
+
+      color: #ff2a2a;
+
+      image-rendering: pixelated;
+
+      opacity: 0;
+
+      animation: fadeIn 2s forwards;
+
+    }
+
+    @keyframes fadeIn {
+
+      to {
+        opacity: 1;
+      }
+
+    }
+
+    /* =========================
+       BACKGROUND
+    ========================= */
+
+    #bg {
+
+      position: fixed;
+
+      inset: 0;
+
+      background-size: cover;
+      background-position: center;
+
+      filter:
+        brightness(0.45)
+        contrast(1.2)
+        saturate(1.2);
+
+      z-index: -5;
+
+    }
+
+    /* =========================
+       RED STATIC
+    ========================= */
+
+    #static {
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0.08;
+
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,0,0,0.08) 0px,
+          rgba(255,0,0,0.08) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+
+      animation: noise 0.2s infinite;
+
+      z-index: 100;
+
+    }
+
+    @keyframes noise {
+
+      0% {
+        transform: translate(0px,0px);
+      }
+
+      50% {
+        transform: translate(-1px,1px);
+      }
+
+      100% {
+        transform: translate(1px,-1px);
+      }
+
+    }
+
+    /* =========================
+       TITLE BOX
+    ========================= */
+
+    #topBox {
+
+      position: absolute;
+
+      top: 15px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: 92%;
+      height: 90px;
+
+      border: 5px solid #5a0000;
+
+      background: rgba(20,0,0,0.9);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 2.8rem;
+
+      text-align: center;
+
+      box-shadow:
+        0 0 20px rgba(255,0,0,0.25);
+
+    }
+
+    /* =========================
+       ENTITY
+    ========================= */
+
+    #enemy {
+
+      position: absolute;
+
+      top: 42%;
+      left: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      width: 430px;
+
+      image-rendering: pixelated;
+
+      animation:
+        float 3s ease-in-out infinite;
+
+      filter:
+        contrast(1.2)
+        brightness(0.8)
+        drop-shadow(0 0 20px red);
+
+    }
+
+    @keyframes float {
+
+      0% {
+
+        transform:
+          translate(-50%, -50%)
+          translateY(0px);
+
+      }
+
+      50% {
+
+        transform:
+          translate(-50%, -50%)
+          translateY(-10px);
+
+      }
+
+      100% {
+
+        transform:
+          translate(-50%, -50%)
+          translateY(0px);
+
+      }
+
+    }
+
+    /* =========================
+       LEFT BOX
+    ========================= */
+
+    #leftBox {
+
+      position: absolute;
+
+      left: 20px;
+      bottom: 20px;
+
+      width: 390px;
+      height: 270px;
+
+      background:
+        rgba(10,0,0,0.92);
+
+      border:
+        5px solid #680000;
+
+      padding: 20px;
+
+      box-sizing: border-box;
+
+    }
+
+    /* =========================
+       RIGHT BOX
+    ========================= */
+
+    #rightBox {
+
+      position: absolute;
+
+      right: 30px;
+      bottom: 30px;
+
+      width: 300px;
+      height: 240px;
+
+      background:
+        rgba(10,0,0,0.92);
+
+      border:
+        5px solid #680000;
+
+      padding: 20px;
+
+      box-sizing: border-box;
+
+      line-height: 1.6;
+
+      font-size: 1.1rem;
+
+    }
+
+    /* =========================
+       OPTIONS
+    ========================= */
+
+    .option {
+
+      font-size: 2rem;
+
+      margin-bottom: 14px;
+
+      cursor: pointer;
+
+      transition: 0.15s;
+
+      user-select: none;
+
+    }
+
+    .option:hover {
+
+      color: white;
+
+      transform:
+        translateX(6px);
+
+      text-shadow:
+        0 0 10px red;
+
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    #stats {
+
+      position: absolute;
+
+      right: 20px;
+      bottom: 20px;
+
+      text-align: right;
+
+      line-height: 1.5;
+
+      font-size: 1.1rem;
+
+    }
+
+    /* =========================
+       DIALOGUE
+    ========================= */
+
+    #dialogue {
+
+      white-space: pre-line;
+
+    }
+
+    /* =========================
+       WARNING
+    ========================= */
+
+    #mustText {
+
+      position: fixed;
+
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 7rem;
+
+      font-weight: bold;
+
+      color: #ff0000;
+
+      letter-spacing: 20px;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      text-transform: uppercase;
+
+      text-shadow:
+        0 0 10px red,
+        0 0 25px darkred,
+        0 0 45px red;
+
+      transform: scaleX(1.5);
+
+      z-index: 999;
+
+    }
+
+    @keyframes flashMust {
+
+      0% {
+
+        opacity: 0;
+
+        transform:
+          scaleX(1.4)
+          scaleY(0.9);
+
+      }
+
+      20% {
+
+        opacity: 1;
+
+        transform:
+          scaleX(1.6)
+          scaleY(1.1);
+
+      }
+
+      40% {
+
+        opacity: 0.3;
+
+      }
+
+      60% {
+
+        opacity: 1;
+
+        transform:
+          scaleX(1.75)
+          scaleY(1.15);
+
+      }
+
+      100% {
+
+        opacity: 0;
+
+        transform:
+          scaleX(1.4)
+          scaleY(0.9);
+
+      }
+
+    }
+
+    /* =========================
+       GLITCH LINES
+    ========================= */
+
+    .glitchLine {
+
+      position: absolute;
+
+      left: 0;
+
+      width: 100%;
+
+      pointer-events: none;
+
+      opacity: 0.7;
+
+      z-index: 999;
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     BACKGROUND
+========================= -->
+
+<div id="bg"></div>
+
+<!-- =========================
+     TOP BOX
+========================= -->
+
+<div id="topBox">
+
+  <span id="topText">
+    YOU LOOKED TOO DEEP
+  </span>
+
+</div>
+
+<!-- =========================
+     ENTITY
+========================= -->
+
+<img
+  id="enemy"
+  src="images/HIM.png"
+  alt="entity">
+
+<!-- =========================
+     LEFT
+========================= -->
+
+<div id="leftBox">
+
+  <div class="option"
+       onclick="fight()">
+    FIGHT
+  </div>
+
+  <div class="option"
+       onclick="item()">
+    ITEM
+  </div>
+
+  <div class="option"
+       onclick="flee()">
+    FLEE
+  </div>
+
+  <div class="option"
+       onclick="observe()">
+    OBSERVE
+  </div>
+
+  <div id="stats">
+
+    HP: 90<br>
+    ENTITY: ???<br>
+    MENTAL: 100
+
+  </div>
+
+</div>
+
+<!-- =========================
+     RIGHT
+========================= -->
+
+<div id="rightBox">
+
+  <div id="dialogue">
+
+    It was never supposed
+    to be seen.
+
+  </div>
+
+</div>
+
+<!-- =========================
+     MUST TEXT
+========================= -->
+
+<div id="mustText">
+  YOU MUST
+</div>
+
+<!-- =========================
+     STATIC
+========================= -->
+
+<div id="static"></div>
+
+<!-- =========================
+     AUDIO
+========================= -->
+
+<audio
+  id="music"
+  loop>
+
+  <source
+    src="audio/creepyaudio.mp3"
+    type="audio/mp3">
+
+</audio>
+
+<audio
+  id="selectSound"
+  src="audio/select.mp3"></audio>
+
+<audio
+  id="hitSound"
+  src="audio/hit.mp3"></audio>
+
+<script>
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const dialogue =
+  document.getElementById("dialogue");
+
+const stats =
+  document.getElementById("stats");
+
+const mustText =
+  document.getElementById("mustText");
+
+const topText =
+  document.getElementById("topText");
+
+const music =
+  document.getElementById("music");
+
+const selectSound =
+  document.getElementById("selectSound");
+
+const hitSound =
+  document.getElementById("hitSound");
+
+/* =========================
+   STATS
+========================= */
+
+let hp = 90;
+
+let enemyHp = 999;
+
+let mental = 100;
+
+let heals = 2;
+
+let locked = false;
+
+let battleOver = false;
+
+/* =========================
+   MUSIC
+========================= */
+
+document.addEventListener("click", () => {
+
+  music.volume = 0.6;
+
+  music.play().catch(()=>{});
+
+}, { once:true });
+
+/* =========================
+   UPDATE STATS
+========================= */
+
+function updateStats() {
+
+  stats.innerHTML =
+
+`HP: ${hp}<br>
+ENTITY: ???<br>
+MENTAL: ${mental}`;
+
+}
+
+/* =========================
+   SOUND
+========================= */
+
+function select() {
+
+  selectSound.currentTime = 0;
+
+  selectSound.play().catch(()=>{});
+
+}
+
+/* =========================
+   GLITCH TITLE
+========================= */
+
+const glitches = [
+
+  "YOU LOOKED TOO DEEP",
+
+  "IT SEES YOU",
+
+  "DON'T TURN AROUND",
+
+  "RUN",
+
+  "WHY DID YOU OPEN IT",
+
+  "IT WAS INSIDE",
+
+  "YOU BROKE THE UI",
+
+  "IT FOUND YOU"
+
+];
+
+setInterval(() => {
+
+  topText.textContent =
+
+    glitches[
+      Math.floor(
+        Math.random() *
+        glitches.length
+      )
+    ];
+
+}, 2200);
+
+/* =========================
+   GLITCH LINES
+========================= */
+
+function createGlitchLine() {
+
+  const line =
+    document.createElement("div");
+
+  line.className =
+    "glitchLine";
+
+  line.style.top =
+    Math.random() *
+    window.innerHeight + "px";
+
+  line.style.height =
+    (2 + Math.random() * 6) + "px";
+
+  line.style.background =
+
+    `rgba(255,0,0,
+    ${Math.random()})`;
+
+  document.body.appendChild(line);
+
+  setTimeout(() => {
+
+    line.remove();
+
+  }, 120);
+
+}
+
+setInterval(() => {
+
+  if (Math.random() < 0.5) {
+
+    createGlitchLine();
+
+  }
+
+}, 120);
+
+/* =========================
+   ENTITY TURN
+========================= */
+
+function enemyTurn() {
+
+  locked = true;
+
+  dialogue.innerHTML =
+    "THE ENTITY MOVES.";
+
+  setTimeout(() => {
+
+    const damage =
+      Math.floor(Math.random()*18)+12;
+
+    hp -= damage;
+
+    mental -=
+      Math.floor(Math.random()*10)+8;
+
+    if (hp < 0)
+      hp = 0;
+
+    if (mental < 0)
+      mental = 0;
+
+    hitSound.currentTime = 0;
+
+    hitSound.play().catch(()=>{});
+
+    dialogue.innerHTML =
+
+`YOU TOOK
+${damage} DAMAGE`;
+
+    updateStats();
+
+    /* low mental distortion */
+    if (mental <= 40) {
+
+      document.body.style.filter =
+        "contrast(1.3) blur(1px)";
+
+    }
+
+    if (mental <= 20) {
+
+      dialogue.innerHTML =
+        "YOU CAN'T THINK STRAIGHT.";
+
+    }
+
+    if (hp <= 0 ||
+        mental <= 0) {
+
+      battleOver = true;
+
+      setTimeout(() => {
+
+        dialogue.innerHTML =
+          "THE SCREEN GOES QUIET.";
+
+        setTimeout(() => {
+
+          window.location.href =
+            "underground.html";
+
+        }, 4000);
+
+      }, 1500);
+
+      return;
+    }
+
+    setTimeout(() => {
+
+      locked = false;
+
+      dialogue.innerHTML =
+        "YOUR MOVE.";
+
+    }, 1300);
+
+  }, 1600);
+}
+
+/* =========================
+   FIGHT
+========================= */
+
+function fight() {
+
+  if (locked ||
+      battleOver)
+      return;
+
+  locked = true;
+
+  select();
+
+  /* attacks become unreliable */
+
+  const miss =
+    Math.random() < 0.35;
+
+  if (miss) {
+
+    dialogue.innerHTML =
+      "YOU SWING WILDLY.";
+
+    setTimeout(enemyTurn, 1400);
+
+    return;
+
+  }
+
+  const damage =
+    Math.floor(Math.random()*8)+4;
+
+  enemyHp -= damage;
+
+  hitSound.currentTime = 0;
+
+  hitSound.play().catch(()=>{});
+
+  dialogue.innerHTML =
+
+`THE ENTITY TOOK
+${damage} DAMAGE`;
+
+  updateStats();
+
+  /* impossible battle feeling */
+  if (enemyHp <= 0) {
+
+    dialogue.innerHTML =
+      "IT DOESN'T STOP.";
+
+    enemyHp = 999;
+
+  }
+
+  setTimeout(() => {
+
+    enemyTurn();
+
+  }, 1500);
+}
+
+/* =========================
+   ITEM
+========================= */
+
+function item() {
+
+  if (locked ||
+      battleOver)
+      return;
+
+  locked = true;
+
+  select();
+
+  if (heals <= 0) {
+
+    dialogue.innerHTML =
+      "NOTHING REMAINS.";
+
+    locked = false;
+
+    return;
+
+  }
+
+  heals--;
+
+  const amount =
+    Math.floor(Math.random()*10)+8;
+
+  hp += amount;
+
+  if (hp > 90)
+    hp = 90;
+
+  dialogue.innerHTML =
+
+`YOU RECOVERED
+${amount} HP`;
+
+  updateStats();
+
+  setTimeout(() => {
+
+    enemyTurn();
+
+  }, 1500);
+}
+
+/* =========================
+   OBSERVE
+========================= */
+
+const observations = [
+
+  "IT SHOULD NOT EXIST.",
+
+  "ITS FACE KEEPS CHANGING.",
+
+  "YOU FEEL SICK.",
+
+  "IT WAS HIDING INSIDE THE SITE.",
+
+  "YOU SHOULDN'T HAVE OPENED IT.",
+
+  "IT IS GETTING CLOSER.",
+
+  "YOUR HEART IS RACING.",
+
+  "YOU REGRET LOOKING."
+
+];
+
+function observe() {
+
+  if (locked ||
+      battleOver)
+      return;
+
+  select();
+
+  dialogue.innerHTML =
+
+    observations[
+      Math.floor(
+        Math.random() *
+        observations.length
+      )
+    ];
+
+}
+
+/* =========================
+   FLEE
+========================= */
+
+function flee() {
+
+  if (locked ||
+      battleOver)
+      return;
+
+  select();
+
+  mustText.style.animation =
+    "flashMust 1.6s ease";
+
+  dialogue.innerHTML =
+    "IT WON'T LET YOU LEAVE.";
+
+  setTimeout(() => {
+
+    mustText.style.animation =
+      "none";
+
+  }, 1200);
+
+}
+
+</script>
+
+</body>
+</html>

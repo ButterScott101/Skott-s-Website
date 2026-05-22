@@ -4,12 +4,12 @@
   <title>Encounter</title>
 
   <style>
+
     body {
       margin: 0;
-      background: black;
+      background: #dcdcdc;
       overflow: hidden;
       font-family: monospace;
-      color: white;
       image-rendering: pixelated;
       opacity: 0;
       animation: fadeIn 2s forwards;
@@ -22,332 +22,671 @@
     }
 
     /* =========================
-       ENEMY
+       TOP BOX
     ========================= */
-    #enemy {
-      position: absolute;
-      top: 38%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 800px;
-      image-rendering: pixelated;
-      z-index: 5;
-    }
 
-    /* =========================
-       TOP STATUS
-    ========================= */
-    #topText {
-      position: absolute;
-      top: 30px;
-      width: 100%;
-      text-align: center;
-      font-size: 2rem;
-      z-index: 20;
-    }
+    #topBox {
 
-    /* =========================
-       DIALOG BOX
-    ========================= */
-    #dialogueBox {
       position: absolute;
-      bottom: 170px;
+
+      top: 15px;
       left: 50%;
+
       transform: translateX(-50%);
 
-      width: 70%;
-      min-height: 100px;
+      width: 90%;
+      height: 95px;
 
-      border: 4px solid white;
-      background: black;
+      background: #ececec;
 
-      padding: 18px;
-      box-sizing: border-box;
-
-      font-size: 1.6rem;
-      line-height: 1.3;
-
-      z-index: 10;
-    }
-
-    /* =========================
-       HUD
-    ========================= */
-    #hud {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-
-      width: 85%;
-      height: 70px;
-
-      border: 4px solid white;
-      background: black;
+      border: 5px solid black;
+      border-radius: 20px;
 
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: center;
 
-      padding: 10px 20px;
+      overflow: hidden;
 
       box-sizing: border-box;
 
-      font-size: 1.5rem;
+      font-size: 3rem;
+      text-align: center;
 
-      z-index: 10;
+    }
+
+    #topText {
+
+      transition: 0.2s;
+
+    }
+
+    /* =========================
+       ENEMY
+    ========================= */
+
+    #enemy {
+
+      position: absolute;
+
+      top: 42%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 380px;
+
+      image-rendering: pixelated;
+
+      z-index: 5;
+
+      animation: float 3s ease-in-out infinite;
+
+      filter:
+        drop-shadow(0 0 10px rgba(0,0,0,0.3));
+
+    }
+
+    @keyframes float {
+
+      0% {
+        transform:
+          translate(-50%, -50%)
+          translateY(0px);
+      }
+
+      50% {
+        transform:
+          translate(-50%, -50%)
+          translateY(-8px);
+      }
+
+      100% {
+        transform:
+          translate(-50%, -50%)
+          translateY(0px);
+      }
+
+    }
+
+    /* =========================
+       LEFT BOX
+    ========================= */
+
+    #leftBox {
+
+      position: absolute;
+
+      bottom: 20px;
+      left: 20px;
+
+      width: 390px;
+      height: 270px;
+
+      background: #f5f5f5;
+
+      border: 5px solid black;
+      border-radius: 20px;
+
+      padding: 20px;
+
+      box-sizing: border-box;
+
+    }
+
+    /* =========================
+       RIGHT BOX
+    ========================= */
+
+    #rightBox {
+
+      position: absolute;
+
+      bottom: 30px;
+      right: 40px;
+
+      width: 290px;
+      height: 250px;
+
+      background: #f5f5f5;
+
+      border: 5px solid black;
+      border-radius: 20px;
+
+      padding: 20px;
+
+      box-sizing: border-box;
+
+      font-size: 1.2rem;
+      line-height: 1.6;
+
     }
 
     /* =========================
        OPTIONS
     ========================= */
+
     .option {
+
+      font-size: 2rem;
+
+      margin-bottom: 14px;
+
       cursor: pointer;
+
       transition: 0.15s;
+
       user-select: none;
+
     }
 
     .option:hover {
-      color: yellow;
-      transform: scale(1.05);
+
+      color: #0055ff;
+
+      transform: translateX(5px);
+
     }
 
     /* =========================
-       HP
+       STATS
     ========================= */
+
     #stats {
+
       position: absolute;
-      top: 90px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.2rem;
-      text-align: center;
-      z-index: 20;
+
+      bottom: 20px;
+      right: 15px;
+
+      text-align: right;
+
+      font-size: 1.1rem;
+
+      line-height: 1.5;
+
+    }
+
+    /* =========================
+       DIALOGUE
+    ========================= */
+
+    #dialogue {
+
+      white-space: pre-line;
+
+    }
+
+    /* =========================
+       YOU MUST
+    ========================= */
+
+    #mustText {
+
+      position: fixed;
+
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 7rem;
+      font-weight: bold;
+
+      letter-spacing: 20px;
+
+      color: #b30000;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      z-index: 999;
+
+      text-transform: uppercase;
+
+      text-shadow:
+        0 0 10px red,
+        0 0 20px darkred,
+        0 0 40px red;
+
+      transform: scaleX(1.4);
+
+    }
+
+    @keyframes flashMust {
+
+      0% {
+
+        opacity: 0;
+
+        transform:
+          scaleX(1.4)
+          scaleY(0.9);
+
+        filter: blur(4px);
+
+      }
+
+      20% {
+
+        opacity: 0.9;
+
+        transform:
+          scaleX(1.6)
+          scaleY(1.1);
+
+        filter: blur(0px);
+
+      }
+
+      40% {
+
+        opacity: 0.3;
+
+        transform:
+          scaleX(1.5)
+          scaleY(1);
+
+      }
+
+      60% {
+
+        opacity: 1;
+
+        transform:
+          scaleX(1.7)
+          scaleY(1.15);
+
+      }
+
+      100% {
+
+        opacity: 0;
+
+        transform:
+          scaleX(1.4)
+          scaleY(0.9);
+
+        filter: blur(5px);
+
+      }
+
     }
 
     /* =========================
        STATIC
     ========================= */
+
     #static {
+
       position: fixed;
+
       inset: 0;
 
       pointer-events: none;
 
-      opacity: 0.07;
+      opacity: 0.05;
 
-      background-image: repeating-linear-gradient(
-        0deg,
-        rgba(255,255,255,0.04) 0px,
-        rgba(255,255,255,0.04) 1px,
-        transparent 2px,
-        transparent 4px
-      );
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.05) 0px,
+          rgba(255,255,255,0.05) 1px,
+          transparent 2px,
+          transparent 4px
+        );
 
       animation: noise 0.2s infinite;
+
     }
 
     @keyframes noise {
-      0%   { transform: translate(0px,0px); }
-      50%  { transform: translate(-1px,1px); }
-      100% { transform: translate(1px,-1px); }
+
+      0% {
+        transform: translate(0px,0px);
+      }
+
+      50% {
+        transform: translate(-1px,1px);
+      }
+
+      100% {
+        transform: translate(1px,-1px);
+      }
+
     }
 
     /* =========================
        GLITCH LINES
     ========================= */
+
     .glitchLine {
+
       position: absolute;
+
       left: 0;
+
       width: 100%;
+
       pointer-events: none;
+
       z-index: 999;
+
       opacity: 0.7;
+
     }
 
-    /* =========================
-       FLASH
-    ========================= */
-    #flash {
-      position: fixed;
-      inset: 0;
-      background: white;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 500;
-    }
   </style>
 </head>
 
 <body>
 
-<div id="topText">
-  AL3XAN ATTACKS
+<!-- =========================
+     TOP BOX
+========================= -->
+
+<div id="topBox">
+
+  <span id="topText">
+    (KJASX_#) BLOCKS THE WAY
+  </span>
+
 </div>
 
-<div id="stats">
-  YOU HP: 90 / 90<br>
-  AL3XAN HP: 200 / 200
-</div>
+<!-- =========================
+     ENEMY IMAGE
+========================= -->
 
-<img id="enemy" src="images/enemy.png" alt="enemy">
+<img
+  id="enemy"
+  src="images/enemy.png"
+  alt="enemy">
 
-<div id="dialogueBox">
-  AL3XAN HAS EMERGED.
-</div>
+<!-- =========================
+     LEFT BOX
+========================= -->
 
-<div id="hud">
+<div id="leftBox">
 
-  <div class="option" onclick="fight()">
+  <div class="option"
+       onclick="fight()">
     FIGHT
   </div>
 
-  <div class="option" onclick="act()">
-    ACT
+  <div class="option"
+       onclick="item()">
+    ITEM
   </div>
 
-  <div class="option" onclick="heal()">
-    HEAL
+  <div class="option"
+       onclick="flee()">
+    FLEE
   </div>
 
-  <div class="option" onclick="run()">
-    RUN
+  <div class="option"
+       onclick="observe()">
+    OBSERVE
+  </div>
+
+  <div id="stats">
+
+    HP: 90<br>
+    AL3XAN: 200<br>
+    MENTAL: 100
+
   </div>
 
 </div>
 
-<div id="static"></div>
-<div id="flash"></div>
+<!-- =========================
+     RIGHT BOX
+========================= -->
 
-<!-- AUDIO -->
-<audio id="battleMusic" src="audio/battle.mp3" loop></audio>
-<audio id="selectSound" src="audio/select.mp3"></audio>
-<audio id="hitSound" src="audio/hit.wav"></audio>
+<div id="rightBox">
+
+  <div id="dialogue">
+
+    This person didn't
+    do anything wrong,
+    please stop...
+
+  </div>
+
+</div>
+
+<!-- =========================
+     MUST TEXT
+========================= -->
+
+<div id="mustText">
+  YOU MUST
+</div>
+
+<!-- =========================
+     STATIC
+========================= -->
+
+<div id="static"></div>
+
+<!-- =========================
+     AUDIO
+========================= -->
+
+<audio
+  id="battleMusic"
+  src="audio/battle.mp3"
+  loop></audio>
+
+<audio
+  id="lowHpMusic"
+  src="audio/lowhp.mp3"
+  loop></audio>
+
+<audio
+  id="selectSound"
+  src="audio/select.mp3"></audio>
+
+<audio
+  id="hitSound"
+  src="audio/hit.mp3"></audio>
 
 <script>
+
 /* =========================
    ELEMENTS
 ========================= */
+
 const dialogue =
-  document.getElementById("dialogueBox");
+  document.getElementById("dialogue");
 
 const stats =
   document.getElementById("stats");
 
-const music =
+const mustText =
+  document.getElementById("mustText");
+
+const topText =
+  document.getElementById("topText");
+
+const battleMusic =
   document.getElementById("battleMusic");
 
-const select =
+const lowHpMusic =
+  document.getElementById("lowHpMusic");
+
+const selectSound =
   document.getElementById("selectSound");
 
-const hit =
+const hitSound =
   document.getElementById("hitSound");
 
-const flash =
-  document.getElementById("flash");
-
 /* =========================
-   STATS
+   PLAYER STATS
 ========================= */
-let playerHP = 90;
-let bossHP = 200;
+
+let hp = 150;
+let enemyHp = 80;
+let mental = 100;
 
 let heals = 3;
 
+let lowHpTriggered = false;
+
+let locked = false;
 let battleOver = false;
-let turnLocked = false;
 
 /* =========================
-   MUSIC
+   START MUSIC
 ========================= */
+
 document.addEventListener("click", () => {
 
-  music.volume = 0.6;
+  battleMusic.volume = 0.5;
 
-  music.play().catch(()=>{});
+  battleMusic.play().catch(()=>{});
 
 }, { once:true });
 
 /* =========================
    UPDATE STATS
 ========================= */
+
 function updateStats() {
 
   stats.innerHTML =
-`YOU HP: ${playerHP} / 90<br>
-AL3XAN HP: ${bossHP} / 200`;
+
+`HP: ${hp}<br>
+AL3XAN: ${enemyHp}<br>
+MENTAL: ${mental}`;
 
 }
 
 /* =========================
-   FLASH
+   LOW HP MUSIC
 ========================= */
-function screenFlash() {
 
-  flash.style.transition = "none";
-  flash.style.opacity = "0.9";
+function checkLowHp() {
 
-  setTimeout(() => {
+  if (hp <= 30 &&
+      !lowHpTriggered) {
 
-    flash.style.transition = "0.3s";
-    flash.style.opacity = "0";
+    lowHpTriggered = true;
 
-  }, 40);
+    battleMusic.pause();
 
+    lowHpMusic.volume = 0.6;
+
+    lowHpMusic.play().catch(()=>{});
+
+    dialogue.innerHTML =
+      "YOUR INSTINCTS KICK IN.";
+
+  }
 }
 
 /* =========================
    SOUND
 ========================= */
-function playSelect() {
 
-  select.currentTime = 0;
+function select() {
 
-  select.play().catch(()=>{});
+  selectSound.currentTime = 0;
+
+  selectSound.play().catch(()=>{});
 
 }
 
 /* =========================
-   GLITCH
+   GLITCH TEXT
 ========================= */
+
+const glitches = [
+
+  "(KJASX_#) BLOCKS THE WAY",
+
+  "(VVHY D1D Y0U) BLOCKS THE WAY",
+
+  "(ER_R0R) BLOCKS THE WAY",
+
+  "(1T KN0WS) BLOCKS THE WAY",
+
+  "(D0NT LOOK) BLOCKS THE WAY",
+
+  "(H3 L!3S) BLOCKS THE WAY",
+
+  "(STAY AWAY) BLOCKS THE WAY",
+
+  "(WHO ARE YOU) BLOCKS THE WAY",
+
+  "(HELP ME) BLOCKS THE WAY"
+
+];
+
+setInterval(() => {
+
+  topText.textContent =
+
+    glitches[
+      Math.floor(
+        Math.random() *
+        glitches.length
+      )
+    ];
+
+}, 2000);
+
+/* =========================
+   GLITCH LINES
+========================= */
+
 function createGlitchLine() {
 
   const line =
     document.createElement("div");
 
-  line.className = "glitchLine";
+  line.className =
+    "glitchLine";
 
   line.style.top =
-    Math.random() * window.innerHeight + "px";
+    Math.random() *
+    window.innerHeight + "px";
 
   line.style.height =
     (2 + Math.random() * 4) + "px";
 
   line.style.background =
-    `hsl(${Math.random()*360},100%,50%)`;
+    `hsl(${Math.random()*360},
+    100%,50%)`;
 
   document.body.appendChild(line);
 
   setTimeout(() => {
+
     line.remove();
-  }, 120);
+
+  }, 100);
 
 }
 
 setInterval(() => {
 
-  if (Math.random() < 0.35) {
+  if (Math.random() < 0.4) {
+
     createGlitchLine();
+
   }
 
-}, 150);
+}, 140);
 
 /* =========================
-   BOSS TURN
+   ENEMY TURN
 ========================= */
-function bossTurn() {
 
-  turnLocked = true;
+function enemyTurn() {
+
+  locked = true;
 
   dialogue.innerHTML =
     "AL3XAN ATTACKS";
@@ -355,192 +694,147 @@ function bossTurn() {
   setTimeout(() => {
 
     const damage =
-      Math.floor(Math.random() * 16) + 8;
+      Math.floor(Math.random()*14)+8;
 
-    playerHP -= damage;
+    hp -= damage;
 
-    if (playerHP < 0)
-      playerHP = 0;
+    mental -=
+      Math.floor(Math.random()*5)+2;
 
-    screenFlash();
+    if (hp < 0)
+      hp = 0;
 
-    hit.currentTime = 0;
-    hit.play().catch(()=>{});
+    if (mental < 0)
+      mental = 0;
+
+    hitSound.currentTime = 0;
+
+    hitSound.play().catch(()=>{});
 
     dialogue.innerHTML =
       `YOU TOOK ${damage} DAMAGE`;
 
     updateStats();
 
-    if (playerHP <= 0) {
+    checkLowHp();
+
+    if (hp <= 0) {
 
       battleOver = true;
 
       setTimeout(() => {
 
         dialogue.innerHTML =
-          "YOU WERE CONSUMED.";
+          "YOU COLLAPSE.";
 
         setTimeout(() => {
 
-          document.body.style.transition =
-            "2s";
+          window.location.href =
+            "underground.html";
 
-          document.body.style.opacity = "0";
+        }, 3000);
 
-          setTimeout(() => {
-
-            window.location.href =
-              "underground.html";
-
-          }, 2000);
-
-        }, 2000);
-
-      }, 1200);
+      }, 1500);
 
       return;
     }
 
     setTimeout(() => {
 
-      turnLocked = false;
+      locked = false;
 
       dialogue.innerHTML =
         "YOUR MOVE.";
 
-    }, 1200);
+    }, 1300);
 
   }, 1500);
-
 }
 
 /* =========================
    FIGHT
 ========================= */
+
 function fight() {
 
-  if (battleOver || turnLocked)
-    return;
+  if (locked ||
+      battleOver)
+      return;
 
-  turnLocked = true;
+  locked = true;
 
-  playSelect();
+  select();
 
   const damage =
-    Math.floor(Math.random() * 20) + 10;
+    Math.floor(Math.random()*18)+8;
 
-  bossHP -= damage;
+  enemyHp -= damage;
 
-  if (bossHP < 0)
-    bossHP = 0;
+  if (enemyHp < 0)
+    enemyHp = 0;
 
-  screenFlash();
+  hitSound.currentTime = 0;
 
-  hit.currentTime = 0;
-  hit.play().catch(()=>{});
+  hitSound.play().catch(()=>{});
 
   dialogue.innerHTML =
-    `AL3XAN TOOK ${damage} DAMAGE`;
+
+`AL3XAN TOOK
+${damage} DAMAGE`;
 
   updateStats();
 
-  if (bossHP <= 0) {
+  if (enemyHp <= 0) {
 
     battleOver = true;
 
     setTimeout(() => {
 
       dialogue.innerHTML =
-        "AL3XAN COLLAPSED.";
+        "THE HALLUCINATION FADES.";
+
+      lowHpMusic.pause();
+      battleMusic.pause();
 
       setTimeout(() => {
 
-        document.body.style.transition =
-          "2s";
+        window.location.href =
+          "/";
 
-        document.body.style.opacity =
-          "0";
+      }, 4000);
 
-        setTimeout(() => {
-
-          window.location.href = "/";
-
-        }, 2000);
-
-      }, 2500);
-
-    }, 1000);
+    }, 1500);
 
     return;
   }
 
   setTimeout(() => {
 
-    bossTurn();
-
-  }, 1400);
-
-}
-
-/* =========================
-   ACT
-========================= */
-function act() {
-
-  if (battleOver || turnLocked)
-    return;
-
-  playSelect();
-
-  turnLocked = true;
-
-  const messages = [
-
-    "IT STARES THROUGH YOU.",
-
-    "YOU FEEL COLD.",
-
-    "ITS EYES FLICKER.",
-
-    "THE ROOM DISTORTS.",
-
-    "IT DOES NOT SPEAK."
-  ];
-
-  dialogue.innerHTML =
-    messages[
-      Math.floor(
-        Math.random() * messages.length
-      )
-    ];
-
-  setTimeout(() => {
-
-    bossTurn();
+    enemyTurn();
 
   }, 1500);
-
 }
 
 /* =========================
-   HEAL
+   ITEM
 ========================= */
-function heal() {
 
-  if (battleOver || turnLocked)
-    return;
+function item() {
 
-  playSelect();
+  if (locked ||
+      battleOver)
+      return;
 
-  turnLocked = true;
+  locked = true;
+
+  select();
 
   if (heals <= 0) {
 
     dialogue.innerHTML =
-      "NO HEALS LEFT.";
+      "NOTHING REMAINS.";
 
-    turnLocked = false;
+    locked = false;
 
     return;
   }
@@ -548,73 +842,106 @@ function heal() {
   heals--;
 
   const amount =
-    Math.floor(Math.random() * 20) + 15;
+    Math.floor(Math.random()*18)+15;
 
-  playerHP += amount;
+  hp += amount;
 
-  if (playerHP > 90)
-    playerHP = 90;
+  if (hp > 90)
+    hp = 90;
 
   dialogue.innerHTML =
-    `YOU RECOVERED ${amount} HP`;
+
+`YOU RECOVERED
+${amount} HP`;
 
   updateStats();
 
   setTimeout(() => {
 
-    bossTurn();
+    enemyTurn();
 
-  }, 1400);
+  }, 1500);
+}
+
+/* =========================
+   OBSERVE
+========================= */
+
+const observations = [
+
+  "He looks terrified.",
+
+  "He's trying to calm you down.",
+
+  "You remember his voice.",
+
+  "He keeps backing away.",
+
+  "Your hands won't stop shaking.",
+
+  "Something feels horribly wrong.",
+
+  "Why does he look familiar?",
+
+  "You don't think he's the enemy."
+
+];
+
+function observe() {
+
+  if (locked ||
+      battleOver)
+      return;
+
+  select();
+
+  dialogue.innerHTML =
+
+    observations[
+      Math.floor(
+        Math.random() *
+        observations.length
+      )
+    ];
 
 }
 
 /* =========================
-   RUN
+   FLEE
 ========================= */
-function run() {
 
-  if (battleOver || turnLocked)
-    return;
+function flee() {
 
-  playSelect();
+  if (locked ||
+      battleOver)
+      return;
 
-  turnLocked = true;
+  select();
 
-  const success =
-    Math.random() < 0.3;
+  mustText.innerHTML =
+    "YOU MUST";
 
-  if (success) {
+  mustText.style.animation =
+    "flashMust 1.6s ease";
 
-    dialogue.innerHTML =
-      "ESCAPE SUCCESSFUL.";
+  dialogue.innerHTML =
+    "YOUR BODY REFUSES.";
 
-    document.body.style.transition =
-      "2s";
+  document.body.style.filter =
+    "contrast(1.2) blur(1px)";
 
-    document.body.style.opacity =
-      "0";
+  setTimeout(() => {
 
-    setTimeout(() => {
+    document.body.style.filter =
+      "";
 
-      window.location.href = "/";
+    mustText.style.animation =
+      "none";
 
-    }, 2000);
+  }, 1200);
 
-  }
-
-  else {
-
-    dialogue.innerHTML =
-      "YOU CANNOT ESCAPE.";
-
-    setTimeout(() => {
-
-      bossTurn();
-
-    }, 1400);
-
-  }
 }
+
 </script>
 
 </body>
