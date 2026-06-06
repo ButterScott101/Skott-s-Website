@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>THE WEB MOTHERTRUCKER OAOAOAOAOOAOAOA</title>
+
+  <link rel="stylesheet" href="/candy.css" />
+
+  <style>
+
+    /* =========================
+       SECRET SHARK EVENT
+    ========================= */
+
+    #sharkContainer {
+
+      position: relative;
+
+      width: fit-content;
+
+      margin: auto;
+
+    }
+
+    #sharky {
+
+      width: 16rem;
+
+      border: 2px solid #00adc7;
+
+      margin-top: 10px;
+
+      cursor: pointer;
+
+      transition: 0.15s;
+
+      image-rendering: pixelated;
+
+    }
+
+    /* =========================
+       CRACK OVERLAY
+    ========================= */
+
+    #crackOverlay {
+
+      position: absolute;
+
+      inset: 0;
+
+      background-size: cover;
+      background-position: center;
+
+      pointer-events: none;
+
+      opacity: 0;
+
+      transition: 0.2s;
+
+    }
+
+    /* =========================
+       HIDDEN FACE
+    ========================= */
+
+    #hiddenFace {
+
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      opacity: 0;
+
+      transform: translateX(-100px);
+
+      transition:
+        opacity 1s ease,
+        transform 2s ease;
+
+      pointer-events: none;
+
+      filter:
+        contrast(1.3)
+        saturate(1.2);
+
+    }
+
+    #hiddenFace.reveal {
+
+      opacity: 1;
+
+      transform: translateX(0px);
+
+    }
+
+    /* =========================
+       SHAKE
+    ========================= */
+
+    @keyframes shake {
+
+      0% {
+        transform: translate(0px,0px);
+      }
+
+      25% {
+        transform: translate(-2px,2px);
+      }
+
+      50% {
+        transform: translate(2px,-2px);
+      }
+
+      75% {
+        transform: translate(-2px,-1px);
+      }
+
+      100% {
+        transform: translate(0px,0px);
+      }
+
+    }
+
+    .shaking {
+
+      animation: shake 0.15s infinite;
+
+    }
+
+    /* =========================
+       CORRUPTION FLICKER
+    ========================= */
+
+    @keyframes flicker {
+
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+
+      100% {
+        opacity: 1;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     ENTER SCREEN
+========================= -->
+
+<div id="enterScreen">
+  CLICK TO ENTER MY WEBSITE
+</div>
+
+<!-- =========================
+     AUDIO
+========================= -->
+
+<audio id="player" autoplay loop muted>
+
+  <source
+    src="audio/overwhelming.mp3"
+    type="audio/mp3">
+
+</audio>
+
+<audio id="eas"
+src="audio/eas.mp3"></audio>
+
+<audio id="punchSound"
+src="audio/punch.mp3"></audio>
+
+<audio id="scaryReveal"
+src="audio/reveal.mp3"></audio>
+
+<!-- =========================
+     TITLE
+========================= -->
+
+<div class="title">
+  Skott's website
+</div>
+
+<div class="layout">
+
+  <!-- =========================
+       LEFT SIDEBAR
+  ========================= -->
+
+  <div class="left-sidebar">
+
+    <div class="aboutshark">
+
+      <h2>About Me</h2>
+
+      <!-- SECRET IMAGE EVENT -->
+
+      <div id="sharkContainer">
+
+        <img
+          id="sharky"
+          src="images/alexwave.PNG"
+          alt="alexan">
+
+        <div id="crackOverlay"></div>
+
+        <img
+          id="hiddenFace"
+          src="images/666face.jpg"
+          alt="hidden">
+
+      </div>
+
+      <p>
+
+        (for the record, this character is named alexan)
+
+        Hi im Skott, I made
+        this website mostly for social media accounts and other assets.
+
+        More info is found on the middle box.
+
+        As for me in general, im currently
+        17.
+
+        Currently as im writing this,
+        it will be 2 months away from graduation!
+
+        Yippee!
+
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       CENTER COLUMN
+  ========================= -->
+
+  <div class="center-column">
+
+    <!-- MAIN BOX -->
+
+    <div class="middle">
+
+      <div class="aboutweb">
+
+        <p>
+
+          Hello there! Welcome to my website.
+
+          This website has music i made along with
+          some social media platforms listed.
+
+          I first bought this domain in 2025
+          with the name of "skottheshark"
+          and its not for the reason of saying
+          im actually a shark but because i like
+          kinda like sharks.
+
+          To be honest it makes me sound like
+          a furry which is definitely
+
+          <span class="rainbow-text">
+            NOT
+          </span>
+
+          true, so expect my counter response
+          when you actually assume im a furball.
+
+          I have interests in sharks,
+          dogs, cats, etc.
+
+          Anyways if you have any questions
+          about the site or any q&a's for me,
+          email me at
+          (crowmilking@gmail.com).
+
+          Don't know if i will answer
+          but hey, its as good as roblox's
+          suggestion box.
+
+          <span class="rainbow-text">
+            AKA the i don't gaf box.
+          </span>
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- STORIES -->
+
+    <div class="stories-box">
+
+      <h2>PlaceHolder (for now)</h2>
+
+      <ul class="story-list">
+
+        <li><a href="#">Placeholder</a></li>
+        <li><a href="#">Placeholder</a></li>
+        <li><a href="#">Placeholder</a></li>
+
+      </ul>
+
+    </div>
+
+    <!-- BLINKIE BAR -->
+
+    <div class="blinkie-bar">
+
+      <div class="blinkie-track">
+
+        <img src="https://blinkies.cafe/b/display/0190-hittingfloor.gif">
+        <img src="https://blinkies.cafe/b/display/0206-nyancat.gif">
+        <img src="https://blinkies.cafe/b/display/0114-tbh.gif">
+        <img src="https://blinkies.cafe/b/display/0102-rainbowchecker.gif">
+        <img src="https://blinkies.cafe/b/display/0090-flatline.gif">
+        <img src="https://blinkies.cafe/b/display/0032-coffeecup.gif">
+        <img src="https://blinkies.cafe/b/display/0221-cd.gif">
+
+        <!-- DUPLICATES -->
+
+        <img src="https://blinkies.cafe/b/display/0190-hittingfloor.gif">
+        <img src="https://blinkies.cafe/b/display/0206-nyancat.gif">
+        <img src="https://blinkies.cafe/b/display/0114-tbh.gif">
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       RIGHT SIDEBAR
+  ========================= -->
+
+  <div class="right-sidebar">
+
+    <h3>Social Media</h3>
+
+    <ul class="social-list">
+
+      <li>
+        <a href="nfv/video/double.mp4"
+           class="social-button">
+          Twitter
+        </a>
+      </li>
+
+      <li>
+        <a href="https://www.youtube.com/@SkottRedux"
+           class="social-button">
+          YouTube
+        </a>
+      </li>
+
+      <li>
+        <a href="https://github.com/ButterScott101"
+           class="social-button">
+          GitHub
+        </a>
+      </li>
+
+      <li>
+        <a href="nfv/video/baconator.mp4"
+           class="social-button">
+          Deviantart (NSFW)
+        </a>
+      </li>
+
+    </ul>
+
+    <img src="https://blinkies.cafe/b/display/0206-nyancat.gif">
+
+    <!-- MUSIC -->
+
+    <div class="music-box">
+
+      <h3>Songs I Made</h3>
+
+      <ul class="music-list">
+
+        <li>
+          <a href="audio/mafia funk.mp3">
+            Mafia Funk
+          </a>
+        </li>
+
+        <li>
+          <a href="audio/tt8chip.mp3">
+            t&t>>8
+          </a>
+        </li>
+
+        <li>
+          <a href="audio/AlexansTheme2026.mp3">
+            AlexansTheme
+          </a>
+        </li>
+
+        <li>
+          <a href="audio/8000hzbutgood.mp3">
+            8000Hz
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     SCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+   AUDIO / INTRO
+========================= */
+
+const player =
+  document.getElementById("player");
+
+const enterScreen =
+  document.getElementById("enterScreen");
+
+/* =========================
+   RANDOM INTRO TEXT
+========================= */
+
+const messages = [
+
+  "CLICK TO ENTER MY SITE",
+
+  "CLICK TO PROCEED",
+
+  "I AM DARB, I MADE THE WEBSITE",
+
+  "THIS SITE CONTAINS AUDIO"
+
+];
+
+enterScreen.innerText =
+
+  messages[
+    Math.floor(
+      Math.random() *
+      messages.length
+    )
+  ];
+
+/* =========================
+   ENTER SCREEN
+========================= */
+
+enterScreen.addEventListener("click", () => {
+
+  player.muted = false;
+
+  player.volume = 1;
+
+  player.play().catch(err => {
+
+    console.log("play failed:", err);
+
+  });
+
+  enterScreen.style.opacity = "0";
+
+  setTimeout(() => {
+
+    enterScreen.remove();
+
+  }, 500);
+
+  /* RANDOM CORRUPTION */
+
+  if (Math.random() < 0.1) {
+
+    triggerCorruption();
+
+  }
+
+});
+
+/* =========================
+   SECRET IMAGE EVENT
+========================= */
+
+const sharky =
+  document.getElementById("sharky");
+
+const crackOverlay =
+  document.getElementById("crackOverlay");
+
+const hiddenFace =
+  document.getElementById("hiddenFace");
+
+const punchSound =
+  document.getElementById("punchSound");
+
+const scaryReveal =
+  document.getElementById("scaryReveal");
+
+let hits = 0;
+
+/* crack images */
+
+const cracks = [
+
+  "images/crack1.png",
+
+  "images/crack2.png",
+
+  "images/crack3.png",
+
+  "images/crack4.png"
+
+];
+
+/* =========================
+   CLICK EVENT
+========================= */
+
+sharky.addEventListener("click", () => {
+
+  hits++;
+
+  /* punch sound */
+
+  punchSound.currentTime = 0;
+
+  punchSound.play().catch(()=>{});
+
+  /* shake */
+
+  sharky.classList.add("shaking");
+
+  setTimeout(() => {
+
+    sharky.classList.remove("shaking");
+
+  }, 120);
+
+  /* lower music */
+
+  if (player.volume > 0) {
+
+    player.volume =
+
+      Math.max(
+        0,
+        player.volume - 0.07
+      );
+
+  }
+
+  /* cracks */
+
+  if (hits >= 3)
+    setCrack(0);
+
+  if (hits >= 6)
+    setCrack(1);
+
+  if (hits >= 9)
+    setCrack(2);
+
+  if (hits >= 12)
+    setCrack(3);
+
+  /* reveal */
+
+  if (hits >= 15) {
+
+    revealFace();
+
+  }
+
+});
+
+/* =========================
+   CRACK FUNCTION
+========================= */
+
+function setCrack(index) {
+
+  crackOverlay.style.backgroundImage =
+
+    `url('${cracks[index]}')`;
+
+  crackOverlay.style.opacity = "1";
+
+}
+
+/* =========================
+   REVEAL
+========================= */
+
+function revealFace() {
+
+  sharky.style.opacity = "0";
+
+  crackOverlay.style.opacity = "0";
+
+  player.pause();
+
+  setTimeout(() => {
+
+    scaryReveal.volume = 0.8;
+
+    scaryReveal.play().catch(()=>{});
+
+    hiddenFace.classList.add("reveal");
+
+  }, 3000);
+
+  /* redirect */
+
+  setTimeout(() => {
+
+    window.location.href =
+      "confrontation.html";
+
+  }, 9000);
+
+}
+
+/* =========================
+   RANDOM CORRUPTION
+========================= */
+
+function triggerCorruption() {
+
+  console.log("CORRUPTION TRIGGERED");
+
+  /* stop music */
+
+  player.pause();
+
+  /* switch to EAS */
+
+  player.innerHTML = `
+  <source
+  src="audio/eas.mp3"
+  type="audio/mp3">
+  `;
+
+  player.load();
+
+  player.loop = false;
+
+  player.currentTime = 0;
+
+  player.play().catch(err => {
+
+    console.log("EAS failed:", err);
+
+  });
+
+  /* overlay */
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.innerHTML =
+    "NO NO NO NO<br>GOD SAVE US ALL";
+
+  Object.assign(overlay.style, {
+
+    position: "fixed",
+
+    top: "0",
+    left: "0",
+
+    width: "100%",
+    height: "100%",
+
+    background: "black",
+
+    color: "red",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    fontSize: "3rem",
+
+    textAlign: "center",
+
+    zIndex: "999999",
+
+    animation:
+      "flicker 0.3s infinite"
+
+  });
+
+  document.body.appendChild(overlay);
+
+  /* redirect */
+
+  setTimeout(() => {
+
+    window.location.href =
+      "/404.html";
+
+  }, 5000);
+
+}
+
+</script>
+
+</body>
+</html>

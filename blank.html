@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>HIDE</title>
+
+<style>
+
+body{
+
+margin:0;
+overflow:hidden;
+
+background:black;
+
+font-family:monospace;
+
+color:white;
+
+}
+
+#room{
+
+position:fixed;
+
+inset:0;
+
+overflow:hidden;
+
+}
+
+#roomBg{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+}
+
+/* ====================
+   TIMER
+==================== */
+
+#timer{
+
+position:absolute;
+
+top:20px;
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:4rem;
+
+color:#ff4444;
+
+text-shadow:
+0 0 20px red;
+
+z-index:100;
+
+}
+
+/* ====================
+   DIALOGUE
+==================== */
+
+#dialogue{
+
+position:absolute;
+
+left:50%;
+bottom:20px;
+
+transform:translateX(-50%);
+
+width:70%;
+
+padding:15px;
+
+text-align:center;
+
+background:
+rgba(0,0,0,.7);
+
+border:
+2px solid #880000;
+
+font-size:1.3rem;
+
+z-index:100;
+
+}
+
+/* ====================
+   HIDING SPOTS
+==================== */
+
+.spot{
+
+position:absolute;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.spot:hover{
+
+filter:
+brightness(1.25);
+
+}
+
+/* PLACEHOLDERS */
+
+#closet{
+
+left:4%;
+bottom:10%;
+
+width:220px;
+
+}
+
+#desk{
+
+left:35%;
+bottom:14%;
+
+width:260px;
+
+}
+
+#curtain{
+
+right:8%;
+bottom:8%;
+
+width:220px;
+
+}
+
+#vent{
+
+right:15%;
+top:10%;
+
+width:160px;
+
+}
+
+/* ====================
+   SHADOW
+==================== */
+
+#shadow{
+
+position:absolute;
+
+width:240px;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.3s;
+
+z-index:80;
+
+}
+
+/* ====================
+   STATIC
+==================== */
+
+#static{
+
+position:fixed;
+
+inset:0;
+
+pointer-events:none;
+
+opacity:.05;
+
+background:
+repeating-linear-gradient(
+0deg,
+rgba(255,255,255,.15) 0px,
+rgba(255,255,255,.15) 1px,
+transparent 2px,
+transparent 4px
+);
+
+z-index:500;
+
+}
+
+/* ====================
+   FAILURE SCREEN
+==================== */
+
+#failure{
+
+position:fixed;
+
+inset:0;
+
+display:none;
+
+align-items:center;
+justify-content:center;
+
+font-size:4rem;
+
+background:black;
+
+color:red;
+
+text-shadow:
+0 0 20px red;
+
+z-index:9999;
+
+}
+
+/* ====================
+   GLITCH
+==================== */
+
+.glitch{
+
+animation:
+glitch .08s infinite;
+
+}
+
+@keyframes glitch{
+
+0%{
+
+transform:
+translate(0px);
+
+}
+
+25%{
+
+transform:
+translate(-2px);
+
+}
+
+50%{
+
+transform:
+translate(2px);
+
+}
+
+75%{
+
+transform:
+translate(-1px);
+
+}
+
+100%{
+
+transform:
+translate(0px);
+
+}
+
+}
+
+#timerContainer{
+
+position:absolute;
+
+top:20px;
+left:50%;
+
+transform:translateX(-50%);
+
+z-index:500;
+
+}
+
+#error404{
+
+position:absolute;
+
+top:0;
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:4rem;
+
+color:red;
+
+opacity:0;
+
+text-shadow:
+0 0 20px red,
+0 0 40px red;
+
+pointer-events:none;
+
+transition:.2s;
+
+}
+
+.corrupt404{
+
+animation:
+blip404 .15s infinite;
+
+}
+
+@keyframes blip404{
+
+0%{
+
+opacity:.1;
+
+}
+
+50%{
+
+opacity:1;
+
+}
+
+100%{
+
+opacity:.1;
+
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="room">
+
+<img
+id="roomBg"
+src="images/room_background.png">
+
+<img
+id="closet"
+class="spot"
+src="images/closet.png">
+
+<img
+id="desk"
+class="spot"
+src="images/desk.png">
+
+<img
+id="curtain"
+class="spot"
+src="images/curtain.png">
+
+<img
+id="vent"
+class="spot"
+src="images/vent.png">
+
+<img
+id="shadow"
+src="images/shadow.png">
+
+</div>
+
+<div id="timerContainer">
+
+<div id="timer">
+
+20
+
+</div>
+
+<div id="error404">
+
+404
+
+</div>
+
+</div>
+
+<div id="dialogue">
+
+You hear something moving.
+
+</div>
+
+<div id="static"></div>
+
+<div id="failure">
+
+404
+
+</div>
+
+<!-- AUDIO -->
+
+<audio
+id="searchMusic"
+loop>
+
+<source
+src="audio/searching.mp3"
+type="audio/mp3">
+
+</audio>
+
+<audio
+id="panicMusic"
+loop>
+
+<source
+src="audio/panic.mp3"
+type="audio/mp3">
+
+</audio>
+
+<audio
+id="foundSound">
+
+<source
+src="audio/found.mp3"
+type="audio/mp3">
+
+</audio>
+
+<audio
+id="successSound">
+
+<source
+src="audio/success.mp3"
+type="audio/mp3">
+
+</audio>
+
+<script>
+
+/* ====================
+   ELEMENTS
+==================== */
+
+const timerEl =
+document.getElementById(
+"timer"
+);
+
+const dialogue =
+document.getElementById(
+"dialogue"
+);
+
+const failure =
+document.getElementById(
+"failure"
+);
+
+const shadow =
+document.getElementById(
+"shadow"
+);
+
+/* ====================
+   AUDIO
+==================== */
+
+const searchMusic =
+document.getElementById(
+"searchMusic"
+);
+
+const panicMusic =
+document.getElementById(
+"panicMusic"
+);
+
+const foundSound =
+document.getElementById(
+"foundSound"
+);
+
+const successSound =
+document.getElementById(
+"successSound"
+);
+
+/* ====================
+   START MUSIC
+==================== */
+
+document.addEventListener(
+"click",
+()=>{
+
+searchMusic.play()
+.catch(()=>{});
+
+},
+{once:true}
+);
+
+/* ====================
+   SAFE SPOT
+==================== */
+
+const spots = [
+
+"closet",
+"desk",
+"curtain",
+"vent"
+
+];
+
+const safeSpot =
+
+spots[
+Math.floor(
+Math.random() *
+spots.length
+)
+];
+
+/* ====================
+   CLUE
+==================== */
+
+switch(safeSpot){
+
+case "closet":
+
+dialogue.innerHTML =
+"The closet door is slightly open.";
+
+break;
+
+case "desk":
+
+dialogue.innerHTML =
+"The desk seems sturdier than the rest.";
+
+break;
+
+case "curtain":
+
+dialogue.innerHTML =
+"The curtain sways gently.";
+
+break;
+
+case "vent":
+
+dialogue.innerHTML =
+"You hear air moving through the vent.";
+
+break;
+
+}
+
+/* ====================
+   HOVER TEXT
+==================== */
+
+closet.onmouseenter=()=>{
+
+dialogue.innerHTML=
+"Hide inside the closet.";
+
+};
+
+desk.onmouseenter=()=>{
+
+dialogue.innerHTML=
+"Hide beneath the desk.";
+
+};
+
+curtain.onmouseenter=()=>{
+
+dialogue.innerHTML=
+"Hide behind the curtain.";
+
+};
+
+vent.onmouseenter=()=>{
+
+dialogue.innerHTML=
+"Enter the vent.";
+
+};
+
+/* ====================
+   SHADOWS
+==================== */
+
+function spawnShadow(){
+
+shadow.style.left =
+
+(Math.random()*70+10)+"%";
+
+shadow.style.top =
+
+(Math.random()*50+10)+"%";
+
+shadow.style.opacity =
+
+".85";
+
+setTimeout(()=>{
+
+shadow.style.opacity =
+
+"0";
+
+},1200);
+
+}
+
+/* ====================
+   TIMER
+==================== */
+
+let time = 20;
+
+let chosen = false;
+
+const countdown =
+
+setInterval(()=>{
+
+if(chosen)
+return;
+
+time--;
+
+timerEl.innerHTML =
+time;
+
+if(time <= 10){
+
+document.body.classList
+.add("glitch");
+
+spawnShadow();
+
+}
+
+if(time <= 5){
+
+panicMusic.play()
+.catch(()=>{});
+
+dialogue.innerHTML =
+"IT IS GETTING CLOSER.";
+
+spawnShadow();
+
+}
+
+if(time <= 0){
+
+clearInterval(
+countdown
+);
+
+failureSequence();
+
+}
+
+},1000);
+
+/* ====================
+   CHOICE
+==================== */
+
+spots.forEach(id=>{
+
+document
+.getElementById(id)
+.onclick = ()=>{
+
+if(chosen)
+return;
+
+chosen=true;
+
+if(id===safeSpot){
+
+success();
+
+}else{
+
+failureSequence();
+
+}
+
+};
+
+});
+
+/* ====================
+   SUCCESS
+==================== */
+
+function success(){
+
+searchMusic.pause();
+
+panicMusic.pause();
+
+successSound.play()
+.catch(()=>{});
+
+dialogue.innerHTML =
+"...";
+
+setTimeout(()=>{
+
+dialogue.innerHTML =
+"IT STOPS OUTSIDE.";
+
+},3000);
+
+setTimeout(()=>{
+
+dialogue.innerHTML =
+"IT LEAVES.";
+
+},6000);
+
+setTimeout(()=>{
+
+dialogue.innerHTML =
+"YOU SURVIVED.";
+
+},8000);
+
+setTimeout(()=>{
+
+window.location.href =
+"level2.html";
+
+},10000);
+
+}
+
+/* ====================
+   FAILURE
+==================== */
+
+function failureSequence(){
+
+chosen = true;
+
+searchMusic.pause();
+
+panicMusic.pause();
+
+foundSound.play()
+.catch(()=>{});
+
+dialogue.innerHTML =
+"YOU CHOSE WRONG.";
+
+let intensity = 0;
+
+const corrupt =
+
+setInterval(()=>{
+
+intensity++;
+
+document.body.style.filter =
+
+`brightness(${1-intensity*.04})
+contrast(${1+intensity*.1})`;
+
+spawnShadow();
+
+if(intensity > 20){
+
+clearInterval(
+corrupt
+);
+
+const error404 =
+document.getElementById(
+"error404"
+);
+
+error404.classList.add(
+"corrupt404"
+);
+
+error404.style.opacity =
+"1";
+
+setTimeout(()=>{
+
+window.location.href =
+"404.html";
+
+},3000);
+
+}
+
+},100);
+
+}
+
+</script>
+
+</body>
+</html>
