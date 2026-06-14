@@ -112,14 +112,24 @@ WASD TO MOVE
 
 <!-- AUDIO -->
 
-<audio
-id="walkSound"></audio>
+<!-- AUDIO -->
 
 <audio
-id="lightsOff"></audio>
+id="walkSound"
+src="audio/walk.mp3"></audio>
+
+<audio
+id="lightsOff"
+src="audio/lightoff.mp3"></audio>
 
 <audio
 id="ambience"
+src="audio/mazeambience.mp3"
+loop></audio>
+
+<audio
+id="hunterMusic"
+src="audio/disstressing.mp3"
 loop></audio>
 
 <script>
@@ -143,6 +153,11 @@ document.getElementById(
 "ambience"
 );
 
+const hunterMusic =
+document.getElementById(
+"hunterMusic"
+);
+
 /* =====================
    MAP
 ===================== */
@@ -156,13 +171,20 @@ const map = [
 "# ####### ### # # ##",
 "#       # #   # # ##",
 "# ### # # # ### # ##",
-"#   # #   #     #E##",
+"#   # #   #     #>##",
 "####################"
 
 ];
 
 let playerX = 1;
 let playerY = 1;
+
+let level = 1;
+
+let hunterX = -1;
+let hunterY = -1;
+
+let hunterActive = false;
 
 /* =====================
    DRAW
@@ -188,18 +210,27 @@ let x=0;
 x<map[y].length;
 x++
 ){
-
 if(
 x===playerX &&
 y===playerY
 ){
 
-output += "@";
+  output += "@";
 
-}else{
+}
+else if(
+hunterActive &&
+x===hunterX &&
+y===hunterY
+){
 
-output +=
-map[y][x];
+  output += "X";
+
+}
+else{
+
+  output +=
+    map[y][x];
 
 }
 
@@ -266,18 +297,91 @@ walkSound.play()
 
 playerX = newX;
 playerY = newY;
+moveHunter();
 
 drawMap();
 
 /* encounter */
 
-if(tile === "E"){
+if(tile === ">"){
 
-startEncounter();
+nextLevel();
 
 }
 
 });
+
+/* i dont feel like making a decor 
+but this is for hunter */
+
+function moveHunter(){
+
+  if(!hunterActive)
+    return;
+
+  if(hunterX < playerX)
+    hunterX++;
+
+  else if(hunterX > playerX)
+    hunterX--;
+
+  if(hunterY < playerY)
+    hunterY++;
+
+  else if(hunterY > playerY)
+    hunterY--;
+
+  if(
+    hunterX === playerX &&
+    hunterY === playerY
+  ){
+
+    startEncounter();
+
+  }
+
+}
+
+/* new level bitch */
+
+function nextLevel(){
+
+  level++;
+
+  document.getElementById(
+    "message"
+  ).textContent =
+    "LEVEL " + level;
+
+  playerX = 1;
+  playerY = 1;
+
+  if(level >= 2){
+
+  hunterActive = true;
+
+  hunterX = 17;
+  hunterY = 7;
+
+  if(level === 2){
+
+    hunterMusic.play()
+      .catch(()=>{});
+
+  }
+
+}
+
+  if(level > 10){
+
+    window.location.href =
+      "victory.html";
+
+  }
+
+  drawMap();
+
+}
 
 /* =====================
    ENCOUNTER
@@ -285,24 +389,19 @@ startEncounter();
 
 const creepyLines = [
 
-"HE SAW YOU",
-
-"YOU SHOULD\nNOT BE HERE",
-
-"IT FOLLOWED\nTHE SIGNAL",
-
-"DON'T LOOK\nBEHIND YOU",
-
-"THE MAZE\nIS ALIVE"
+"пойманный"
 
 ];
 
 function startEncounter(){
 
+   hunterMusic.pause();
+
 document.getElementById(
 "encounter"
 ).style.display =
 "flex";
+
 
 lightsOff.play()
 .catch(()=>{});
@@ -334,6 +433,7 @@ window.location.href =
 "encounter.html";
 
 },6000);
+
 
 }
 
