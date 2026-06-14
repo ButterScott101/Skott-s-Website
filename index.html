@@ -1,349 +1,455 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>WARNING</title>
+<meta charset="UTF-8">
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>XYZ</title>
 
 <style>
 
-body {
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-  margin: 0;
+body{
 
-  background: black;
+background:
+url("images/background.jpg")
+center center / cover no-repeat;
 
-  color: #ff0000;
+font-family:
+monospace;
 
-  font-family: monospace;
+overflow:hidden;
 
-  overflow: hidden;
+height:100vh;
 
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  height: 100vh;
-
-  text-shadow:
-  0 0 5px #ff0000,
-  0 0 10px #ff0000;
+color:white;
 
 }
 
-/* CRT */
+/* =========================
+   ENTRY SCREEN
+========================= */
 
-body::before {
+#entryScreen{
 
-  content: "";
+position:fixed;
 
-  position: fixed;
+inset:0;
 
-  inset: 0;
+background:
+rgba(0,0,0,.85);
 
-  pointer-events: none;
+display:flex;
 
-  background:
-  repeating-linear-gradient(
-    to bottom,
-    rgba(0,255,0,.04) 0px,
-    rgba(0,255,0,.04) 1px,
-    transparent 2px,
-    transparent 4px
-  );
+justify-content:center;
+align-items:center;
 
-}
-
-/* MAIN */
-
-#warning {
-
-  width: min(800px, 90vw);
-
-  padding: 40px;
-
-  border: 3px solid #4b0000;
-
-  box-shadow:
-  0 0 15px #69000e,
-  0 0 40px rgba(255, 0, 0, 0.4);
-
-  background:
-  rgba(0,0,0,.85);
-
-  animation:
-  pulse 3s infinite;
+z-index:9999;
 
 }
 
-@keyframes pulse {
+#enterButton{
 
-  0% {
+padding:18px 35px;
 
-    box-shadow:
-    0 0 15px #740000,
-    0 0 40px rgba(92, 21, 0, 0.4);
+font-size:
+clamp(1.2rem,2vw,2rem);
 
-  }
+cursor:pointer;
 
-  50% {
+border:2px solid white;
 
-    box-shadow:
-    0 0 25px #8f0000,
-    0 0 70px rgba(100, 0, 0, 0.6);
+background:black;
 
-  }
-
-  100% {
-
-    box-shadow:
-    0 0 15px #6e0000,
-    0 0 40px rgba(241, 0, 0, 0.4);
-
-  }
+transition:.2s;
 
 }
 
-h1 {
+#enterButton:hover{
 
-  margin-top: 0;
-
-  font-size: 3rem;
-
-}
-
-ul {
-
-  font-size: 1.2rem;
-
-  line-height: 1.8;
+transform:
+scale(1.05);
 
 }
 
-/* BUTTON */
+/* =========================
+   TITLE
+========================= */
 
-#proceed {
+#title{
 
-  margin-top: 30px;
+position:fixed;
 
-  font-size: 1.5rem;
+left:50%;
+top:50%;
 
-  cursor: pointer;
+transform:
+translate(-50%,-50%);
 
-  border: 2px solid #ff0000;
+font-size:
+clamp(4rem,12vw,12rem);
 
-  padding: 10px 20px;
+font-weight:bold;
 
-  display: inline-block;
+opacity:0;
 
-  transition: .2s;
+text-align:center;
 
-}
+pointer-events:none;
 
-#proceed:hover {
+text-shadow:
+0 0 20px white,
+0 0 40px white,
+0 0 80px white;
 
-  background:
-  rgba(0,255,102,.15);
-
-  transform:
-  translateY(-2px);
-
-}
-
-/* LOADING BOX */
-
-#loader {
-
-  position: absolute;
-
-  right: 40px;
-
-  bottom: 40px;
-
-  text-align: center;
-
-  font-size: .9rem;
+z-index:50;
 
 }
 
-#bar {
+/* =========================
+   DISCLAIMER
+========================= */
 
-  width: 120px;
+#warningBox{
 
-  height: 18px;
+position:fixed;
 
-  border: 2px solid #ff0000;
+left:50%;
+top:50%;
 
-  overflow: hidden;
+transform:
+translate(-50%,-50%);
 
-}
+width:min(800px,90vw);
 
-#fill {
+padding:30px;
 
-  height: 100%;
+background:
+rgba(0,0,0,.75);
 
-  width: 60%;
+backdrop-filter:
+blur(4px);
 
-  background: #3b0000;
+border:
+2px solid rgba(255,255,255,.4);
 
-  animation:
-  glitchLoad .8s infinite;
+opacity:0;
 
-}
+text-align:center;
 
-@keyframes glitchLoad {
-
-  0% {
-
-    width: 55%;
-
-  }
-
-  50% {
-
-    width: 70%;
-
-  }
-
-  100% {
-
-    width: 60%;
-
-  }
+z-index:20;
 
 }
 
-#unmuteBtn {
+#warningBox h1{
 
-  margin-top: 15px;
+margin-bottom:20px;
 
-  display: inline-block;
-
-  cursor: pointer;
-
-  padding: 8px 16px;
-
-  border: 2px solid #ff0000;
-
-  user-select: none;
-
-  transition: .2s;
+font-size:2.2rem;
 
 }
 
-#unmuteBtn:hover {
+#warningBox p{
 
-  background:
-  rgba(0,255,102,.15);
+line-height:1.8;
 
-}
-
-.glitchText {
-
-  animation:
-  glitchText .2s infinite;
+font-size:1.1rem;
 
 }
 
-@keyframes glitchText {
+/* =========================
+   PROCEED BUTTON
+========================= */
 
-  0% {
-    transform: translate(0px);
-  }
+#proceed{
 
-  25% {
-    transform: translate(-1px);
-  }
+margin-top:25px;
 
-  50% {
-    transform: translate(1px);
-  }
+display:inline-block;
 
-  75% {
-    transform: translate(-1px);
-  }
+padding:12px 24px;
 
-  100% {
-    transform: translate(0px);
-  }
+border:2px solid white;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+#proceed:hover{
+
+transform:
+scale(1.05);
+
+}
+
+/* =========================
+   LOADING GIF
+========================= */
+
+#loader{
+
+position:fixed;
+
+right:20px;
+bottom:20px;
+
+width:90px;
+
+opacity:0;
+
+z-index:100;
+
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes titleBurst{
+
+0%{
+
+opacity:0;
+
+transform:
+translate(-50%,-50%)
+scale(0.1);
+
+}
+
+25%{
+
+opacity:1;
+
+transform:
+translate(-50%,-50%)
+scale(1.4);
+
+}
+
+50%{
+
+transform:
+translate(-50%,-50%)
+scale(1);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+translate(-50%,-50%)
+scale(1);
+
+}
+
+}
+
+@keyframes titleMove{
+
+from{
+
+top:50%;
+
+}
+
+to{
+
+top:10%;
+
+}
+
+}
+
+@keyframes shake{
+
+0%{
+transform:translate(0px);
+}
+
+25%{
+transform:translate(-4px);
+}
+
+50%{
+transform:translate(4px);
+}
+
+75%{
+transform:translate(-3px);
+}
+
+100%{
+transform:translate(0px);
+}
+
+}
+
+@keyframes warningShake{
+
+0%{
+transform:translate(-50%,-50%);
+}
+
+20%{
+transform:translate(calc(-50% - 6px),-50%);
+}
+
+40%{
+transform:translate(calc(-50% + 6px),-50%);
+}
+
+60%{
+transform:translate(calc(-50% - 4px),-50%);
+}
+
+80%{
+transform:translate(calc(-50% + 4px),-50%);
+}
+
+100%{
+transform:translate(-50%,-50%);
+}
+
+}
+
+@keyframes flash{
+
+0%{
+opacity:1;
+}
+
+50%{
+opacity:0;
+}
+
+100%{
+opacity:1;
+}
+
+}
+
+.flash{
+
+animation:
+flash .12s 8;
 
 }
 
 </style>
 </head>
+
 <body>
 
-<div id="warning">
+<!-- ENTRY -->
 
-<h1>WARNING</h1>
+<div id="entryScreen">
 
-<p>
-This website contains:
-</p>
-
-<ul>
-
-<li>Audio</li>
-
-<li>Flashing imagery</li>
-
-<li>Hidden content</li>
-
-<li>Unsettling themes</li>
-
-<li>Experimental visual effects</li>
-
-</ul>
-
-<p>
-
-Viewer discretion is advised.
-
-</p>
-
-<div id="proceed">
+<div id="enterButton">
 
 CLICK TO PROCEED
 
 </div>
 
-<div id="unmuteBtn">
+</div>
 
-[SOUND: OFF]
+<!-- TITLE -->
+
+<div id="title">
+
+XYZ
 
 </div>
 
-</div>
+<!-- WARNING -->
 
-<div id="loader">
+<div id="warningBox">
 
-<div id="bar">
+<h1>WARNING</h1>
 
-<div id="fill"></div>
+<p>
 
-</div>
+This website contains:
+
+<br><br>
+
+• Audio
 
 <br>
 
-LOADING...
+• Flashing imagery
+
+<br>
+
+• Hidden content
+
+<br>
+
+• Unsettling themes
+
+<br>
+
+• Experimental visual effects
+
+</p>
+
+<div id="proceed">
+
+PROCEED
 
 </div>
 
+</div>
+
+<!-- GIF -->
+
+<img
+id="loader"
+src="images/loading.gif"
+alt="loading">
+
+<!-- AUDIO -->
+
 <audio
-id="bgMusic"
-loop>
+id="titleSound"
+src="audio/title.mp3"></audio>
 
-<source
-src="audio/warning.mp3"
-type="audio/mp3">
-
-</audio>
+<audio
+id="warningSound"
+src="audio/hum.mp3"
+loop></audio>
 
 <script>
 
-const music =
+const entryScreen =
 document.getElementById(
-"bgMusic"
+"entryScreen"
+);
+
+const enterButton =
+document.getElementById(
+"enterButton"
+);
+
+const title =
+document.getElementById(
+"title"
+);
+
+const warningBox =
+document.getElementById(
+"warningBox"
 );
 
 const proceed =
@@ -351,61 +457,93 @@ document.getElementById(
 "proceed"
 );
 
-/* user interaction */
-
-const unmuteBtn =
+const loader =
 document.getElementById(
-"unmuteBtn"
+"loader"
 );
 
-let musicEnabled =
-false;
+const titleSound =
+document.getElementById(
+"titleSound"
+);
 
-unmuteBtn.onclick = () => {
+const warningSound =
+document.getElementById(
+"warningSound"
+);
 
-  if(!musicEnabled){
+/* =========================
+   START SEQUENCE
+========================= */
 
-    musicEnabled = true;
+enterButton.onclick = ()=>{
 
-    music.volume = 0.5;
+entryScreen.style.display =
+"none";
 
-    music.play()
-    .catch(()=>{});
+title.style.opacity =
+"1";
 
-    unmuteBtn.innerHTML =
-    "[SOUND: ON]";
+title.style.animation =
+"titleBurst 1.2s forwards";
 
-  } else {
+titleSound.play()
+.catch(()=>{});
 
-    musicEnabled = false;
+/* screen shake */
 
-    music.pause();
+document.body.style.animation =
+"shake .08s 12";
 
-    unmuteBtn.innerHTML =
-    "[SOUND: OFF]";
+setTimeout(()=>{
 
-  }
+title.style.animation =
+"titleMove 1.5s forwards";
+
+},1500);
+
+/* warning */
+
+setTimeout(()=>{
+
+warningBox.style.opacity =
+"1";
+
+warningBox.style.animation =
+"warningShake .08s 12";
+
+warningSound.play()
+.catch(()=>{});
+
+loader.style.opacity =
+"1";
+
+},3200);
 
 };
 
-proceed.onclick = () => {
+/* =========================
+   PROCEED
+========================= */
 
-  document.body.style.opacity =
-  "0";
+proceed.onclick = ()=>{
 
-  document.body.style.transition =
-  "1s";
+title.classList.add(
+"flash"
+);
 
-  setTimeout(() => {
+warningBox.classList.add(
+"flash"
+);
 
-    window.location.href =
-    "website.html";
+setTimeout(()=>{
 
-  }, 1000);
+window.location.href =
+"website.html";
+
+},1000);
 
 };
-
-
 
 </script>
 

@@ -7,6 +7,8 @@
 
   <style>
 
+    
+
     /* =========================
        SECRET SHARK EVENT
     ========================= */
@@ -36,6 +38,8 @@
       image-rendering: pixelated;
 
     }
+
+    
 
     /* =========================
        CRACK OVERLAY
@@ -152,6 +156,69 @@
 
     }
 
+
+    /* =========================
+   CORRUPTION OVERLAY
+========================= */
+
+#corruptionOverlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: black;
+
+  display: none;
+
+  z-index: 2147483647;
+
+}
+
+#staticNoise {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    url("images/static.gif")
+    center center / cover;
+
+  opacity: .75;
+
+}
+
+
+.corrupting * {
+
+  animation:
+    corruptionBlink .35s 4;
+
+}
+
+@keyframes corruptionBlink {
+
+  0% {
+
+    opacity: 1;
+
+  }
+
+  40% {
+
+    opacity: .6;
+
+  }
+
+  100% {
+
+    opacity: 1;
+
+  }
+
+}
+
   </style>
 </head>
 
@@ -178,13 +245,33 @@
 </audio>
 
 <audio id="eas"
-src="audio/eas.mp3"></audio>
+src="audio/eas.wav"></audio>
+
+<audio
+id="staticAudio">
+
+  <source
+    src="audio/static.mp3"
+    type="audio/mp3">
+
+</audio>
+
+<audio
+id="lightsOut">
+
+  <source
+    src="audio/lightoff.mp3"
+    type="audio/mp3">
+
+</audio>
 
 <audio id="punchSound"
 src="audio/punch.mp3"></audio>
 
 <audio id="scaryReveal"
 src="audio/reveal.mp3"></audio>
+
+
 
 <!-- =========================
      TITLE
@@ -236,8 +323,8 @@ src="audio/reveal.mp3"></audio>
         As for me in general, im currently
         17.
 
-        Currently as im writing this,
-        it will be 2 months away from graduation!
+       I GRADUATED MOTHERFUCKER YEAHHHHH
+       and im in college
 
         Yippee!
 
@@ -495,11 +582,11 @@ enterScreen.addEventListener("click", () => {
 
   /* RANDOM CORRUPTION */
 
-  if (Math.random() < 0.1) {
+  setTimeout(() => {
 
-    triggerCorruption();
+  triggerCorruption();
 
-  }
+}, 40000);
 
 });
 
@@ -652,85 +739,86 @@ function revealFace() {
 
 function triggerCorruption() {
 
-  console.log("CORRUPTION TRIGGERED");
+  const eas =
+    document.getElementById("eas");
 
-  /* stop music */
+  const staticAudio =
+    document.getElementById("staticAudio");
+
+  const lightsOut =
+    document.getElementById("lightsOut");
+
+  /* stop website music */
 
   player.pause();
 
-  /* switch to EAS */
+  /* flicker everything */
 
-  player.innerHTML = `
-  <source
-  src="audio/eas.mp3"
-  type="audio/mp3">
-  `;
+  document.body.classList.add(
+    "corrupting"
+  );
 
-  player.load();
+  /* after flicker */
 
-  player.loop = false;
+  setTimeout(() => {
 
-  player.currentTime = 0;
+    /* hide site */
 
-  player.play().catch(err => {
+    document.querySelector(
+      ".layout"
+    ).style.visibility =
+      "hidden";
 
-    console.log("EAS failed:", err);
+    document.querySelector(
+      ".title"
+    ).style.visibility =
+      "hidden";
 
-  });
+    /* play EAS */
 
-  /* overlay */
+    eas.currentTime = 0;
 
-  const overlay =
-    document.createElement("div");
+    eas.play().catch(()=>{});
 
-  overlay.innerHTML =
-    "NO NO NO NO<br>GOD SAVE US ALL";
+  }, 1200);
 
-  Object.assign(overlay.style, {
+  /* darkness */
 
-    position: "fixed",
+  setTimeout(() => {
 
-    top: "0",
-    left: "0",
+    lightsOut.currentTime = 0;
 
-    width: "100%",
-    height: "100%",
+    lightsOut.play().catch(()=>{});
 
-    background: "black",
+    document.getElementById(
+      "corruptionOverlay"
+    ).style.display =
+      "block";
 
-    color: "red",
+    staticAudio.currentTime = 0;
 
-    display: "flex",
+    staticAudio.play().catch(()=>{});
 
-    alignItems: "center",
-
-    justifyContent: "center",
-
-    fontSize: "3rem",
-
-    textAlign: "center",
-
-    zIndex: "999999",
-
-    animation:
-      "flicker 0.3s infinite"
-
-  });
-
-  document.body.appendChild(overlay);
+  }, 6200);
 
   /* redirect */
 
   setTimeout(() => {
 
     window.location.href =
-      "/404.html";
+      "404.html";
 
-  }, 5000);
+  }, 10000);
 
 }
 
 </script>
+
+<div id="corruptionOverlay">
+
+  <div id="staticNoise"></div>
+
+</div>
 
 </body>
 </html>

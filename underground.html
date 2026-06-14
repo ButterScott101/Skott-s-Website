@@ -100,11 +100,11 @@
 
 <body>
 
-<div id="intro">CLICK TO ENTER</div>
+<div id="intro">enter</div>
 
-<img id="image" src="images/creepy.jpg" alt="...">
+<img id="image" src="images/shit.webp" alt="...">
 <div id="message"></div>
-<button id="ghostBtn">BECOME A GHOST AND GO BACK</button>
+<button id="ghostBtn">GO BACK?</button>
 
 <div id="static"></div>
 
@@ -141,7 +141,7 @@ intro.addEventListener("click", () => {
 
   // first message
   setTimeout(() => {
-    message.textContent = "YOU WERE NOT MEANT TO BE HERE";
+    message.textContent = "THIS IS YOU";
     message.style.opacity = "1";
   }, 10000);
 
@@ -150,7 +150,7 @@ intro.addEventListener("click", () => {
     message.style.opacity = "0";
 
     setTimeout(() => {
-      message.textContent = "THIS PLACE WILL NEVER FORGET";
+      message.textContent = "YOU ARE IN TEMPORARY HELL";
       message.style.opacity = "1";
     }, 1500);
 

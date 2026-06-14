@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DESCEND</title>
+
+<style>
+
+body{
+
+margin:0;
+
+background:black;
+
+color:#00ff66;
+
+font-family:monospace;
+
+overflow:hidden;
+
+display:flex;
+
+justify-content:center;
+align-items:center;
+
+height:100vh;
+
+text-shadow:
+0 0 5px #00ff66;
+
+}
+
+#screen{
+
+white-space:pre;
+
+font-size:24px;
+
+line-height:1.1;
+
+user-select:none;
+
+}
+
+#message{
+
+position:fixed;
+
+bottom:20px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:1rem;
+
+opacity:.8;
+
+}
+
+#encounter{
+
+position:fixed;
+
+inset:0;
+
+background:black;
+
+display:none;
+
+justify-content:center;
+align-items:center;
+
+flex-direction:column;
+
+color:white;
+
+font-size:3rem;
+
+z-index:9999;
+
+}
+
+#creepyText{
+
+opacity:0;
+
+transition:2s;
+
+font-size:3rem;
+
+text-align:center;
+
+}
+
+</style>
+</head>
+<body>
+
+<pre id="screen"></pre>
+
+<div id="message">
+
+WASD TO MOVE
+
+</div>
+
+<div id="encounter">
+
+<div id="creepyText"></div>
+
+</div>
+
+<!-- AUDIO -->
+
+<audio
+id="walkSound"></audio>
+
+<audio
+id="lightsOff"></audio>
+
+<audio
+id="ambience"
+loop></audio>
+
+<script>
+
+/* =====================
+   AUDIO
+===================== */
+
+const walkSound =
+document.getElementById(
+"walkSound"
+);
+
+const lightsOff =
+document.getElementById(
+"lightsOff"
+);
+
+const ambience =
+document.getElementById(
+"ambience"
+);
+
+/* =====================
+   MAP
+===================== */
+
+const map = [
+
+"####################",
+"#@      #         ##",
+"######  #  ###### ##",
+"#       #       # ##",
+"# ####### ### # # ##",
+"#       # #   # # ##",
+"# ### # # # ### # ##",
+"#   # #   #     #E##",
+"####################"
+
+];
+
+let playerX = 1;
+let playerY = 1;
+
+/* =====================
+   DRAW
+===================== */
+
+const screen =
+document.getElementById(
+"screen"
+);
+
+function drawMap(){
+
+let output = "";
+
+for(
+let y=0;
+y<map.length;
+y++
+){
+
+for(
+let x=0;
+x<map[y].length;
+x++
+){
+
+if(
+x===playerX &&
+y===playerY
+){
+
+output += "@";
+
+}else{
+
+output +=
+map[y][x];
+
+}
+
+}
+
+output += "\n";
+
+}
+
+screen.textContent =
+output;
+
+}
+
+drawMap();
+
+/* =====================
+   MOVEMENT
+===================== */
+
+document.addEventListener(
+"keydown",
+e=>{
+
+let dx = 0;
+let dy = 0;
+
+if(e.key==="w")
+dy = -1;
+
+if(e.key==="s")
+dy = 1;
+
+if(e.key==="a")
+dx = -1;
+
+if(e.key==="d")
+dx = 1;
+
+const newX =
+playerX + dx;
+
+const newY =
+playerY + dy;
+
+const tile =
+
+map[newY]?.[newX];
+
+if(
+tile === "#"
+)
+return;
+
+if(dx!==0||dy!==0){
+
+walkSound.currentTime =
+0;
+
+walkSound.play()
+.catch(()=>{});
+
+}
+
+playerX = newX;
+playerY = newY;
+
+drawMap();
+
+/* encounter */
+
+if(tile === "E"){
+
+startEncounter();
+
+}
+
+});
+
+/* =====================
+   ENCOUNTER
+===================== */
+
+const creepyLines = [
+
+"HE SAW YOU",
+
+"YOU SHOULD\nNOT BE HERE",
+
+"IT FOLLOWED\nTHE SIGNAL",
+
+"DON'T LOOK\nBEHIND YOU",
+
+"THE MAZE\nIS ALIVE"
+
+];
+
+function startEncounter(){
+
+document.getElementById(
+"encounter"
+).style.display =
+"flex";
+
+lightsOff.play()
+.catch(()=>{});
+
+const text =
+document.getElementById(
+"creepyText"
+);
+
+text.innerHTML =
+
+creepyLines[
+Math.floor(
+Math.random() *
+creepyLines.length
+)
+];
+
+setTimeout(()=>{
+
+text.style.opacity =
+"1";
+
+},300);
+
+setTimeout(()=>{
+
+window.location.href =
+"encounter.html";
+
+},6000);
+
+}
+
+/* =====================
+   START MUSIC
+===================== */
+
+document.addEventListener(
+"click",
+()=>{
+
+ambience.play()
+.catch(()=>{});
+
+},
+{once:true});
+
+</script>
+
+</body>
+</html>

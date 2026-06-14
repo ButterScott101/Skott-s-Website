@@ -156,7 +156,7 @@
       filter:
         contrast(1.2)
         brightness(0.8)
-        drop-shadow(0 0 20px red);
+        drop-shadow(0 0 20px rgb(0, 19, 59));
 
     }
 
@@ -206,7 +206,7 @@
         rgba(10,0,0,0.92);
 
       border:
-        5px solid #680000;
+        5px solid #1c005e;
 
       padding: 20px;
 
@@ -232,7 +232,7 @@
         rgba(10,0,0,0.92);
 
       border:
-        5px solid #680000;
+        5px solid #380031;
 
       padding: 20px;
 
@@ -270,7 +270,7 @@
         translateX(6px);
 
       text-shadow:
-        0 0 10px red;
+        0 0 10px rgb(0, 62, 90);
 
     }
 
@@ -332,9 +332,9 @@
       text-transform: uppercase;
 
       text-shadow:
-        0 0 10px red,
+        0 0 10px rgb(70, 0, 15),
         0 0 25px darkred,
-        0 0 45px red;
+        0 0 45px rgba(0, 10, 145, 0.719);
 
       transform: scaleX(1.5);
 
@@ -497,7 +497,7 @@
 
 <img
   id="enemy"
-  src="images/HIM.png"
+  src="images/HER.png"
   alt="entity">
 
 <!-- =========================
@@ -602,7 +602,7 @@
 
   <img
     id="deathImage"
-    src="images/death.jpg"
+    src="images/death.gif"
     alt="death">
 
 </div>
@@ -734,7 +734,7 @@ function select() {
 
 const glitches = [
 
-  "YOU LOOKED TOO DEEP",
+  "FUCK",
 
   "IT SEES YOU",
 
@@ -742,13 +742,13 @@ const glitches = [
 
   "RUN",
 
-  "WHY DID YOU OPEN IT",
+  "WHY WOULD YOU OPEN IT",
 
-  "IT WAS INSIDE",
+  "you'll be better off dead than alive",
 
-  "YOU BROKE THE UI",
+  "YOU BROKE THE LAYER",
 
-  "IT FOUND YOU"
+  "theres no use"
 
 ];
 
@@ -823,7 +823,7 @@ function enemyTurn() {
   locked = true;
 
   dialogue.innerHTML =
-    "THE ENTITY MOVES.";
+    "SHE MOVES.";
 
   setTimeout(() => {
 
