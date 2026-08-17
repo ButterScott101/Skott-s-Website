@@ -1,4 +1,4 @@
-/* ===== PAGE BACKGROUND ===== */
+/* page bg yea */
 body {
   background-color: #000000;
   background-image: url("/images/.gif");
@@ -41,7 +41,7 @@ h1 {
   flex: 1;
   padding: 20px;
   background-color: #999999;
-  background: linear-gradient(90deg, #2c49aa, #6658b4, #4db3a2, #00ff2a62)
+  background: linear-gradient(90deg, #2e479e, #808080, #62a89d, #80d48ed3)
 }
 
 .scrolling-bar {
