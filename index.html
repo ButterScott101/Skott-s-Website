@@ -2,550 +2,128 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>XYZ</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-
-background:
-url("images/background.jpg")
-center center / cover no-repeat;
-
-font-family:
-monospace;
-
-overflow:hidden;
-
-height:100vh;
-
-color:white;
-
-}
-
-/* =========================
-   ENTRY SCREEN
-========================= */
-
-#entryScreen{
-
-position:fixed;
-
-inset:0;
-
-background:
-rgba(0,0,0,.85);
-
-display:flex;
-
-justify-content:center;
-align-items:center;
-
-z-index:9999;
-
-}
-
-#enterButton{
-
-padding:18px 35px;
-
-font-size:
-clamp(1.2rem,2vw,2rem);
-
-cursor:pointer;
-
-border:2px solid white;
-
-background:black;
-
-transition:.2s;
-
-}
-
-#enterButton:hover{
-
-transform:
-scale(1.05);
-
-}
-
-/* =========================
-   TITLE
-========================= */
-
-#title{
-
-position:fixed;
-
-left:50%;
-top:50%;
-
-transform:
-translate(-50%,-50%);
-
-font-size:
-clamp(4rem,12vw,12rem);
-
-font-weight:bold;
-
-opacity:0;
-
-text-align:center;
-
-pointer-events:none;
-
-text-shadow:
-0 0 20px white,
-0 0 40px white,
-0 0 80px white;
-
-z-index:50;
-
-}
-
-/* =========================
-   DISCLAIMER
-========================= */
-
-#warningBox{
-
-position:fixed;
-
-left:50%;
-top:50%;
-
-transform:
-translate(-50%,-50%);
-
-width:min(800px,90vw);
-
-padding:30px;
-
-background:
-rgba(0,0,0,.75);
-
-backdrop-filter:
-blur(4px);
-
-border:
-2px solid rgba(255,255,255,.4);
-
-opacity:0;
-
-text-align:center;
-
-z-index:20;
-
-}
-
-#warningBox h1{
-
-margin-bottom:20px;
-
-font-size:2.2rem;
-
-}
-
-#warningBox p{
-
-line-height:1.8;
-
-font-size:1.1rem;
-
-}
-
-/* =========================
-   PROCEED BUTTON
-========================= */
-
-#proceed{
-
-margin-top:25px;
-
-display:inline-block;
-
-padding:12px 24px;
-
-border:2px solid white;
-
-cursor:pointer;
-
-transition:.2s;
-
-}
-
-#proceed:hover{
-
-transform:
-scale(1.05);
-
-}
-
-/* =========================
-   LOADING GIF
-========================= */
-
-#loader{
-
-position:fixed;
-
-right:20px;
-bottom:20px;
-
-width:90px;
-
-opacity:0;
-
-z-index:100;
-
-}
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes titleBurst{
-
-0%{
-
-opacity:0;
-
-transform:
-translate(-50%,-50%)
-scale(0.1);
-
-}
-
-25%{
-
-opacity:1;
-
-transform:
-translate(-50%,-50%)
-scale(1.4);
-
-}
-
-50%{
-
-transform:
-translate(-50%,-50%)
-scale(1);
-
-}
-
-100%{
-
-opacity:1;
-
-transform:
-translate(-50%,-50%)
-scale(1);
-
-}
-
-}
-
-@keyframes titleMove{
-
-from{
-
-top:50%;
-
-}
-
-to{
-
-top:10%;
-
-}
-
-}
-
-@keyframes shake{
-
-0%{
-transform:translate(0px);
-}
-
-25%{
-transform:translate(-4px);
-}
-
-50%{
-transform:translate(4px);
-}
-
-75%{
-transform:translate(-3px);
-}
-
-100%{
-transform:translate(0px);
-}
-
-}
-
-@keyframes warningShake{
-
-0%{
-transform:translate(-50%,-50%);
-}
-
-20%{
-transform:translate(calc(-50% - 6px),-50%);
-}
-
-40%{
-transform:translate(calc(-50% + 6px),-50%);
-}
-
-60%{
-transform:translate(calc(-50% - 4px),-50%);
-}
-
-80%{
-transform:translate(calc(-50% + 4px),-50%);
-}
-
-100%{
-transform:translate(-50%,-50%);
-}
-
-}
-
-@keyframes flash{
-
-0%{
-opacity:1;
-}
-
-50%{
-opacity:0;
-}
-
-100%{
-opacity:1;
-}
-
-}
-
-.flash{
-
-animation:
-flash .12s 8;
-
-}
-
-</style>
+<link rel="stylesheet" href="/candy.css" />
 </head>
 
 <body>
 
-<!-- ENTRY -->
+<div class="scrolling-bar">
+    <div class="bar-text">
+        WELCOME TO XYZ. A PROJECT BY YOUR'S TRULY, SKOTT. THIS WEBSITE IS STILL ON VERSION 1. SO SIT TIGHT, STAY LOW, AND DONT COMPLAIN OR ILL SHOVE MY BOOT UP YOUR ASS. ALSO A HEADS UP, I DO NOT IDENTIFY AS A SHARK, THATS JUST THE NAME OF THE SITE CUZ I LIKED SHARKS LOLOLOLOLOLOLOL
+    </div>    
+</div>    
 
-<div id="entryScreen">
+<div class="layout-container">
 
-<div id="enterButton">
+<aside class="sidebar">
+<h2>LINKS !!!!</h2>
+<a href="index.html" class="HOMEPAGE">HOMEPAGE</a>
+<a href="/aboutme.html" class="HOMEPAGE">ABOUT ME</a>
+<a href="index.html" class="HOMEPAGE">MUSIC</a>
+<a href="index.html" class="HOMEPAGE">"ART"</a>
+<a href="index.html" class="HOMEPAGE">BLOGS</a>
+<a href="#" id="mystery-btn" class="HOMEPAGE">???</a>
+<a href="labyrinth.html" class="HOMEPAGE">GAME</a>
 
-CLICK TO PROCEED
+</aside>
+<audio id="overworldly" src="/audio/stuck.mp3" preload="auto" loop ></audio>
 
-</div>
+<main class="main-content">
+<h2>WELCOME TO <span class="sound-word" onclick="playSound()">XYZ</span></h2>
 
-</div>
-
-<!-- TITLE -->
-
-<div id="title">
-
-XYZ
-
-</div>
-
-<!-- WARNING -->
-
-<div id="warningBox">
-
-<h1>WARNING</h1>
+<audio id="clickSound" src="audio/title.mp3"></audio>
 
 <p>
+Welcome to this website, here you will find my projects such as little doodles i call art and little melodies i call music. 
+Honestly the Version before this website was made with AI, however this version is not because i didn't like the idea of AI taking me over
+and creating a website for me that i claimed as my own work, this version fixes that. So far this is on Version 1, meaning this is the first version of it's 
+public release. Will i use AI and give it my HTML structure? NOT A CHANCE. Will i use it to help me pick the correct code to use for an extra bit of help?
+Well yeah, if AI fucks it up ill just use W3Schools guide to HTML and CSS, so that way ill actually learn something and not have a robot make it for me like
+im a dumbass fucktard 4 year old who doesn't know how to cut his McDonald's pancakes or tie his shoes or even piss in the toilet correctly.</p>
 
-This website contains:
-
-<br><br>
-
-• Audio
-
-<br>
-
-• Flashing imagery
-
-<br>
-
-• Hidden content
-
-<br>
-
-• Unsettling themes
-
-<br>
-
-• Experimental visual effects
-
+<p>Now lets start with why i made this website or why i even decided to buy a domain in the first place. The main reason i bought this domain was only because my other
+online buddies also had their own website, thats it. Thats the reason, it's not because i wanted to show people my creations or talk about anything in particular, it's
+because i wanted to be more like my friends, AKA the Bandwagon Effect. At the time i bought this domain i had no idea how to make a website, so i was pretty much dumbfounded
+and asked one of my friends for help with this website. Then after a bit i began to stop learning and decided to ask shitgpt on how to make my social website into a haunted house
+like website. Because i pretty much wanted my website to look like SMLWiki.com. A now defunct website because of the creator feeling pretty awful, i don't want to accidentally talk 
+about anything bad about the creator so ill end there.
 </p>
 
-<div id="proceed">
+<h1>
+    Okay so now what the fuck was the original haunted house ARG like website and what was the lore?
+</h1>
 
-PROCEED
+<p>
+    I honestly couldn't tell you, i absolutely created NO FUCKING lore for the website at all and just threw a bunch of effects and SPOOOOOOPY images and added my own music to it,
+    Of course the website is a bit creepy if you were a 9 year old who found Jeff The Killer THAT scary to the point that you pissed the bed because you thought if you went to the bathroom alone
+    he would slice your throat. If you aren't that kid then don't worry. (unfortunately that was me). I do have an archive for it on my GitHub, so if you are curious you can just download it all into
+    a ZIP file, Extract it, and then insert the extracted folder into VSC and make sure you have the live server extension installed. After that go into the index.html file and launch a new server.
+    This will act as the website and from that you are pretty much set.
+</p>
 
-</div>
+<h1>
+    Alright, so what is this website going to feature?
+</h1>
 
-</div>
+<p>
+    I am very glad you asked (even tho i wrote this and nobody fucking asked), this website is now going to be used as a Social website, although i will add a few easter eggs here and there
+    throughout this website, maybe even in this code to reference the old website (the one made with shitgpt). This website will feature all of my social media accounts (unless they are deleted or 
+    if i just don't feel like listing them all), My "art", My Music, About Me, and finally a Blog. This will be my own personal website that i will keep forever as long as i make my payments, though i will
+    keep those savings somewhere safe to keep this website up.
+</p>
 
-<!-- GIF -->
+<h1>
+    Soooooo, why did you name your "company" XYZ?
+</h1>
 
-<img
-id="loader"
-src="images/loading.gif"
-alt="loading">
+<p>
+    The answer for this is very simple its because when i had the old website html still up, i had a very ominous title for the website simply named 
+    "XYZ". I liked how ominous it felt especially with the sound i grabbed off of a stock website and it really just fit how unsettling the title sounded when it popped up and glowed,
+    i LOVED that dynamic, so now if i make a certain program or if in the near future i make a game, it will be made by the creators or developers of "XYZ", featuring that cool white glow.
+    I know it sounds stupid and makes me look like those shitty deviantart logo kids that draw the emergency alert system farting for some reason but i personally think that XYZ is just a cool
+    codename for a project like this, and if you disagree, thats okay. People have opinions but criticism is the best way to improve overtime.
 
-<!-- AUDIO -->
-
-<audio
-id="titleSound"
-src="audio/title.mp3"></audio>
-
-<audio
-id="warningSound"
-src="audio/hum.mp3"
-loop></audio>
+</p>
+<p>
+For anymore questions or if you just wanna say hi or something contact me via Discord at alexanchronicals. This is the best way to contact me as i barely JUST BARELY check my emails regularly.
+I have little time on my hands especially when living with parents, so time to create these certain projects are pretty slim (if thats the right word for it).
+</p>
 
 <script>
+    function playSound() {
+        const sound =
+        document.getElementById("clickSound");
 
-const entryScreen =
-document.getElementById(
-"entryScreen"
-);
+        sound.currentTime = 0;
+        sound.play();
+    }
 
-const enterButton =
-document.getElementById(
-"enterButton"
-);
+    document.getElementById('mystery-btn').addEventListener('click', function(event) {
+        event.preventDefault();
 
-const title =
-document.getElementById(
-"title"
-);
+        const audio = document.getElementById('overworldly');
+        if (audio) {
+            audio.play().catch(err => console.log("Audio play blocked:", err))
+        }
 
-const warningBox =
-document.getElementById(
-"warningBox"
-);
+        document.body.innerHTML = '';
+        document.body.style.backgroundColor = 'black';
 
-const proceed =
-document.getElementById(
-"proceed"
-);
-
-const loader =
-document.getElementById(
-"loader"
-);
-
-const titleSound =
-document.getElementById(
-"titleSound"
-);
-
-const warningSound =
-document.getElementById(
-"warningSound"
-);
-
-/* =========================
-   START SEQUENCE
-========================= */
-
-enterButton.onclick = ()=>{
-
-entryScreen.style.display =
-"none";
-
-title.style.opacity =
-"1";
-
-title.style.animation =
-"titleBurst 1.2s forwards";
-
-titleSound.play()
-.catch(()=>{});
-
-/* screen shake */
-
-document.body.style.animation =
-"shake .08s 12";
-
-setTimeout(()=>{
-
-title.style.animation =
-"titleMove 1.5s forwards";
-
-},1500);
-
-/* warning */
-
-setTimeout(()=>{
-
-warningBox.style.opacity =
-"1";
-
-warningBox.style.animation =
-"warningShake .08s 12";
-
-warningSound.play()
-.catch(()=>{});
-
-loader.style.opacity =
-"1";
-
-},3200);
-
-};
-
-/* =========================
-   PROCEED
-========================= */
-
-proceed.onclick = ()=>{
-
-title.classList.add(
-"flash"
-);
-
-warningBox.classList.add(
-"flash"
-);
-
-setTimeout(()=>{
-
-window.location.href =
-"website.html";
-
-},1000);
-
-};
-
+        if (audio) {
+        document.body.appendChild(audio);
+        }
+    });
 </script>
+
+</main>
+
+<hr>
+
+
+</div>
 
 </body>
 </html>
