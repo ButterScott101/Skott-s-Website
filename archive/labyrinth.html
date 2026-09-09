@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,13 +209,14 @@ const hunterMusic =
     disstressing.mp3.
 */
 
-/*
-    One song is used for every hunter level (4-9).
-
-    Put this file in:
-
-    audio/disstressing.mp3
-*/
+const hunterSongs = {
+    4: "audio/hunter4.mp3",
+    5: "audio/hunter5.mp3",
+    6: "audio/hunter6.mp3",
+    7: "audio/hunter7.mp3",
+    8: "audio/hunter8.mp3",
+    9: "audio/hunter9.mp3"
+};
 
 
 /* =========================================================
@@ -381,7 +382,7 @@ const levels = [
 "# #### # ###### #  #",
 "#    # #      # #  #",
 "#### # ###### # #  #",
-"#       #        >#",
+"#       #      # >#",
 "####################"
 ],
 
@@ -1094,20 +1095,46 @@ function stopHunterTimer() {
 
 function playHunterMusic() {
 
-    /*
-        The hunter uses ONE song for levels 4-9.
-
-        Do not reset currentTime when changing levels.
-        This lets the song continue seamlessly from
-        one hunter level into the next.
-    */
-
-    if (hunterMusic.src.endsWith("disstressing.mp3") &&
-        !hunterMusic.paused) {
+    if (!hunterSongs[level]) {
         return;
     }
 
-    hunterMusic.src = "audio/disstressing.mp3";
+
+    /*
+        Stop previous music.
+    */
+
+    hunterMusic.pause();
+
+    hunterMusic.currentTime = 0;
+
+
+    /*
+        Set level-specific song.
+    */
+
+    hunterMusic.src =
+        hunterSongs[level];
+
+
+    hunterMusic.onerror =
+        function() {
+
+            /*
+                If hunter4.mp3 etc. doesn't exist,
+                use the original distressing song.
+            */
+
+            hunterMusic.onerror = null;
+
+            hunterMusic.src =
+                "audio/disstressing.mp3";
+
+            hunterMusic.play()
+                .catch(() => {});
+
+        };
+
 
     hunterMusic.play()
         .catch(() => {});
@@ -1129,11 +1156,9 @@ function nextLevel() {
 
     hunterActive = false;
 
+    hunterMusic.pause();
 
-    /*
-        Do NOT stop or reset the hunter music here.
-        It continues playing through levels 4-9.
-    */
+    hunterMusic.currentTime = 0;
 
 
     /*
@@ -1210,7 +1235,6 @@ function winGame() {
     stopHunterTimer();
 
     hunterMusic.pause();
-    hunterMusic.currentTime = 0;
 
     ambience.pause();
 
@@ -1404,3 +1428,4 @@ drawMap();
 
 </body>
 </html>
+```
