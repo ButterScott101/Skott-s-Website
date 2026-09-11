@@ -78,6 +78,164 @@ body {
 }
 
 /* =========================
+   ALEXAN STORY SCENE
+========================= */
+
+#encounter.alexanScene {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 25px;
+    padding: 40px;
+    background: #000;
+}
+
+#encounter.alexanScene::before {
+    content: "@";
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    color: #00ff66;
+    font-size: 9rem;
+    text-shadow: 0 0 10px #00ff66, 0 0 30px #00ff66;
+}
+
+#encounter.alexanScene::after {
+    content: "X";
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    color: #00ff66;
+    font-size: 12rem;
+    text-shadow: 0 0 10px #00ff66, 0 0 30px #00ff66;
+}
+
+#encounter.alexanScene #creepyText {
+    grid-column: 2;
+    grid-row: 2;
+    width: min(600px, 90%);
+    margin: 0 auto;
+    padding: 18px 24px;
+    border: 2px solid #00ff66;
+    background: #050505;
+    color: #00ff66;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    text-align: left;
+    opacity: 1;
+    position: relative;
+    box-shadow: 0 0 12px #00ff66;
+}
+
+#encounter.alexanScene #creepyText::before {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: 35px;
+    width: 20px;
+    height: 20px;
+    background: #050505;
+    border-left: 2px solid #00ff66;
+    border-top: 2px solid #00ff66;
+    transform: rotate(45deg);
+}
+
+#encounter.alexanScene .speaker {
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+}
+
+#encounter.alexanScene .dialogue {
+    line-height: 1.5;
+}
+
+#encounter.alexanScene #creepyText::after {
+    content: "SPACE / ENTER";
+    display: block;
+    margin-top: 14px;
+    font-size: .7rem;
+    opacity: .5;
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+    #encounter.alexanScene {
+        padding: 20px;
+    }
+
+    #encounter.alexanScene::before {
+        font-size: 5rem;
+    }
+
+    #encounter.alexanScene::after {
+        font-size: 7rem;
+    }
+
+    #encounter.alexanScene #creepyText {
+        font-size: .9rem;
+    }
+}
+
+/* =========================
+   ALEXAN GUN SCENE
+========================= */
+#encounter.gunScene {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 25px;
+    padding: 40px;
+    background: #000;
+}
+#encounter.gunScene::before {
+    content: "@";
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    color: #00ff66;
+    font-size: 9rem;
+    text-shadow: 0 0 10px #00ff66, 0 0 30px #00ff66;
+}
+#encounter.gunScene::after {
+    content: "X";
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    color: #00ff66;
+    font-size: 12rem;
+    text-shadow: 0 0 10px #00ff66, 0 0 30px #00ff66;
+}
+#encounter.gunScene #creepyText {
+    grid-column: 2;
+    grid-row: 2;
+    width: min(600px, 90%);
+    margin: 0 auto;
+    padding: 18px 24px;
+    border: 2px solid #00ff66;
+    background: #050505;
+    color: #00ff66;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    text-align: left;
+    opacity: 1;
+    position: relative;
+    box-shadow: 0 0 12px #00ff66;
+}
+#encounter.gunScene #creepyText::after {
+    content: "SPACE / ENTER";
+    display: block;
+    margin-top: 14px;
+    font-size: .7rem;
+    opacity: .5;
+    text-align: right;
+}
+
+/* =========================
    ENCOUNTER
 ========================= */
 
@@ -135,6 +293,32 @@ body {
     transition: opacity 0.25s;
 }
 
+
+/* =========================
+   MUSIC LIST
+========================= */
+#musicList {
+    position: fixed;
+    left: 14px;
+    bottom: 14px;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.45;
+    text-shadow: none;
+    pointer-events: none;
+    text-align: left;
+    z-index: 20;
+}
+#musicList .activeSong { color: #aaa; }
+
+.boss {
+    color: red !important;
+    font-size: 2.8em;
+    font-weight: bold;
+    cursor: crosshair;
+    text-shadow: 0 0 5px red, 0 0 15px red, 0 0 30px red;
+}
+
 </style>
 </head>
 
@@ -143,7 +327,7 @@ body {
 <pre id="screen"></pre>
 
 <div id="message">
-    WASD / ARROW KEYS TO MOVE
+    WASD / ARROW KEYS TO MOVE — SHIFT + DIRECTION = SLIDE
 </div>
 
 <div id="encounter">
@@ -151,6 +335,7 @@ body {
 </div>
 
 <div id="levelFlash"></div>
+<div id="musicList"></div>
 
 
 <!-- =========================
@@ -169,6 +354,7 @@ body {
 
 <audio
     id="hunterMusic"
+    preload="auto"
     loop>
 </audio>
 
@@ -230,7 +416,7 @@ const hunterMusic =
 
 ========================================================= */
 
-const levels = [
+const baseLevels = [
 
 /* =========================
    LEVEL 1
@@ -397,6 +583,269 @@ const levels = [
 "####################"
 ]
 
+,
+/* =========================
+   LEVEL 11
+========================= */
+[
+"####################",
+"#@     #           #",
+"#####  #  #######  #",
+"#      #        #  #",
+"# ############ #  #",
+"#              #  #",
+"#  ########### #  #",
+"#            #  >#",
+"####################"
+],
+
+/* LEVEL 12 */
+[
+"####################",
+"#@        #        #",
+"# ####### # ###### #",
+"#       # #      # #",
+"##### # # ###### # #",
+"#     # #        # #",
+"# ### # ########## #",
+"#   #             >#",
+"####################"
+],
+
+/* LEVEL 13 */
+[
+"####################",
+"#@     #           #",
+"# ###  # ######### #",
+"#   #  #         # #",
+"### #  ####### # # #",
+"#   #          # # #",
+"#  ########### # # #",
+"#             #  >#",
+"####################"
+],
+
+/* LEVEL 14 */
+[
+"####################",
+"#@        #        #",
+"#  ###### # ###### #",
+"#  #      #      # #",
+"#  # ############ #",
+"#  #             # #",
+"#  ########### # # #",
+"#            #  > #",
+"####################"
+],
+
+/* LEVEL 15 */
+[
+"####################",
+"#@ #                #",
+"#  # ############## #",
+"#  #              # #",
+"#  ############## # #",
+"#                # #",
+"# ############## # #",
+"#               >  #",
+"####################"
+],
+
+/* LEVEL 16 */
+[
+"####################",
+"#@       #         #",
+"###### # # ####### #",
+"#      # #       # #",
+"# ###### ####### # #",
+"#                # #",
+"# ############## # #",
+"#               > #",
+"####################"
+],
+
+/* LEVEL 17 */
+[
+"####################",
+"#@     #           #",
+"# ###  # ######### #",
+"#   #  #         # #",
+"### #  ####### # # #",
+"#   #          # # #",
+"#  ########### # # #",
+"#             #  >#",
+"####################"
+],
+
+/* LEVEL 18 */
+[
+"####################",
+"#@        #        #",
+"# ####### # ###### #",
+"#       # #      # #",
+"# ##### # ###### # #",
+"#     # #        # #",
+"##### # ########## #",
+"#     #           >#",
+"####################"
+],
+
+/* LEVEL 19 */
+[
+"####################",
+"#@   #             #",
+"# ## # ############ #",
+"#    #            # #",
+"###### ########## # #",
+"#                 # #",
+"# ############### # #",
+"#                > #",
+"####################"
+],
+
+/* LEVEL 20 */
+[
+"####################",
+"#@       #         #",
+"# ###### # ####### #",
+"#      # #       # #",
+"###### # ####### # #",
+"#      #       # # #",
+"# ############ # # #",
+"#              # >#",
+"####################"
+],
+
+/* LEVEL 21 */
+[
+"####################",
+"#@     #           #",
+"# ###  # ######### #",
+"#   #  #         # #",
+"### #  ####### # # #",
+"#   #          # # #",
+"# ############## # #",
+"#               ># #",
+"####################"
+],
+
+/* LEVEL 22 */
+[
+"####################",
+"#@        #        #",
+"#  ###### # ###### #",
+"#  #      #      # #",
+"#  # ############ # #",
+"#  #             # #",
+"#  ########### # # #",
+"#            #  > #",
+"####################"
+],
+
+/* LEVEL 23 */
+[
+"####################",
+"#@   #             #",
+"# #  # ########### #",
+"# #  #           # #",
+"# ####### ####### # #",
+"#       #         # #",
+"# ##### ########### #",
+"#     #            >#",
+"####################"
+],
+
+/* LEVEL 24 */
+[
+"####################",
+"#@      #          #",
+"##### # # ######## #",
+"#     # #        # #",
+"# ##### ######## # #",
+"#                # #",
+"# ############## # #",
+"#               >  #",
+"####################"
+],
+
+/* LEVEL 25 */
+[
+"####################",
+"#@        #        #",
+"# ####### # ###### #",
+"#       # #      # #",
+"##### # # ###### # #",
+"#     # #        # #",
+"# ### # ########## #",
+"#   #             >#",
+"####################"
+],
+
+/* LEVEL 26 */
+[
+"####################",
+"#@     #           #",
+"# ###  # ######### #",
+"#   #  #         # #",
+"### #  ####### # # #",
+"#   #          # # #",
+"#  ########### # # #",
+"#             #  >#",
+"####################"
+],
+
+/* LEVEL 27 */
+[
+"####################",
+"#@       #         #",
+"# ###### # ####### #",
+"#      # #       # #",
+"# #### # ####### # #",
+"#    # #       # #",
+"#### # ########## #",
+"#    #           >#",
+"####################"
+],
+
+/* LEVEL 28 */
+[
+"####################",
+"#@   #             #",
+"# ## # #############",
+"#    #             #",
+"###### ##########  #",
+"#                # #",
+"# ############## # #",
+"#               > #",
+"####################"
+],
+
+/* LEVEL 29 */
+[
+"####################",
+"#@        #        #",
+"# ####### # ###### #",
+"#       # #      # #",
+"####### # ###### # #",
+"#       #        # #",
+"# ############## # #",
+"#               > #",
+"####################"
+],
+
+/* LEVEL 30 */
+[
+"####################",
+"#@       #         #",
+"# ###### # ####### #",
+"#      # #       # #",
+"# #### # ####### # #",
+"#    # #       # #",
+"#### # ########## #",
+"#    #           >#",
+"####################"
+]
+
 ];
 
 
@@ -405,998 +854,987 @@ const levels = [
 ========================================================= */
 
 let level = 1;
-
 let playerX = 1;
 let playerY = 1;
+let gameOver = false;
 
-let hunterX = -1;
-let hunterY = -1;
+let lives = 3;
+let invulnerableUntil = 0;
 
-let hunterActive = false;
-
+let hunters = [];
 let hunterTimer = null;
 
-let gameOver = false;
+let bossActive = false;
+let bossX = -1;
+let bossY = -1;
+let bossTimer = null;
+let bossHits = 0;
+const BOSS_HITS_NEEDED = 12;
+
+let gunObtained = false;
+
+const screen = document.getElementById("screen");
+const message = document.getElementById("message");
 
 
 /*
-    Hunter speed.
-
-    Lower number = faster.
-
-    Level 4 starts fairly fast.
-    Each level becomes faster.
+   Music files expected in audio/:
+   alexan-theme.mp3   -> Alexan's theme after Level 10
+   descent-11-20.mp3  -> Levels 11-20
+   descent-20-29.mp3  -> Levels 20-29
+   boss.mp3           -> Level 30
 */
-
-const hunterSpeeds = {
-    4: 420,
-    5: 370,
-    6: 325,
-    7: 285,
-    8: 250,
-    9: 215
+const musicTracks = {
+    hunter: "audio/disstressing.mp3",
+    alexan: "audio/alexan-theme.mp3",
+    level11: "audio/4000hz.mp3",
+    level20: "audio/tt8chip.mp3",
+    boss: "audio/boss.mp3"
 };
+
+const musicNames = {
+    hunter: "8000hz beepbox ver",
+    alexan: "ALEXAN'S THEME",
+    level11: "8000hz — 11 / 20",
+    level20: "t&t>>8 chiptune ver — 20 / 29",
+    boss: "boss"
+};
+
+let currentMusicKey = null;
 
 
 /* =========================================================
-   CURRENT MAP
+   MAP GENERATOR
+
+   Levels 11-29 are intentionally much larger than 1-10.
+   Each level is 41 columns x 21 rows.  The generator creates
+   long corridors and extra walls while guaranteeing a route
+   from @ to >.
 ========================================================= */
 
-function getMap() {
-    return levels[level - 1];
+function makeLargeMaze(seed, difficulty) {
+    // Levels 11-30 use a LABYRINTH rather than a conventional maze:
+    // wide, readable corridors, lots of loops, and several ways around
+    // obstacles so two hunters can be juked instead of forcing a single path.
+    const width = 41;
+    const height = 21;
+    const grid = Array.from({length: height}, () => Array(width).fill(" "));
+
+    // Deterministic pseudo-random generator.
+    let state = (seed >>> 0) || 1;
+    function rand() {
+        state = (state * 1664525 + 1013904223) >>> 0;
+        return state / 4294967296;
+    }
+
+    // Outer walls.
+    for (let x=0; x<width; x++) {
+        grid[0][x] = "#";
+        grid[height-1][x] = "#";
+    }
+    for (let y=0; y<height; y++) {
+        grid[y][0] = "#";
+        grid[y][width-1] = "#";
+    }
+
+    // Long wall pieces make a winding labyrinth. Every piece deliberately
+    // has openings, so there are multiple routes around it.
+    const horizontalRows = [3, 7, 11, 15, 18];
+    const verticalCols = [8, 16, 25, 33];
+
+    for (let r=0; r<horizontalRows.length; r++) {
+        const y = horizontalRows[r];
+        const reverse = ((Math.floor(rand()*2) + r) & 1) === 1;
+        const startX = reverse ? 23 : 3;
+        const endX   = reverse ? 37 : 37;
+        const gapA = 5 + Math.floor(rand()*7);
+        const gapB = 20 + Math.floor(rand()*8);
+
+        for (let x=startX; x<=endX; x++) {
+            if (x===gapA || x===gapA+1 || x===gapB || x===gapB+1) continue;
+            // Leave the outer edge and spawn/exit areas comfortable.
+            if (x>1 && x<width-2) grid[y][x]="#";
+        }
+    }
+
+    for (let c=0; c<verticalCols.length; c++) {
+        const x = verticalCols[c];
+        const reverse = ((Math.floor(rand()*2) + c) & 1) === 1;
+        const startY = reverse ? 4 : 2;
+        const endY   = reverse ? 18 : 17;
+        const gapA = 5 + Math.floor(rand()*4);
+        const gapB = 12 + Math.floor(rand()*4);
+
+        for (let y=startY; y<=endY; y++) {
+            if (y===gapA || y===gapA+1 || y===gapB || y===gapB+1) continue;
+            if (y>1 && y<height-2) grid[y][x]="#";
+        }
+    }
+
+    // Add smaller staggered wall pieces as difficulty rises. They are only
+    // accepted if the whole walkable area remains connected, preventing
+    // impossible sections while preserving alternate escape routes.
+    function connected() {
+        const q=[{x:1,y:1}];
+        const seen=new Set(["1,1"]);
+        const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+        while(q.length){
+            const cur=q.shift();
+            for(const [dx,dy] of dirs){
+                const nx=cur.x+dx, ny=cur.y+dy;
+                if(nx<=0||ny<=0||nx>=width-1||ny>=height-1||grid[ny][nx]==="#") continue;
+                const k=`${nx},${ny}`;
+                if(!seen.has(k)){seen.add(k);q.push({x:nx,y:ny});}
+            }
+        }
+        let open=0;
+        for(let y=1;y<height-1;y++) for(let x=1;x<width-1;x++) if(grid[y][x]!=="#") open++;
+        return seen.size===open;
+    }
+
+    const extra = Math.min(12, 3 + Math.floor(difficulty*0.45));
+    for(let n=0; n<extra; n++) {
+        const horizontal = rand() < 0.55;
+        const len = 3 + Math.floor(rand()*4);
+        let x = 3 + Math.floor(rand()*(width-7));
+        let y = 2 + Math.floor(rand()*(height-5));
+        if(horizontal) {
+            for(let i=0;i<len && x+i<width-2;i++) {
+                if(grid[y][x+i]==="#") continue;
+                grid[y][x+i]="#";
+                if(!connected()) grid[y][x+i]=" ";
+            }
+        } else {
+            for(let i=0;i<len && y+i<height-2;i++) {
+                if(grid[y+i][x]==="#") continue;
+                grid[y+i][x]="#";
+                if(!connected()) grid[y+i][x]=" ";
+            }
+        }
+    }
+
+    // Keep the start and nearby area open so the player gets room to react.
+    for(let y=1;y<=3;y++) for(let x=1;x<=5;x++) grid[y][x]=" ";
+
+    // Find a distant exit. Because the labyrinth is connected, this always
+    // gives the player a real route to the finish.
+    const q=[{x:1,y:1}];
+    const dist=new Map([["1,1",0]]);
+    const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+    let far={x:1,y:1,d:0};
+    while(q.length){
+        const cur=q.shift();
+        const cd=dist.get(`${cur.x},${cur.y}`);
+        if(cd>far.d) far={x:cur.x,y:cur.y,d:cd};
+        for(const [dx,dy] of dirs){
+            const nx=cur.x+dx, ny=cur.y+dy;
+            if(nx<=0||ny<=0||nx>=width-1||ny>=height-1||grid[ny][nx]==="#") continue;
+            const k=`${nx},${ny}`;
+            if(!dist.has(k)){dist.set(k,cd+1);q.push({x:nx,y:ny});}
+        }
+    }
+
+    grid[1][1]="@";
+    grid[far.y][far.x]=">";
+    return grid.map(row=>row.join(""));
 }
 
+const levels = [
+    [
+        "####################",
+        "#@       #         #",
+        "######   #   ####  #",
+        "#        #      #  #",
+        "#  ####### ### #  #",
+        "#             #   #",
+        "#  ####  # ## ### #",
+        "#       #       #>#",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@     #           #",
+        "#####  #  ######## #",
+        "#      #        #  #",
+        "#  ###########  #  #",
+        "#              #   #",
+        "#  ############### #",
+        "#                 >#",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@        #        #",
+        "#  ###### # ###### #",
+        "#  #      #      # #",
+        "#  # ########### # #",
+        "#  #             # #",
+        "#  ############### #",
+        "#                 >#",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@       #         #",
+        "######   #   ####  #",
+        "#        #      #  #",
+        "#  ####### ### #  #",
+        "#             #   #",
+        "#  ####  # ## ### #",
+        "#       #       #>#",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@   #             #",
+        "# ## #  ########## #",
+        "#    #             #",
+        "#### ########### # #",
+        "#                # #",
+        "# ############## # #",
+        "#               ># #",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@                 #",
+        "# ###### # ######  #",
+        "#      # #      #  #",
+        "###### # ###### #  #",
+        "#      #      # #  #",
+        "#  ########## # #  #",
+        "#             # >  #",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@      #          #",
+        "#  #### # ######## #",
+        "#     # #          #",
+        "##### # ########## #",
+        "#     #            #",
+        "# ########### #### #",
+        "#                >#",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@    #            #",
+        "# ### # ########## #",
+        "#   # #            #",
+        "### # ###########  #",
+        "#   #             #",
+        "# ####### ##########",
+        "#               > #",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@       #         #",
+        "# ###### # ######  #",
+        "#      # #      #  #",
+        "# #### # ###### #  #",
+        "#    # #      # #  #",
+        "#### # ###### # #  #",
+        "#       #        >#",
+        "####################"
+    ],
+    [
+        "####################",
+        "#@                >#",
+        "####################"
+    ]
+];
+
+for (let i=11; i<=29; i++) {
+    levels.push(makeLargeMaze(i * 9283, i - 10));
+}
+
+// Level 30: large final arena.
+levels.push(makeLargeMaze(30030, 22));
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+function musicLabel(key) {
+    let list = document.getElementById("musicList");
+    if (!list) return;
+    list.innerHTML = "";
+
+    const order = ["hunter", "alexan", "level11", "level20", "boss"];
+    for (const k of order) {
+        const visible = (k === "hunter" && level >= 4 && level <= 10) ||
+                        (k === "alexan" && level === 10) ||
+                        (k === "level11" && level >= 11 && level <= 19) ||
+                        (k === "level20" && level >= 20 && level <= 29) ||
+                        (k === "boss" && level === 30);
+        if (!visible) continue;
+        const div = document.createElement("div");
+        div.textContent = (k === currentMusicKey ? "♪ " : "  ") + musicNames[k];
+        div.className = k === currentMusicKey ? "activeSong" : "";
+        list.appendChild(div);
+    }
+}
+
+let audioUnlocked = false;
+
+function unlockAudio() {
+    // IMPORTANT: only unlock audio once.
+    // Re-loading the music on every key press was causing the current song
+    // to restart repeatedly while the player moved.
+    if (!audioUnlocked) {
+        audioUnlocked = true;
+
+        // Start the already-selected track without replacing/reloading it.
+        if (currentMusicKey && hunterMusic.paused) {
+            hunterMusic.play().catch(()=>{});
+        }
+
+        ambience.play().catch(()=>{});
+        return;
+    }
+
+    // Once audio is unlocked, a key press should NEVER reload or restart
+    // the current music. Only resume it if the browser paused it.
+    if (currentMusicKey && hunterMusic.paused) {
+        hunterMusic.play().catch(()=>{});
+    }
+    if (ambience.paused) {
+        ambience.play().catch(()=>{});
+    }
+}
+
+function playTrack(key) {
+    if (!musicTracks[key]) return;
+
+    // Same track = keep it playing continuously.
+    // This is what makes one song span all levels in its section.
+    if (currentMusicKey === key) {
+        musicLabel(key);
+        if (audioUnlocked && hunterMusic.paused) {
+            hunterMusic.play().catch(()=>{});
+        }
+        return;
+    }
+
+    // A genuinely new track starts from the beginning.
+    hunterMusic.pause();
+    hunterMusic.currentTime = 0;
+    hunterMusic.src = musicTracks[key];
+    hunterMusic.preload = "auto";
+    hunterMusic.loop = true;
+    currentMusicKey = key;
+    musicLabel(key);
+
+    // If the player has already interacted with the page, start immediately.
+    if (audioUnlocked) hunterMusic.play().catch(()=>{});
+}
+
+function stopTrack() {
+    hunterMusic.pause();
+    hunterMusic.currentTime = 0;
+    currentMusicKey = null;
+    musicLabel(null);
+}
+
+function updateMusicForLevel() {
+    if (level >= 4 && level <= 10) playTrack("hunter");
+    else if (level === 10) playTrack("alexan");
+    else if (level >= 11 && level <= 19) playTrack("level11");
+    else if (level >= 20 && level <= 29) playTrack("level20");
+    else if (level === 30) playTrack("boss");
+    else if (level < 4) stopTrack();
+}
 
 /* =========================================================
    DRAW MAP
 ========================================================= */
 
-const screen =
-    document.getElementById("screen");
-
-
 function drawMap() {
-
     const map = getMap();
-
-    let output = "";
-
-    for (let y = 0; y < map.length; y++) {
-
-        for (let x = 0; x < map[y].length; x++) {
-
-            /*
-                Player
-            */
-
-            if (
-                x === playerX &&
-                y === playerY
-            ) {
-
-                output += "@";
-
-            }
-
-            /*
-                Hunter
-            */
-
-            else if (
-                hunterActive &&
-                x === hunterX &&
-                y === hunterY
-            ) {
-
-                output += "X";
-
-            }
-
-            else {
-
-                output += map[y][x];
-
-            }
-
-        }
-
-        output += "\n";
-    }
-
-    screen.textContent = output;
-
-    /*
-        Make the X red after drawing.
-        Because <pre> text is normally one text node,
-        we replace the X visually using HTML.
-    */
-
     let html = "";
 
-    for (let y = 0; y < map.length; y++) {
-
-        for (let x = 0; x < map[y].length; x++) {
-
-            if (
-                x === playerX &&
-                y === playerY
-            ) {
-
+    for (let y=0; y<map.length; y++) {
+        for (let x=0; x<map[y].length; x++) {
+            if (x === playerX && y === playerY) {
                 html += "@";
-
+            } else if (bossActive && x === bossX && y === bossY) {
+                html += '<span class="boss">X</span>';
+            } else {
+                const h = hunters.findIndex(h => h.active && h.x === x && h.y === y);
+                if (h >= 0) html += '<span class="hunter">X</span>';
+                else html += map[y][x]
+                    .replace(/&/g,"&amp;")
+                    .replace(/</g,"&lt;")
+                    .replace(/>/g,"&gt;");
             }
-
-            else if (
-                hunterActive &&
-                x === hunterX &&
-                y === hunterY
-            ) {
-
-                html += '<span class="hunter">X</span>';
-
-            }
-
-            else {
-
-                html += map[y][x]
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;");
-
-            }
-
         }
-
         html += "\n";
     }
-
     screen.innerHTML = html;
+
+    const iframes = Date.now() < invulnerableUntil ? "   [INVINCIBLE]" : "";
+    message.textContent = `LEVEL ${level}   ♥ ${lives}/3${gunObtained ? "   [GUN]" : ""}${iframes}`;
 }
 
-
-/* =========================================================
-   PLAYER MOVEMENT
-========================================================= */
-
-document.addEventListener("keydown", function(e) {
-
-    /*
-        IMPORTANT:
-
-        Only these eight movement keys are accepted.
-
-        This fixes the Caps Lock / Tab bug.
-    */
-
-    const key = e.key.toLowerCase();
-
-    const movementKeys = [
-        "w",
-        "a",
-        "s",
-        "d",
-        "arrowup",
-        "arrowdown",
-        "arrowleft",
-        "arrowright"
-    ];
-
-    if (!movementKeys.includes(key)) {
-        return;
-    }
-
-    /*
-        Prevent browser scrolling with arrow keys.
-    */
-
-    e.preventDefault();
-
-    if (gameOver) {
-        return;
-    }
-
-    let dx = 0;
-    let dy = 0;
-
-    if (
-        key === "w" ||
-        key === "arrowup"
-    ) {
-        dy = -1;
-    }
-
-    if (
-        key === "s" ||
-        key === "arrowdown"
-    ) {
-        dy = 1;
-    }
-
-    if (
-        key === "a" ||
-        key === "arrowleft"
-    ) {
-        dx = -1;
-    }
-
-    if (
-        key === "d" ||
-        key === "arrowright"
-    ) {
-        dx = 1;
-    }
-
-
-    const map = getMap();
-
-    const newX = playerX + dx;
-    const newY = playerY + dy;
-
-    const tile =
-        map[newY]?.[newX];
-
-
-    /*
-        Do not walk into walls.
-    */
-
-    if (tile === "#" || tile === undefined) {
-        return;
-    }
-
-
-    /*
-        Play walking sound.
-    */
-
-    walkSound.currentTime = 0;
-
-    walkSound.play().catch(() => {});
-
-
-    playerX = newX;
-    playerY = newY;
-
-
-    /*
-        Check if the player reached the exit.
-    */
-
-    if (tile === ">") {
-
-        nextLevel();
-
-        return;
-    }
-
-
-    /*
-        Check hunter collision.
-    */
-
-    if (
-        hunterActive &&
-        playerX === hunterX &&
-        playerY === hunterY
-    ) {
-
-        startEncounter();
-
-        return;
-    }
-
-
-    drawMap();
-
-});
-
-
-/* =========================================================
-   HUNTER SPAWN
-========================================================= */
-
-function spawnHunter() {
-
-    hunterActive = true;
-
-    const map = getMap();
-
-
-    /*
-        The hunter deliberately starts outside
-        the visible maze.
-
-        This makes it appear to slide into the maze.
-    */
-
-    hunterX = map[0].length - 1;
-    hunterY = map.length - 2;
-
-
-    /*
-        Find a usable entrance.
-
-        If the starting position is a wall,
-        the hunter searches for the closest
-        walkable position along the outside.
-    */
-
-    const entrance =
-        findClosestWalkableTile(
-            hunterX,
-            hunterY
-        );
-
-
-    hunterX = entrance.x;
-    hunterY = entrance.y;
-
-
-    drawMap();
-
-
-    /*
-        Start hunter movement.
-    */
-
-    startHunterTimer();
-
+function getMap() {
+    return levels[level - 1];
 }
 
-
-/* =========================================================
-   FIND CLOSEST WALKABLE TILE
-========================================================= */
-
-function findClosestWalkableTile(startX, startY) {
-
-    const map = getMap();
-
-    const queue = [
-        {
-            x: startX,
-            y: startY
-        }
-    ];
-
-    const visited = new Set();
-
-    while (queue.length > 0) {
-
-        const current =
-            queue.shift();
-
-        const key =
-            current.x + "," + current.y;
-
-        if (visited.has(key)) {
-            continue;
-        }
-
-        visited.add(key);
-
-
-        const tile =
-            map[current.y]?.[current.x];
-
-
-        if (
-            tile !== "#" &&
-            tile !== undefined
-        ) {
-
-            return current;
-        }
-
-
-        const directions = [
-            {x: 1, y: 0},
-            {x: -1, y: 0},
-            {x: 0, y: 1},
-            {x: 0, y: -1}
-        ];
-
-
-        for (const dir of directions) {
-
-            const nx =
-                current.x + dir.x;
-
-            const ny =
-                current.y + dir.y;
-
-            if (
-                nx >= 0 &&
-                nx < map[0].length &&
-                ny >= 0 &&
-                ny < map.length
-            ) {
-
-                queue.push({
-                    x: nx,
-                    y: ny
-                });
-
-            }
-
-        }
-
-    }
-
-
-    return {
-        x: 1,
-        y: 1
-    };
-
+function isWalkable(x,y) {
+    const map=getMap();
+    const tile=map[y]?.[x];
+    return tile !== undefined && tile !== "#";
 }
 
-
 /* =========================================================
-   HUNTER PATHFINDING
-=========================================================
-
-   The hunter does NOT simply teleport toward
-   the player.
-
-   It calculates an actual path through the maze.
-
+   LIVES / COLLISION
 ========================================================= */
 
-function findHunterPath() {
-
-    const map = getMap();
-
-    const queue = [
-        {
-            x: hunterX,
-            y: hunterY
-        }
-    ];
-
-    const visited = new Set();
-
-    const previous = new Map();
-
-
-    const startKey =
-        hunterX + "," + hunterY;
-
-    visited.add(startKey);
-
-
-    while (queue.length > 0) {
-
-        const current =
-            queue.shift();
-
-
-        /*
-            Player found.
-        */
-
-        if (
-            current.x === playerX &&
-            current.y === playerY
-        ) {
-
-            break;
-        }
-
-
-        const directions = [
-            {x: 1, y: 0},
-            {x: -1, y: 0},
-            {x: 0, y: 1},
-            {x: 0, y: -1}
-        ];
-
-
-        for (const dir of directions) {
-
-            const nx =
-                current.x + dir.x;
-
-            const ny =
-                current.y + dir.y;
-
-
-            /*
-                Only move through floor tiles.
-            */
-
-            if (
-                ny < 0 ||
-                ny >= map.length ||
-                nx < 0 ||
-                nx >= map[ny].length
-            ) {
-                continue;
-            }
-
-
-            const tile =
-                map[ny][nx];
-
-
-            if (tile === "#") {
-                continue;
-            }
-
-
-            const key =
-                nx + "," + ny;
-
-
-            if (visited.has(key)) {
-                continue;
-            }
-
-
-            visited.add(key);
-
-            previous.set(
-                key,
-                current.x + "," + current.y
-            );
-
-
-            queue.push({
-                x: nx,
-                y: ny
-            });
-
-        }
-
-    }
-
-
-    /*
-        Reconstruct path.
-    */
-
-    const playerKey =
-        playerX + "," + playerY;
-
-
-    if (!visited.has(playerKey)) {
-
-        return [];
-
-    }
-
-
-    const path = [];
-
-    let currentKey = playerKey;
-
-
-    while (
-        currentKey !== startKey
-    ) {
-
-        const [x, y] =
-            currentKey.split(",").map(Number);
-
-        path.unshift({
-            x: x,
-            y: y
-        });
-
-        currentKey =
-            previous.get(currentKey);
-
-        if (!currentKey) {
-            break;
-        }
-
-    }
-
-
-    return path;
-
-}
-
-
-/* =========================================================
-   MOVE HUNTER
-========================================================= */
-
-function moveHunter() {
-
-    if (
-        !hunterActive ||
-        gameOver
-    ) {
-        return;
-    }
-
-
-    const path =
-        findHunterPath();
-
-
-    /*
-        If the hunter has a route,
-        move exactly one tile along it.
-    */
-
-    if (path.length > 0) {
-
-        hunterX = path[0].x;
-        hunterY = path[0].y;
-
-    }
-
-
-    /*
-        Collision.
-    */
-
-    if (
-        hunterX === playerX &&
-        hunterY === playerY
-    ) {
-
-        startEncounter();
-
-        return;
-    }
-
-
-    drawMap();
-
-}
-
-
-/* =========================================================
-   HUNTER TIMER
-========================================================= */
-
-function startHunterTimer() {
+function loseLife() {
+    if (Date.now() < invulnerableUntil || gameOver) return;
+
+    lives--;
+    invulnerableUntil = Date.now() + 2200;
 
     stopHunterTimer();
+    stopBossTimer();
 
-
-    const speed =
-        hunterSpeeds[level] || 300;
-
-
-    hunterTimer =
-        setInterval(
-            moveHunter,
-            speed
-        );
-
-}
-
-
-/* =========================================================
-   STOP HUNTER
-========================================================= */
-
-function stopHunterTimer() {
-
-    if (hunterTimer !== null) {
-
-        clearInterval(hunterTimer);
-
-        hunterTimer = null;
-
-    }
-
-}
-
-
-/* =========================================================
-   PLAY HUNTER MUSIC
-========================================================= */
-
-function playHunterMusic() {
-
-    /*
-        The hunter uses ONE song for levels 4-9.
-
-        Do not reset currentTime when changing levels.
-        This lets the song continue seamlessly from
-        one hunter level into the next.
-    */
-
-    if (hunterMusic.src.endsWith("disstressing.mp3") &&
-        !hunterMusic.paused) {
+    if (lives <= 0) {
+        startEncounter("THE MAZE GOT YOU.\nNO LIVES REMAIN.");
         return;
     }
 
-    hunterMusic.src = "audio/disstressing.mp3";
+    playerX = 1;
+    playerY = 1;
+    message.textContent = `LIFE LOST — ${lives} REMAINING — INVINCIBLE`;
+    drawMap();
 
-    hunterMusic.play()
-        .catch(() => {});
-
+    // Give the player time to get away before enemies begin moving again.
+    setTimeout(() => {
+        if (gameOver) return;
+        if (level >= 4 && level <= 29) spawnHunters();
+        if (level === 30 && bossActive) startBossTimer();
+        drawMap();
+    }, 2200);
 }
 
+function checkEnemyCollision() {
+    if (Date.now() < invulnerableUntil) return false;
+    if (bossActive && playerX === bossX && playerY === bossY) {
+        loseLife();
+        return true;
+    }
+    if (hunters.some(h => h.active && h.x === playerX && h.y === playerY)) {
+        loseLife();
+        return true;
+    }
+    return false;
+}
+
+/* =========================================================
+   PLAYER MOVEMENT + SHIFT DASH
+
+   Shift + a direction performs a 3-tile slide immediately.
+   There is no one-second charge or delay.
+========================================================= */
+
+function movePlayer(dx,dy,sprint=false) {
+    if (gameOver) return;
+
+    const distance = sprint ? 3 : 1;
+    let moved = false;
+
+    for (let i=0; i<distance; i++) {
+        const nx=playerX+dx;
+        const ny=playerY+dy;
+        if (!isWalkable(nx,ny)) break;
+
+        playerX=nx;
+        playerY=ny;
+        moved=true;
+
+        if (walkSound) {
+            walkSound.currentTime=0;
+            walkSound.play().catch(()=>{});
+        }
+
+        if (getMap()[playerY][playerX] === ">") {
+            nextLevel();
+            return;
+        }
+
+        if (checkEnemyCollision()) return;
+    }
+
+    if (moved) drawMap();
+}
+
+document.addEventListener("keydown", e => {
+    unlockAudio();
+    const key=e.key.toLowerCase();
+    const allowed=["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"];
+    if (!allowed.includes(key)) return;
+    e.preventDefault();
+    if (gameOver) return;
+
+    let dx=0,dy=0;
+    if (key==="w"||key==="arrowup") dy=-1;
+    if (key==="s"||key==="arrowdown") dy=1;
+    if (key==="a"||key==="arrowleft") dx=-1;
+    if (key==="d"||key==="arrowright") dx=1;
+
+    movePlayer(dx,dy,e.shiftKey);
+    ambience.play().catch(()=>{});
+});
+
+/* =========================================================
+   HUNTERS — TWO AFTER ALEXAN
+========================================================= */
+
+function findOpenTiles() {
+    const map=getMap();
+    const result=[];
+    for(let y=1;y<map.length-1;y++) for(let x=1;x<map[y].length-1;x++) {
+        if(map[y][x]!=="#") result.push({x,y});
+    }
+    return result;
+}
+
+function farthestOpenTile(fromX,fromY, used=[]) {
+    const tiles=findOpenTiles();
+    const q=[{x:fromX,y:fromY}];
+    const dist=new Map([[`${fromX},${fromY}`,0]]);
+    const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+    while(q.length){
+        const cur=q.shift();
+        const cd=dist.get(`${cur.x},${cur.y}`);
+        for(const [dx,dy] of dirs){
+            const nx=cur.x+dx,ny=cur.y+dy;
+            if(!isWalkable(nx,ny)) continue;
+            const k=`${nx},${ny}`;
+            if(!dist.has(k)){dist.set(k,cd+1);q.push({x:nx,y:ny});}
+        }
+    }
+    let best=null,bestD=-1;
+    for(const t of tiles){
+        if(used.some(u=>u.x===t.x&&u.y===t.y)) continue;
+        const d=dist.get(`${t.x},${t.y}`);
+        if(d!==undefined && d>bestD){best=t;bestD=d;}
+    }
+    return best || {x:1,y:1};
+}
+
+function findExitTile() {
+    const map=getMap();
+    for(let y=0;y<map.length;y++) {
+        for(let x=0;x<map[y].length;x++) {
+            if(map[y][x] === ">") return {x,y};
+        }
+    }
+    return farthestOpenTile(1,1);
+}
+
+function findPathFromStartToExit() {
+    const exit=findExitTile();
+    const path=findPath(1,1,exit.x,exit.y);
+    // Include the exit itself at the end of the route.
+    return [{x:1,y:1}, ...path];
+}
+
+function spawnHunters() {
+    stopHunterTimer();
+    hunters=[];
+
+    if (level < 4 || level > 29 || level === 10) return;
+
+    if (level <= 9) {
+        // Levels 4–9 keep their original single-hunter behavior.
+        const first=farthestOpenTile(playerX,playerY);
+        hunters=[{x:first.x,y:first.y,active:true}];
+    } else {
+        // Levels 11–29: put both hunters at the ESCAPE ROUTE rather than
+        // beside the player's spawn. This gives the player a safe opening
+        // and lets the hunters create pressure around the final approach.
+        const route=findPathFromStartToExit();
+        const usable=route.filter(p => !(p.x===playerX && p.y===playerY));
+        const n=usable.length;
+
+        // One hunter starts on the exit, the other starts a few steps before
+        // it. They are separated enough that they do not instantly overlap.
+        const exitPos=usable[n-1] || findExitTile();
+        const secondPos=usable[Math.max(0,n-7)] || exitPos;
+
+        hunters=[
+            {x:exitPos.x,y:exitPos.y,active:true},
+            {x:secondPos.x,y:secondPos.y,active:true}
+        ];
+    }
+
+    updateMusicForLevel();
+    startHunterTimer();
+    drawMap();
+}
+
+function findPath(fromX,fromY,toX,toY) {
+    const map=getMap();
+    const q=[{x:fromX,y:fromY}];
+    const prev=new Map();
+    const seen=new Set([`${fromX},${fromY}`]);
+    const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+
+    while(q.length){
+        const cur=q.shift();
+        if(cur.x===toX&&cur.y===toY) break;
+        for(const [dx,dy] of dirs){
+            const nx=cur.x+dx,ny=cur.y+dy;
+            if(!isWalkable(nx,ny)) continue;
+            const k=`${nx},${ny}`;
+            if(seen.has(k)) continue;
+            seen.add(k); prev.set(k,`${cur.x},${cur.y}`); q.push({x:nx,y:ny});
+        }
+    }
+
+    const target=`${toX},${toY}`;
+    const start=`${fromX},${fromY}`;
+    if(!seen.has(target)) return [];
+    const path=[]; let cur=target;
+    while(cur!==start){
+        const [x,y]=cur.split(",").map(Number);
+        path.unshift({x,y});
+        cur=prev.get(cur);
+        if(!cur) break;
+    }
+    return path;
+}
+
+function hunterSpeed() {
+    // Hunters get faster throughout the descent.
+    if (level <= 10) return Math.max(220, 430 - (level-4)*30);
+    return Math.max(115, 460 - (level-11)*17);
+}
+
+function moveHunters() {
+    if(gameOver || level<4 || level>29 || Date.now() < invulnerableUntil) return;
+    for(const h of hunters) {
+        if(!h.active) continue;
+        const path=findPath(h.x,h.y,playerX,playerY);
+        if(path.length) { h.x=path[0].x; h.y=path[0].y; }
+    }
+    if(checkEnemyCollision()) return;
+    drawMap();
+}
+
+function startHunterTimer() {
+    stopHunterTimer();
+    hunterTimer=setInterval(moveHunters,hunterSpeed());
+}
+
+function stopHunterTimer() {
+    if(hunterTimer!==null){clearInterval(hunterTimer);hunterTimer=null;}
+}
+
+/* =========================================================
+   BOSS — LEVEL 30
+========================================================= */
+
+function startBoss() {
+    stopHunterTimer();
+    hunters=[];
+    bossActive=true;
+    bossHits=0;
+    playerX=1;
+    playerY=1;
+
+    const spot=farthestOpenTile(playerX,playerY);
+    bossX=spot.x;
+    bossY=spot.y;
+
+    playTrack("boss");
+    message.textContent=`LEVEL 30   ♥ ${lives}/3   [GUN]   X HITS: 0/${BOSS_HITS_NEEDED}`;
+    drawMap();
+    startBossTimer();
+}
+
+function startBossTimer() {
+    stopBossTimer();
+    if(!bossActive) return;
+    bossTimer=setInterval(moveBoss,900);
+}
+
+function stopBossTimer() {
+    if(bossTimer!==null){clearInterval(bossTimer);bossTimer=null;}
+}
+
+function moveBoss() {
+    if(!bossActive || gameOver || Date.now() < invulnerableUntil) return;
+    const path=findPath(bossX,bossY,playerX,playerY);
+    if(path.length>1) { bossX=path[0].x; bossY=path[0].y; }
+    else if(path.length===1) { bossX=path[0].x; bossY=path[0].y; }
+    if(checkEnemyCollision()) return;
+    drawMap();
+}
+
+screen.addEventListener("click", e => {
+    if(!bossActive || gameOver || !gunObtained) return;
+    if(!e.target.classList.contains("boss")) return;
+
+    bossHits++;
+    if(bossHits >= BOSS_HITS_NEEDED) {
+        defeatBoss();
+        return;
+    }
+
+    // The boss retreats one tile after being hit.
+    const path=findPath(bossX,bossY,playerX,playerY);
+    if(path.length>2){
+        const retreat=path[path.length-1];
+        bossX=retreat.x; bossY=retreat.y;
+    }
+    message.textContent=`LEVEL 30   ♥ ${lives}/3   [GUN]   X HITS: ${bossHits}/${BOSS_HITS_NEEDED}`;
+    drawMap();
+});
+
+function defeatBoss() {
+    bossActive=false;
+    stopBossTimer();
+    message.textContent="THE RED X IS DOWN — THE GATE IS OPEN";
+
+    const map=getMap();
+    // Open a gate at the lower-right edge and make it the exit.
+    const y=map.length-2;
+    const row=map[y].split("");
+    row[row.length-2]=">";
+    levels[29][y]=row.join("");
+    drawMap();
+}
 
 /* =========================================================
    NEXT LEVEL
 ========================================================= */
 
 function nextLevel() {
-
-    /*
-        Stop current hunter.
-    */
-
     stopHunterTimer();
+    stopBossTimer();
+    hunters=[];
+    bossActive=false;
 
-    hunterActive = false;
-
-
-    /*
-        Do NOT stop or reset the hunter music here.
-        It continues playing through levels 4-9.
-    */
-
-
-    /*
-        Level 10 exit = WIN.
-    */
-
-    if (level >= 10) {
-
-        winGame();
-
+    if(level===10){
+        startAlexanStory();
         return;
-
     }
 
+    if(level>=30){
+        // Level 30 is the final boss arena.
+        if(level===30 && !bossActive){
+            startBoss();
+        } else if(level>30){
+            winGame();
+        }
+        return;
+    }
 
     level++;
+    playerX=1;
+    playerY=1;
 
-
-    playerX = 1;
-    playerY = 1;
-
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        "LEVEL " + level;
-
-
-    /*
-        Small screen flash.
-    */
-
-    const flash =
-        document.getElementById(
-            "levelFlash"
-        );
-
-    flash.style.opacity = "1";
-
-
-    setTimeout(() => {
-
-        flash.style.opacity = "0";
-
-    }, 250);
-
-
-    /*
-        Hunter begins at Level 4.
-    */
-
-    if (level >= 4 && level <= 9) {
-
-        spawnHunter();
-
-        playHunterMusic();
-
-    }
-
-
-    drawMap();
-
-}
-
-
-/* =========================================================
-   WIN
-========================================================= */
-
-function winGame() {
-
-    gameOver = true;
-
-    stopHunterTimer();
-
-    hunterMusic.pause();
-    hunterMusic.currentTime = 0;
-
-    ambience.pause();
-
-
-    document.getElementById(
-        "message"
-    ).textContent =
-        "YOU ESCAPED";
-
-
-    const text =
-        document.getElementById(
-            "creepyText"
-        );
-
-
-    text.textContent =
-        "YOU ESCAPED";
-
-
-    text.style.opacity = "1";
-
-
-    document.getElementById(
-        "encounter"
-    ).style.display =
-        "flex";
-
-
-    setTimeout(() => {
-
-        window.location.href =
-            "index.html";
-
-    }, 3500);
-
-}
-
-
-/* =========================================================
-   ENCOUNTER
-========================================================= */
-
-const creepyLines = [
-
-    "пойманный"
-
-];
-
-
-function startEncounter() {
-
-    if (gameOver) {
+    if(level===30){
+        // The final level starts the slow-moving red X boss immediately.
+        startBoss();
         return;
     }
 
-    gameOver = true;
+    if(level===25){
+        startGunStory();
+        return;
+    }
 
+    const flash=document.getElementById("levelFlash");
+    flash.style.opacity="1";
+    setTimeout(()=>flash.style.opacity="0",250);
 
-    stopHunterTimer();
-
-    hunterMusic.pause();
-
-
-    /*
-        Turn the screen black.
-    */
-
-    const encounter =
-        document.getElementById(
-            "encounter"
-        );
-
-    encounter.style.display =
-        "flex";
-
-
-    /*
-        Turn off lights sound.
-    */
-
-    lightsOff.play()
-        .catch(() => {});
-
-
-    const text =
-        document.getElementById(
-            "creepyText"
-        );
-
-
-    text.textContent =
-        creepyLines[
-            Math.floor(
-                Math.random() *
-                creepyLines.length
-            )
-        ];
-
-
-    setTimeout(() => {
-
-        text.style.opacity = "1";
-
-    }, 300);
-
-
-    /*
-        Return to index.html.
-    */
-
-    setTimeout(() => {
-
-        window.location.href =
-            "index.html";
-
-    }, 6000);
-
+    if(level===10) stopTrack();
+    else if(level>=4 && level<=29) spawnHunters();
+    else updateMusicForLevel();
+    drawMap();
 }
 
+/* =========================================================
+   ALEXAN STORY
+========================================================= */
+
+const alexanStory=[
+    {speaker:"ALEXAN",text:"You made it."},
+    {speaker:"YOU",text:"Who are you?"},
+    {speaker:"ALEXAN",text:"My name is Alexan."},
+    {speaker:"YOU",text:"You're one of the hunters."},
+    {speaker:"ALEXAN",text:"I was."},
+    {speaker:"YOU",text:"What happened?"},
+    {speaker:"ALEXAN",text:"I reached the place you're trying to reach."},
+    {speaker:"YOU",text:"The bottom?"},
+    {speaker:"ALEXAN",text:"Yes."},
+    {speaker:"ALEXAN",text:"I thought the hunters were guarding it."},
+    {speaker:"ALEXAN",text:"I was wrong."},
+    {speaker:"YOU",text:"Then why were they chasing me?"},
+    {speaker:"ALEXAN",text:"Because that's what the maze makes us do."},
+    {speaker:"YOU",text:"Us?"},
+    {speaker:"ALEXAN",text:"Everyone who goes too far becomes part of it."},
+    {speaker:"ALEXAN",text:"I escaped before it could finish."},
+    {speaker:"YOU",text:"And now?"},
+    {speaker:"ALEXAN",text:"Now I'm trying to make sure you don't make the same mistake."},
+    {speaker:"YOU",text:"Can I leave?"},
+    {speaker:"ALEXAN",text:"Not yet."},
+    {speaker:"ALEXAN",text:"There are twenty more levels below us."},
+    {speaker:"YOU",text:"Twenty..."},
+    {speaker:"ALEXAN",text:"I'll show you the way. Follow me."}
+];
+let alexanStoryIndex=0;
+
+const gunStory=[
+    {speaker:"ALEXAN",text:"Level twenty-five. Stop."},
+    {speaker:"YOU",text:"Alexan?"},
+    {speaker:"ALEXAN",text:"The thing below is getting closer."},
+    {speaker:"YOU",text:"What thing?"},
+    {speaker:"ALEXAN",text:"You'll know it when you see it."},
+    {speaker:"ALEXAN",text:"Take this. It's the only way to hurt it."},
+    {speaker:"YOU",text:"A gun?"},
+    {speaker:"ALEXAN",text:"You get twelve chances to put it down."},
+    {speaker:"ALEXAN",text:"Don't waste them."}
+];
+let gunStoryIndex=0;
+
+function startGunStory(){
+    gameOver=true;
+    stopHunterTimer();
+    playTrack("alexan");
+    const encounter=document.getElementById("encounter");
+    encounter.classList.remove("alexanScene");
+    encounter.classList.add("gunScene");
+    encounter.style.display="grid";
+    gunStoryIndex=0;
+    showGunLine();
+}
+
+function showGunLine(){
+    const text=document.getElementById("creepyText");
+    if(gunStoryIndex>=gunStory.length){finishGunStory();return;}
+    const line=gunStory[gunStoryIndex];
+    text.style.opacity="0";
+    setTimeout(()=>{
+        text.innerHTML=`<div class="speaker">${line.speaker}</div><div class="dialogue">${line.text}</div>`;
+        text.style.opacity="1";
+    },180);
+}
+
+document.addEventListener("keydown",e=>{
+    const encounter=document.getElementById("encounter");
+    if(!gameOver || !encounter.classList.contains("gunScene")) return;
+    if(e.key===" "||e.key==="Enter") {
+        e.preventDefault();
+        gunStoryIndex++;
+        showGunLine();
+    }
+});
+
+function finishGunStory(){
+    const encounter=document.getElementById("encounter");
+    encounter.style.display="none";
+    encounter.classList.remove("gunScene");
+    gunObtained=true;
+    gameOver=false;
+    playTrack("level20");
+    spawnHunters();
+    drawMap();
+}
+
+function startAlexanStory(){
+    gameOver=true;
+    stopHunterTimer();
+    stopBossTimer();
+    // Switch from the Level 10 hunter track to Alexan's theme for the dialogue.
+    playTrack("alexan");
+
+    const encounter=document.getElementById("encounter");
+    encounter.classList.add("alexanScene");
+    encounter.style.display="grid";
+    alexanStoryIndex=0;
+    showAlexanLine();
+}
+
+function showAlexanLine(){
+    const text=document.getElementById("creepyText");
+    if(alexanStoryIndex>=alexanStory.length){finishAlexanStory();return;}
+    const line=alexanStory[alexanStoryIndex];
+    text.style.opacity="0";
+    setTimeout(()=>{
+        text.innerHTML=`<div class="speaker">${line.speaker}</div><div class="dialogue">${line.text}</div>`;
+        text.style.opacity="1";
+    },180);
+}
+
+document.addEventListener("keydown",e=>{
+    const encounter=document.getElementById("encounter");
+    if(!gameOver || !encounter.classList.contains("alexanScene")) return;
+    if(e.key===" "||e.key==="Enter"){
+        e.preventDefault();
+        alexanStoryIndex++;
+        showAlexanLine();
+    }
+});
+
+function finishAlexanStory(){
+    const encounter=document.getElementById("encounter");
+    encounter.style.display="none";
+    encounter.classList.remove("alexanScene");
+    gameOver=false;
+    level=11;
+    lives=3;
+    playerX=1;
+    playerY=1;
+    gunObtained=false;
+    playTrack("level11");
+    spawnHunters();
+    drawMap();
+}
+
+/* =========================================================
+   WIN / GAME OVER
+========================================================= */
+
+function startEncounter(text){
+    if(gameOver) return;
+    gameOver=true;
+    stopHunterTimer();
+    stopBossTimer();
+    lightsOff.play().catch(()=>{});
+    const encounter=document.getElementById("encounter");
+    encounter.classList.remove("alexanScene");
+    encounter.style.display="flex";
+    const creepy=document.getElementById("creepyText");
+    creepy.textContent=text || "CAUGHT";
+    creepy.style.opacity="1";
+}
+
+function winGame(){
+    gameOver=true;
+    stopHunterTimer();
+    stopBossTimer();
+    stopTrack();
+    ambience.pause();
+    document.getElementById("message").textContent="YOU ESCAPED";
+    const text=document.getElementById("creepyText");
+    text.textContent="YOU ESCAPED";
+    text.style.opacity="1";
+    document.getElementById("encounter").style.display="flex";
+    setTimeout(()=>{window.location.href="index.html";},3500);
+}
 
 /* =========================================================
    START AMBIENCE
-=========================================================
-
-   Browsers generally require user interaction before
-   allowing audio to play.
-
 ========================================================= */
 
-document.addEventListener(
-    "click",
-    () => {
-
-        ambience.play()
-            .catch(() => {});
-
-    },
-    {
-        once: true
-    }
-);
-
-
-/*
-    Also start ambience when the player
-    first presses a movement key.
-*/
-
-document.addEventListener(
-    "keydown",
-    (e) => {
-
-        const key =
-            e.key.toLowerCase();
-
-        const movementKeys = [
-            "w",
-            "a",
-            "s",
-            "d",
-            "arrowup",
-            "arrowdown",
-            "arrowleft",
-            "arrowright"
-        ];
-
-        if (
-            movementKeys.includes(key)
-        ) {
-
-            ambience.play()
-                .catch(() => {});
-
-        }
-
-    },
-    {
-        once: true
-    }
-);
-
-
-/* =========================================================
-   START GAME
-========================================================= */
+document.addEventListener("click",()=>unlockAudio());
 
 drawMap();
 
